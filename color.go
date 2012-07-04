@@ -11,7 +11,7 @@ type Color struct {
 	R byte
 	G byte
 	B byte
-	A byte
+	A byte // 0=transparent
 }
 
 /////////////////////////////////////
@@ -38,5 +38,5 @@ func (this *Color) fromC(color C.sfColor) {
 }
 
 func (this *Color) toC() C.sfColor {
-	return C.sfColor{C.sfUint8(this.R), C.sfUint8(this.G), C.sfUint8(this.B), C.sfUint8(this.A)}
+	return C.sfColor{r: C.sfUint8(this.R), g: C.sfUint8(this.G), b: C.sfUint8(this.B), a: C.sfUint8(this.A)}
 }

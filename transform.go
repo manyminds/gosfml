@@ -61,6 +61,13 @@ func (this *Transform) fromC(transform C.sfTransform) {
 	}
 }
 
+func (this *Transform) toC() (transform C.sfTransform) {
+	for i := 0; i < 9; i++ {
+		transform.matrix[i] = C.float(this[i])
+	}
+	return
+}
+
 func (this *Transform) toCPtr() *C.sfTransform {
 	return (*C.sfTransform)(unsafe.Pointer(this))
 }

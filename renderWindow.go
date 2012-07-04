@@ -20,6 +20,8 @@ type RenderWindow struct {
 	cptr *C.sfRenderWindow
 }
 
+type Drawable interface{}
+
 /////////////////////////////////////
 ///		CONTRUCTOR
 /////////////////////////////////////
@@ -142,16 +144,16 @@ func (this *RenderWindow) SetView(view View) {
 	C.sfRenderWindow_setView(this.cptr, view.cptr)
 }
 
-func (this *RenderWindow) Draw(drawable interface{}) {
+func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
 	switch drawable.(type) {
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, nil)
+		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, renderStates.toCPtr())
 	case *RectangleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, nil)
+		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, renderStates.toCPtr())
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(this.cptr, drawable.(*Sprite).cptr, nil)
+		C.sfRenderWindow_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
 	case *Text:
-		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, nil)
+		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
 	default:
 		fmt.Println("RenderWindow.Draw(): invalid shape type")
 	}

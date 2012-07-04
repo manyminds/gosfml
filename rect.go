@@ -63,11 +63,11 @@ func (this *Recti) fromC(rect C.sfIntRect) {
 }
 
 func (this *Recti) toC() C.sfIntRect {
-	return C.sfIntRect{C.int(this.Left), C.int(this.Top), C.int(this.Width), C.int(this.Height)}
+	return C.sfIntRect{left: C.int(this.Left), top: C.int(this.Top), width: C.int(this.Width), height: C.int(this.Height)}
 }
 
 func (this *Rectf) toC() C.sfFloatRect {
-	return C.sfFloatRect{C.float(this.Left), C.float(this.Top), C.float(this.Width), C.float(this.Height)}
+	return C.sfFloatRect{left: C.float(this.Left), top: C.float(this.Top), width: C.float(this.Width), height: C.float(this.Height)}
 }
 
 func (this *Recti) toCPtr() *C.sfIntRect {

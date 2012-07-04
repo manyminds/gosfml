@@ -1,5 +1,11 @@
 package GoSFML2
 
+/*
+ #include <SFML/Graphics.h>
+*/
+import "C"
+import "unsafe"
+
 /////////////////////////////////////
 ///		CONSTS
 /////////////////////////////////////
@@ -17,8 +23,17 @@ const (
 
 type BlendMode int
 
-type RenderState struct {
+type RenderStates struct {
 	BlendMode BlendMode
 	Transform Transform
-	Texture   Texture
+	texture   *C.sfTexture
+	shader    *C.sfShader
+}
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *RenderStates) toCPtr() *C.sfRenderStates {
+	return (*C.sfRenderStates)(unsafe.Pointer(this))
 }
