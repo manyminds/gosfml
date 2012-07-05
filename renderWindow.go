@@ -134,9 +134,8 @@ func (this *RenderWindow) GetView() View {
 	return View{cptr}
 }
 
-func (this *RenderWindow) GetDefaultView() View {
-	cptr := C.sfRenderWindow_getView(this.cptr)
-	return View{cptr}
+func (this *RenderWindow) GetDefaultView() *View {
+	return &View{C.sfRenderWindow_getDefaultView(this.cptr)}
 }
 
 func (this *RenderWindow) SetView(view View) {
