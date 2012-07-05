@@ -134,7 +134,7 @@ func (this *RenderWindow) GetView() View {
 	return View{cptr}
 }
 
-func (this *RenderWindow) sfRenderWindow_getDefaultView() View {
+func (this *RenderWindow) GetDefaultView() View {
 	cptr := C.sfRenderWindow_getView(this.cptr)
 	return View{cptr}
 }
@@ -158,6 +158,16 @@ func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
 	default:
 		//invalid shape
 	}
+}
+
+func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
+	coord.fromC(C.sfRenderWindow_convertCoords(this.cptr, pos.toC(), view.cptr))
+	return
+}
+
+func (this *RenderWindow) GetViewport(view *View) (viewport Recti) {
+	viewport.fromC(C.sfRenderWindow_getViewport(this.cptr, view.cptr))
+	return
 }
 
 func (this *RenderWindow) PushGLStates() {
