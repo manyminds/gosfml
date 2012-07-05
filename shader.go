@@ -27,12 +27,12 @@ func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) *Shader {
 	)
 
 	if vertexShaderFile != "" {
-		cVShader := C.CString(vertexShaderFile)
+		cVShader = C.CString(vertexShaderFile)
 		defer C.free(unsafe.Pointer(cVShader))
 	}
 
 	if fragmentShaderFile != "" {
-		cFShader := C.CString(vertexShaderFile)
+		cFShader = C.CString(vertexShaderFile)
 		defer C.free(unsafe.Pointer(cFShader))
 	}
 

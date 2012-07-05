@@ -75,3 +75,4 @@ func (this *Texture) IsRepeated() bool {
 func Texture_GetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
+
