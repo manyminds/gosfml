@@ -20,20 +20,20 @@ type Shader struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile *string) *Shader {
+func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) *Shader {
 	var (
 		cVShader *C.char = nil
 		cFShader *C.char = nil
 	)
 
-	if vertexShaderFile != nil {
-		cVShader := C.CString(*vertexShaderFile)
-		defer C.free(unsafe.Pointer(&cVShader))
+	if vertexShaderFile != "" {
+		cVShader := C.CString(vertexShaderFile)
+		defer C.free(unsafe.Pointer(cVShader))
 	}
 
-	if fragmentShaderFile != nil {
-		cFShader := C.CString(*vertexShaderFile)
-		defer C.free(unsafe.Pointer(&cFShader))
+	if fragmentShaderFile != "" {
+		cFShader := C.CString(vertexShaderFile)
+		defer C.free(unsafe.Pointer(cFShader))
 	}
 
 	shader := &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
