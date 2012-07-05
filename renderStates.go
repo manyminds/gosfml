@@ -42,6 +42,22 @@ func CreateRenderStates(blendMode BlendMode, transform Transform, texture Textur
 	return
 }
 
+func (this *RenderStates) SetShader(shader Shader) {
+	this.shader = shader.cptr
+}
+
+func (this *RenderStates) SetTexture(texture Texture) {
+	this.texture = texture.cptr
+}
+
+func (this *RenderStates) SetTramsform(transform Transform) {
+	this.transform = transform
+}
+
+func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
+	this.blendMode = blendMode
+}
+
 /////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////
