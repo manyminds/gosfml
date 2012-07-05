@@ -7,7 +7,6 @@ package GoSFML2
 import "C"
 
 import (
-	"fmt"
 	"runtime"
 	"unsafe"
 )
@@ -154,8 +153,10 @@ func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
 		C.sfRenderWindow_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
 	case *Text:
 		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
+	case *ConvexShape:
+		C.sfRenderWindow_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
 	default:
-		fmt.Println("RenderWindow.Draw(): invalid shape type")
+		//invalid shape
 	}
 }
 

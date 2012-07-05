@@ -31,6 +31,13 @@ func CreateTextureFromFile(file string) *Texture {
 	return texture
 }
 
+//needs testing
+func CreateTextureFromMemory(data []byte) *Texture {
+	texture := &Texture{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]),C.size_t(len(data)))}
+	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	return texture
+}
+
 func (this *Texture) Destroy() {
 	C.sfTexture_destroy(this.cptr)
 	this.cptr = nil
