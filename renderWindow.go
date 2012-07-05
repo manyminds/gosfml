@@ -129,16 +129,15 @@ func (this *RenderWindow) Clear(color Color) {
 	C.sfRenderWindow_clear(this.cptr, color.toC())
 }
 
-func (this *RenderWindow) GetView() View {
-	cptr := C.sfRenderWindow_getView(this.cptr)
-	return View{cptr}
+func (this *RenderWindow) GetView() *View {
+	return &View{C.sfRenderWindow_getView(this.cptr)}
 }
 
 func (this *RenderWindow) GetDefaultView() *View {
 	return &View{C.sfRenderWindow_getDefaultView(this.cptr)}
 }
 
-func (this *RenderWindow) SetView(view View) {
+func (this *RenderWindow) SetView(view *View) {
 	C.sfRenderWindow_setView(this.cptr, view.cptr)
 }
 
