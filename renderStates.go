@@ -24,10 +24,22 @@ const (
 type BlendMode int
 
 type RenderStates struct {
-	BlendMode BlendMode
-	Transform Transform
+	blendMode BlendMode
+	transform Transform
 	texture   *C.sfTexture
 	shader    *C.sfShader
+}
+
+/////////////////////////////////////
+///		FUNCS
+/////////////////////////////////////
+
+func CreateRenderStates(blendMode BlendMode, transform Transform, texture Texture, shader Shader) (rt RenderStates) {
+	rt.blendMode = blendMode
+	rt.transform = transform
+	rt.shader = shader.cptr
+	rt.texture = texture.cptr
+	return
 }
 
 /////////////////////////////////////
