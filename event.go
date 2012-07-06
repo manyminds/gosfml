@@ -2,6 +2,7 @@ package GoSFML2
 
 // #include <SFML/Window.h>
 import "C"
+import "unsafe"
 
 /////////////////////////////////////
 ///		CONSTS
@@ -55,6 +56,9 @@ func (this *KeyEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	SizeEvent
+
 type SizeEvent struct {
 	EventType EventType
 	Width     uint
@@ -65,6 +69,9 @@ func (this *SizeEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	TextEvent
+
 type TextEvent struct {
 	EventType EventType
 	Char      uint32
@@ -73,6 +80,9 @@ type TextEvent struct {
 func (this *TextEvent) GetType() EventType {
 	return this.EventType
 }
+
+///////////////////////////////////////////////////////////////
+//	MouseMoveEvent
 
 type MouseMoveEvent struct {
 	EventType EventType
@@ -83,6 +93,9 @@ type MouseMoveEvent struct {
 func (this *MouseMoveEvent) GetType() EventType {
 	return this.EventType
 }
+
+///////////////////////////////////////////////////////////////
+//	MouseButtonEvent
 
 type MouseButtonEvent struct {
 	EventType EventType
@@ -95,6 +108,9 @@ func (this *MouseButtonEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	MouseWheelEvent
+
 type MouseWheelEvent struct {
 	EventType EventType
 	Delta     int
@@ -105,6 +121,9 @@ type MouseWheelEvent struct {
 func (this *MouseWheelEvent) GetType() EventType {
 	return this.EventType
 }
+
+///////////////////////////////////////////////////////////////
+//	JoystickMoveEvent
 
 type JoystickMoveEvent struct {
 	EventType  EventType
@@ -117,6 +136,9 @@ func (this *JoystickMoveEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	JoystickButtonEvent
+
 type JoystickButtonEvent struct {
 	EventType  EventType
 	JoystickId uint
@@ -127,6 +149,9 @@ func (this *JoystickButtonEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	JoystickConnectEvent
+
 type JoystickConnectEvent struct {
 	EventType  EventType
 	joystickId uint
@@ -136,6 +161,9 @@ func (this *JoystickConnectEvent) GetType() EventType {
 	return this.EventType
 }
 
+///////////////////////////////////////////////////////////////
+//	RawEvent
+
 //20 bytes
 type RawEvent struct {
 	EventType EventType
@@ -144,4 +172,51 @@ type RawEvent struct {
 
 func (this *RawEvent) GetType() EventType {
 	return this.EventType
+}
+
+///////////////////////////////////////////////////////////////
+//standard event handling method used by Window & RenderWindow
+
+func HandleEvent(cEvent *RawEvent) Event {
+	eventType := cEvent.GetType()
+
+	switch eventType {
+	case Event_Closed:
+		return (*RawEvent)(unsafe.Pointer(cEvent))
+	case Event_Resized:
+		return (*SizeEvent)(unsafe.Pointer(cEvent))
+	case Event_TextEntered:
+		return (*TextEvent)(unsafe.Pointer(cEvent))
+	case Event_KeyPressed:
+		return (*KeyEvent)(unsafe.Pointer(cEvent))
+	case Event_KeyReleased:
+		return (*KeyEvent)(unsafe.Pointer(cEvent))
+	case Event_MouseWheelMoved:
+		return (*MouseWheelEvent)(unsafe.Pointer(cEvent))
+	case Event_MouseButtonPressed:
+		fallthrough
+	case Event_MouseButtonReleased:
+		return (*MouseButtonEvent)(unsafe.Pointer(cEvent))
+	case Event_MouseMoved:
+		fallthrough
+	case Event_MouseEntered:
+		fallthrough
+	case Event_MouseLeft:
+		return (*MouseMoveEvent)(unsafe.Pointer(cEvent))
+	case Event_JoystickButtonPressed:
+		fallthrough
+	case Event_JoystickButtonReleased:
+		fallthrough
+	case Event_JoystickMoved:
+		fallthrough
+	case Event_JoystickConnected:
+		fallthrough
+	case Event_JoystickDisconnected:
+		fallthrough
+	default:
+		return (*RawEvent)(unsafe.Pointer(cEvent))
+	}
+
+	//shouldn't get here
+	return (*RawEvent)(unsafe.Pointer(cEvent))
 }

@@ -73,22 +73,7 @@ func (this *RenderTexture) ConvertCoords(pos Vector2i, view *View) (coord Vector
 }
 
 func (this *RenderTexture) Draw(drawable Drawable, renderStates *RenderStates) {
-	switch drawable.(type) {
-	case *CircleShape:
-		C.sfRenderTexture_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, renderStates.toCPtr())
-	case *RectangleShape:
-		C.sfRenderTexture_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, renderStates.toCPtr())
-	case *Sprite:
-		C.sfRenderTexture_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
-	case *Text:
-		C.sfRenderTexture_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
-	case *ConvexShape:
-		C.sfRenderTexture_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
-	case *VertexArray:
-		C.sfRenderTexture_drawVertexArray(this.cptr, drawable.(*VertexArray).cptr, renderStates.toCPtr())
-	default:
-		//invalid shape
-	}
+	drawable.Draw(this,renderStates)
 }
 
 func (this *RenderTexture) PushGLStates() {

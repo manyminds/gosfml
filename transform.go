@@ -13,9 +13,7 @@ import (
 
 type Transform [9]float32
 
-var (
-	Transform_Identity = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
-)
+var Transform_Identity Transform = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
 
 /////////////////////////////////////
 ///		FUNCS
@@ -26,7 +24,7 @@ func (this *Transform) GetMatrix() (matrix [14]float32) {
 	return
 }
 
-func (this *Transform) GetInverse() (exists bool, inverse Transform) {
+func (this *Transform) GetInverse() (inverse Transform, exists bool) {
 	inv := C.sfTransform_getInverse(this.toCPtr())
 	inverse.fromC(inv)
 	exists = (inverse != Transform_Identity)

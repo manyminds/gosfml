@@ -19,7 +19,9 @@ type RenderWindow struct {
 	cptr *C.sfRenderWindow
 }
 
-type Drawable interface{}
+type Drawable interface{
+	Draw(target RenderTarget, renderStates *RenderStates)	
+}
 
 /////////////////////////////////////
 ///		CONTRUCTOR
@@ -142,22 +144,7 @@ func (this *RenderWindow) SetView(view *View) {
 }
 
 func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
-	switch drawable.(type) {
-	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, renderStates.toCPtr())
-	case *RectangleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, renderStates.toCPtr())
-	case *Sprite:
-		C.sfRenderWindow_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
-	case *Text:
-		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
-	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
-	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(this.cptr, drawable.(*VertexArray).cptr, renderStates.toCPtr())
-	default:
-		//invalid shape
-	}
+	drawable.Draw(this,renderStates)
 }
 
 func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
@@ -183,6 +170,6 @@ func (this *RenderWindow) ResetGLStates() {
 }
 
 //Test
-func (this *RenderWindow) AsWindow() *Window{
+func (this *RenderWindow) AsWindow() *Window {
 	return &Window{this.cptr}
 }

@@ -44,6 +44,25 @@ type Window struct {
 ///		FUNCTIONS
 /////////////////////////////////////
 
+func CreateWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *Window {
+	//transform GoString into CString
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
+	//create the window
+	window := &Window{
+		C.sfWindow_create(C.sfVideoMode{C.uint(videoMode.Width), C.uint(videoMode.Height), C.uint(videoMode.BitsPerPixel)},
+			cTitle,
+			C.sfUint32(style),
+			(*C.sfContextSettings)(unsafe.Pointer(contextSettings))),
+	}
+
+	//GC cleanup
+	runtime.SetFinalizer(window, (*Window).Destroy)
+
+	return window
+}
+
 func (this *Window) GetSettings() ContextSettings {
 	csettings := C.sfWindow_getSettings(this.cptr)
 	return ContextSettings{uint(csettings.depthBits),
@@ -92,68 +111,4 @@ func (this *Window) PollEvent() Event {
 		return HandleEvent(cEvent)
 	}
 	return nil
-}
-
-func CreateWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *Window {
-	//transform GoString into CString
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
-
-	//create the window
-	window := &Window{
-		C.sfWindow_create(C.sfVideoMode{C.uint(videoMode.Width), C.uint(videoMode.Height), C.uint(videoMode.BitsPerPixel)},
-			cTitle,
-			C.sfUint32(style),
-			(*C.sfContextSettings)(unsafe.Pointer(contextSettings))),
-	}
-
-	//GC cleanup
-	runtime.SetFinalizer(window, (*Window).Destroy)
-
-	return window
-}
-
-//standard event handling method used by Window & RenderWindow
-func HandleEvent(cEvent *RawEvent) Event {
-	eventType := cEvent.GetType()
-
-	switch eventType {
-	case Event_Closed:
-		return (*RawEvent)(unsafe.Pointer(cEvent))
-	case Event_Resized:
-		return (*SizeEvent)(unsafe.Pointer(cEvent))
-	case Event_TextEntered:
-		return (*TextEvent)(unsafe.Pointer(cEvent))
-	case Event_KeyPressed:
-		return (*KeyEvent)(unsafe.Pointer(cEvent))
-	case Event_KeyReleased:
-		return (*KeyEvent)(unsafe.Pointer(cEvent))
-	case Event_MouseWheelMoved:
-		return (*MouseWheelEvent)(unsafe.Pointer(cEvent))
-	case Event_MouseButtonPressed:
-		fallthrough
-	case Event_MouseButtonReleased:
-		return (*MouseButtonEvent)(unsafe.Pointer(cEvent))
-	case Event_MouseMoved:
-		fallthrough
-	case Event_MouseEntered:
-		fallthrough
-	case Event_MouseLeft:
-		return (*MouseMoveEvent)(unsafe.Pointer(cEvent))
-	case Event_JoystickButtonPressed:
-		fallthrough
-	case Event_JoystickButtonReleased:
-		fallthrough
-	case Event_JoystickMoved:
-		fallthrough
-	case Event_JoystickConnected:
-		fallthrough
-	case Event_JoystickDisconnected:
-		fallthrough
-	default:
-		return (*RawEvent)(unsafe.Pointer(cEvent))
-	}
-
-	//shouldn't get here
-	return (*RawEvent)(unsafe.Pointer(cEvent))
 }

@@ -11,7 +11,7 @@ type Color struct {
 	R byte
 	G byte
 	B byte
-	A byte // 0=transparent
+	A byte //< 0=transparent
 }
 
 /////////////////////////////////////

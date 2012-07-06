@@ -166,3 +166,12 @@ func (this *RectangleShape) GetGlobalBounds() (rect Rectf) {
 	rect.fromC(C.sfRectangleShape_getGlobalBounds(this.cptr))
 	return
 }
+
+func (this *RectangleShape) Draw(target RenderTarget, renderStates *RenderStates) {
+	switch target.(type) {
+	case *RenderWindow:
+		C.sfRenderWindow_drawRectangleShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
+	case *RenderTexture:
+		C.sfRenderWindow_drawRectangleShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+	}
+}

@@ -100,6 +100,15 @@ func (this *VertexArray) GetBounds() (rect Rectf) {
 	return
 }
 
+func (this *VertexArray) Draw(target RenderTarget, renderStates *RenderStates) {
+	switch target.(type) {
+	case *RenderWindow:
+		C.sfRenderWindow_drawVertexArray(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
+	case *RenderTexture:
+		C.sfRenderWindow_drawVertexArray(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+	}
+}
+
 /////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////

@@ -21,9 +21,15 @@ type Sprite struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateSprite() *Sprite {
+func CreateSprite(tex *Texture) *Sprite {
 	shape := &Sprite{C.sfSprite_create(), nil}
 	runtime.SetFinalizer(shape, (*Sprite).Destroy)
+
+	//set texture
+	if tex != nil {
+		shape.SetTexture(tex, true)
+	}
+
 	return shape
 }
 
@@ -124,4 +130,13 @@ func (this *Sprite) GetLocalBounds() (rect Rectf) {
 func (this *Sprite) GetGlobalBounds() (rect Rectf) {
 	rect.fromC(C.sfSprite_getGlobalBounds(this.cptr))
 	return
+}
+
+func (this *Sprite) Draw(target RenderTarget, renderStates *RenderStates) {
+	switch target.(type) {
+	case *RenderWindow:
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
+	case *RenderTexture:
+		C.sfRenderWindow_drawSprite(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+	}
 }
