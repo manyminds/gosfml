@@ -20,6 +20,10 @@ type Vector2f struct {
 	X, Y float32
 }
 
+type Vector3f struct {
+	X, Y, Z float32
+}
+
 /////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
@@ -88,14 +92,24 @@ func (this *Vector2f) fromC(vec C.sfVector2f) {
 	this.Y = float32(vec.y)
 }
 
+func (this *Vector3f) fromC(vec C.sfVector3f) {
+	this.X = float32(vec.x)
+	this.Y = float32(vec.y)
+	this.Z = float32(vec.z)
+}
+
 func (this *Vector2i) toC() C.sfVector2i {
-	return C.sfVector2i{C.int(this.X), C.int(this.Y)}
+	return C.sfVector2i{x: C.int(this.X), y: C.int(this.Y)}
 }
 
 func (this *Vector2u) toC() C.sfVector2u {
-	return C.sfVector2u{C.uint(this.X), C.uint(this.Y)}
+	return C.sfVector2u{x: C.uint(this.X), y: C.uint(this.Y)}
 }
 
 func (this *Vector2f) toC() C.sfVector2f {
-	return C.sfVector2f{C.float(this.X), C.float(this.Y)}
+	return C.sfVector2f{x: C.float(this.X), y: C.float(this.Y)}
+}
+
+func (this *Vector3f) toC() C.sfVector3f {
+	return C.sfVector3f{x: C.float(this.X), y: C.float(this.Y), z: C.float(this.Z)}
 }

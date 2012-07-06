@@ -105,7 +105,10 @@ func (this *Window) Destroy() {
 
 func (this *Window) PollEvent() Event {
 	cEvent := new(RawEvent)
+
+	runtime.LockOSThread()
 	r := C.sfWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
+	runtime.UnlockOSThread()
 
 	if r != 0 {
 		return HandleEvent(cEvent)
