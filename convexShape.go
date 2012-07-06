@@ -171,6 +171,6 @@ func (this *ConvexShape) Draw(target RenderTarget, renderStates *RenderStates) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawConvexShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
 	case *RenderTexture:
-		C.sfRenderWindow_drawConvexShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawConvexShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
 	}
 }

@@ -137,6 +137,6 @@ func (this *Sprite) Draw(target RenderTarget, renderStates *RenderStates) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawSprite(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
 	case *RenderTexture:
-		C.sfRenderWindow_drawSprite(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
 	}
 }

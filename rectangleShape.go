@@ -172,6 +172,6 @@ func (this *RectangleShape) Draw(target RenderTarget, renderStates *RenderStates
 	case *RenderWindow:
 		C.sfRenderWindow_drawRectangleShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
 	case *RenderTexture:
-		C.sfRenderWindow_drawRectangleShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawRectangleShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
 	}
 }

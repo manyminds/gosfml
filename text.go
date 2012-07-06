@@ -173,6 +173,6 @@ func (this *Text) Draw(target RenderTarget, renderStates *RenderStates) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawText(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
 	case *RenderTexture:
-		C.sfRenderWindow_drawText(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawText(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
 	}
 }

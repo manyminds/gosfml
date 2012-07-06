@@ -176,6 +176,6 @@ func (this *CircleShape) Draw(target RenderTarget, renderStates *RenderStates) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawCircleShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
 	case *RenderTexture:
-		C.sfRenderWindow_drawCircleShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawCircleShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
 	}
 }
