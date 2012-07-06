@@ -42,12 +42,20 @@ func CreateRenderStates(blendMode BlendMode, transform Transform, texture Textur
 	return
 }
 
-func (this *RenderStates) SetShader(shader Shader) {
-	this.shader = shader.cptr
+func (this *RenderStates) SetShader(shader *Shader) {
+	if shader == nil {
+		this.shader = nil
+	} else {
+		this.shader = shader.cptr
+	}
 }
 
-func (this *RenderStates) SetTexture(texture Texture) {
-	this.texture = texture.cptr
+func (this *RenderStates) SetTexture(texture *Texture) {
+	if texture == nil {
+		this.texture = nil
+	} else {
+		this.texture = texture.cptr
+	}
 }
 
 func (this *RenderStates) SetTramsform(transform Transform) {

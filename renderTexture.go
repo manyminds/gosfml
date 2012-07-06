@@ -75,15 +75,17 @@ func (this *RenderTexture) ConvertCoords(pos Vector2i, view *View) (coord Vector
 func (this *RenderTexture) Draw(drawable Drawable, renderStates *RenderStates) {
 	switch drawable.(type) {
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawCircleShape(this.cptr, drawable.(*CircleShape).cptr, renderStates.toCPtr())
 	case *RectangleShape:
-		C.sfRenderWindow_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawCircleShape(this.cptr, drawable.(*RectangleShape).cptr, renderStates.toCPtr())
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawSprite(this.cptr, drawable.(*Sprite).cptr, renderStates.toCPtr())
 	case *Text:
-		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
 	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
+	case *VertexArray:
+		C.sfRenderTexture_drawVertexArray(this.cptr, drawable.(*VertexArray).cptr, renderStates.toCPtr())
 	default:
 		//invalid shape
 	}
@@ -109,8 +111,6 @@ func (this *RenderTexture) SetSmooth(smooth bool) {
 	C.sfRenderTexture_setSmooth(this.cptr, goBool2C(smooth))
 }
 
-func (this *RenderTexture) IsSmooth() bool{
+func (this *RenderTexture) IsSmooth() bool {
 	return sfBool2Go(C.sfRenderTexture_isSmooth(this.cptr))
 }
-
-

@@ -153,6 +153,8 @@ func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
 		C.sfRenderWindow_drawText(this.cptr, drawable.(*Text).cptr, renderStates.toCPtr())
 	case *ConvexShape:
 		C.sfRenderWindow_drawConvexShape(this.cptr, drawable.(*ConvexShape).cptr, renderStates.toCPtr())
+	case *VertexArray:
+		C.sfRenderWindow_drawVertexArray(this.cptr, drawable.(*VertexArray).cptr, renderStates.toCPtr())
 	default:
 		//invalid shape
 	}
@@ -178,4 +180,9 @@ func (this *RenderWindow) PopGLStates() {
 
 func (this *RenderWindow) ResetGLStates() {
 	C.sfRenderWindow_resetGLStates(this.cptr)
+}
+
+//Test
+func (this *RenderWindow) AsWindow() *Window{
+	return &Window{this.cptr}
 }

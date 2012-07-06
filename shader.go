@@ -20,7 +20,7 @@ type Shader struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) *Shader {
+func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Shader, err error) {
 	var (
 		cVShader *C.char = nil
 		cFShader *C.char = nil
@@ -36,9 +36,13 @@ func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) *Shader {
 		defer C.free(unsafe.Pointer(cFShader))
 	}
 
-	shader := &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
+	shader = &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
 	runtime.SetFinalizer(shader, (*Shader).Destroy)
-	return shader
+	
+	//error check
+	if shader.cptr == nil { err = &Error{"Cannot create Shader"} }
+	
+	return
 }
 
 func (this *Shader) Destroy() {
