@@ -77,8 +77,6 @@ func (this *RenderWindow) GetPosition() (pos Vector2i) {
 }
 
 func (this *RenderWindow) IsOpen() bool {
-	runtime.LockOSThread() //Test
-	defer runtime.UnlockOSThread()
 	return sfBool2Go(C.sfRenderWindow_isOpen(this.cptr))
 }
 
@@ -94,9 +92,7 @@ func (this *RenderWindow) Destroy() {
 func (this *RenderWindow) PollEvent() Event {
 	cEvent := new(RawEvent)
 	
-	runtime.LockOSThread()
 	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
-	runtime.UnlockOSThread()
 
 	if hasEvent != 0 {
 		return HandleEvent(cEvent)
