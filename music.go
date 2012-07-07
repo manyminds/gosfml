@@ -123,3 +123,9 @@ func (this *Music) GetSampleRate() uint {
 func (this *Music) GetChannelCount() uint {
 	return uint(C.sfMusic_getChannelCount(this.cptr))
 }
+
+//return: time in milliseconds
+func (this *Music) GetDuration() uint {
+	duration := C.sfMusic_getDuration(this.cptr)
+	return uint(C.sfTime_asMilliseconds(duration))
+}
