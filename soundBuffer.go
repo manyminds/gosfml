@@ -50,7 +50,7 @@ func (this *SoundBuffer) Destroy() {
 func (this *SoundBuffer) SaveToFile(file string) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	
+
 	C.sfSoundBuffer_saveToFile(this.cptr, cFile)
 }
 

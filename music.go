@@ -115,3 +115,11 @@ func (this *Music) GetPlayingOffset() uint {
 	time := C.sfMusic_getPlayingOffset(this.cptr)
 	return uint(C.sfTime_asMilliseconds(time))
 }
+
+func (this *Music) GetSampleRate() uint {
+	return uint(C.sfMusic_getSampleRate(this.cptr))
+}
+
+func (this *Music) GetChannelCount() uint {
+	return uint(C.sfMusic_getChannelCount(this.cptr))
+}
