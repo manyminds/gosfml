@@ -77,6 +77,8 @@ func (this *RenderWindow) GetPosition() (pos Vector2i) {
 }
 
 func (this *RenderWindow) IsOpen() bool {
+	runtime.LockOSThread() //Test
+	defer runtime.UnlockOSThread()
 	return sfBool2Go(C.sfRenderWindow_isOpen(this.cptr))
 }
 

@@ -33,7 +33,7 @@ func CreateTextureFromFile(file string) *Texture {
 
 //needs testing
 func CreateTextureFromMemory(data []byte) *Texture {
-	texture := &Texture{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]),C.size_t(len(data)))}
+	texture := &Texture{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 	return texture
 }
@@ -75,4 +75,3 @@ func (this *Texture) IsRepeated() bool {
 func Texture_GetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
-
