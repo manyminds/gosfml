@@ -105,8 +105,8 @@ func (this *Sound) SetAttenuation(attenuation float32) {
 	C.sfSound_setAttenuation(this.cptr, C.float(attenuation))
 }
 
-func (this *Sound) SetPlayingOffset(time time.Duration) {
-	C.sfSound_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(time.Nanoseconds()/1e3)))
+func (this *Sound) SetPlayingOffset(offset time.Duration) {
+	C.sfSound_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
 }
 
 func (this *Sound) GetPitch() float32 {
