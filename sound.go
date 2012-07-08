@@ -35,7 +35,7 @@ type Sound struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateSound() *Sound {
+func NewSound() *Sound {
 	sound := &Sound{C.sfSound_create(), nil}
 	runtime.SetFinalizer(sound, (*Sound).Destroy)
 	return sound

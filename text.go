@@ -35,7 +35,7 @@ type Text struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateText() *Text {
+func NewText() *Text {
 	text := &Text{C.sfText_create(), nil}
 	runtime.SetFinalizer(text, (*Text).Destroy)
 	return text

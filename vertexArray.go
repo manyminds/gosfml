@@ -42,7 +42,7 @@ type Vertex struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateVertexArray() *VertexArray {
+func NewVertexArray() *VertexArray {
 	vertexArray := &VertexArray{C.sfVertexArray_create()}
 	runtime.SetFinalizer(vertexArray, (*VertexArray).Destroy)
 	return vertexArray

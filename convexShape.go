@@ -21,7 +21,7 @@ type ConvexShape struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateConvexShape() *ConvexShape {
+func NewConvexShape() *ConvexShape {
 	shape := &ConvexShape{C.sfConvexShape_create(), nil}
 	runtime.SetFinalizer(shape, (*CircleShape).Destroy)
 	return shape

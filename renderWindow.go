@@ -27,7 +27,7 @@ type Drawable interface{
 ///		CONTRUCTOR
 /////////////////////////////////////
 
-func CreateRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *RenderWindow {
+func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *RenderWindow {
 	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))

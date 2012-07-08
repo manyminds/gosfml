@@ -19,13 +19,13 @@ type View struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateView() *View {
+func NewView() *View {
 	view := &View{C.sfView_create()}
 	runtime.SetFinalizer(view, (*View).Destroy)
 	return view
 }
 
-func CreateViewFromRect(rect *Rectf) *View {
+func NewViewFromRect(rect *Rectf) *View {
 	view := &View{C.sfView_createFromRect(rect.toC())}
 	runtime.SetFinalizer(view, (*View).Destroy)
 	return view

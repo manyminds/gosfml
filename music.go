@@ -24,7 +24,7 @@ type Music struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateMusicFromFile(file string) *Music {
+func NewMusicFromFile(file string) *Music {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	music := &Music{C.sfMusic_createFromFile(cFile)}

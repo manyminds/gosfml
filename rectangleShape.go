@@ -21,7 +21,7 @@ type RectangleShape struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateRectangleShape() *RectangleShape {
+func NewRectangleShape() *RectangleShape {
 	shape := &RectangleShape{C.sfRectangleShape_create(), nil}
 	runtime.SetFinalizer(shape, (*RectangleShape).Destroy)
 	return shape

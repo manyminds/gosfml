@@ -21,7 +21,7 @@ type Sprite struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateSprite(tex *Texture) *Sprite {
+func NewSprite(tex *Texture) *Sprite {
 	shape := &Sprite{C.sfSprite_create(), nil}
 	runtime.SetFinalizer(shape, (*Sprite).Destroy)
 

@@ -23,7 +23,7 @@ type Texture struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateTextureFromFile(file string) *Texture {
+func NewTextureFromFile(file string) *Texture {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	texture := &Texture{C.sfTexture_createFromFile(cFile, nil)}
@@ -32,7 +32,7 @@ func CreateTextureFromFile(file string) *Texture {
 }
 
 //needs testing
-func CreateTextureFromMemory(data []byte) *Texture {
+func NewTextureFromMemory(data []byte) *Texture {
 	texture := &Texture{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 	return texture

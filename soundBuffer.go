@@ -29,7 +29,7 @@ type SoundBuffer struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateSoundBufferFromFile(file string) *SoundBuffer {
+func NewSoundBufferFromFile(file string) *SoundBuffer {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	buffer := &SoundBuffer{C.sfSoundBuffer_createFromFile(cFile)}

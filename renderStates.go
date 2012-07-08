@@ -34,7 +34,7 @@ type RenderStates struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateRenderStates(blendMode BlendMode, transform Transform, texture Texture, shader Shader) (rt RenderStates) {
+func NewRenderStates(blendMode BlendMode, transform Transform, texture Texture, shader Shader) (rt RenderStates) {
 	rt.blendMode = blendMode
 	rt.transform = transform
 	rt.shader = shader.cptr
@@ -42,6 +42,7 @@ func CreateRenderStates(blendMode BlendMode, transform Transform, texture Textur
 	return
 }
 
+// shader can be nil
 func (this *RenderStates) SetShader(shader *Shader) {
 	if shader == nil {
 		this.shader = nil
@@ -50,6 +51,7 @@ func (this *RenderStates) SetShader(shader *Shader) {
 	}
 }
 
+// texture can be nil
 func (this *RenderStates) SetTexture(texture *Texture) {
 	if texture == nil {
 		this.texture = nil

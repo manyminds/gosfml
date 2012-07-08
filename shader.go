@@ -20,7 +20,7 @@ type Shader struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Shader, err error) {
+func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Shader, err error) {
 	var (
 		cVShader *C.char = nil
 		cFShader *C.char = nil

@@ -27,7 +27,7 @@ type Image struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateImageFromFile(file string) *Image {
+func NewImageFromFile(file string) *Image {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	image := &Image{C.sfImage_createFromFile(cFile)}
@@ -35,19 +35,19 @@ func CreateImageFromFile(file string) *Image {
 	return image
 }
 
-func CreateImage(width, height uint) *Image {
+func NewImage(width, height uint) *Image {
 	image := &Image{C.sfImage_create(C.uint(width), C.uint(height))}
 	runtime.SetFinalizer(image, (*Image).Destroy)
 	return image
 }
 
-func CreateImageFromColor(width, height uint, color Color) *Image {
+func NewImageFromColor(width, height uint, color Color) *Image {
 	image := &Image{C.sfImage_createFromColor(C.uint(width), C.uint(height), color.toC())}
 	runtime.SetFinalizer(image, (*Image).Destroy)
 	return image
 }
 
-func CreateImageFromPixels(width, height uint, data []byte) *Image {
+func NewImageFromPixels(width, height uint, data []byte) *Image {
 	image := &Image{C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))}
 	runtime.SetFinalizer(image, (*Image).Destroy)
 	return image

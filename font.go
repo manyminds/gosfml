@@ -20,7 +20,7 @@ type Font struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateFontFromFile(filename string) *Font {
+func NewFontFromFile(filename string) *Font {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 
@@ -29,12 +29,12 @@ func CreateFontFromFile(filename string) *Font {
 	return font
 }
 
-func CreateFontFromMemory(data []byte) *Font {
+func NewFontFromMemory(data []byte) *Font {
 	//not implemented
 	return nil
 }
 
-func CreateFontFromStream() *Font {
+func NewFontFromStream() *Font {
 	//not implemented
 	return nil
 }

@@ -44,7 +44,7 @@ type Window struct {
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func CreateWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *Window {
+func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *Window {
 	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))

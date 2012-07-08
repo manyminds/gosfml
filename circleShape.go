@@ -21,7 +21,7 @@ type CircleShape struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func CreateCircleShape(radius float32) *CircleShape {
+func NewCircleShape(radius float32) *CircleShape {
 	shape := &CircleShape{C.sfCircleShape_create(), nil}
 	shape.SetRadius(radius)
 	runtime.SetFinalizer(shape, (*CircleShape).Destroy)
