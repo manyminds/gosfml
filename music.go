@@ -110,10 +110,8 @@ func (this *Music) GetAttenuation() float32 {
 	return float32(C.sfMusic_getAttenuation(this.cptr))
 }
 
-//return: time in milliseconds
-func (this *Music) GetPlayingOffset() uint {
-	time := C.sfMusic_getPlayingOffset(this.cptr)
-	return uint(C.sfTime_asMilliseconds(time))
+func (this *Music) GetPlayingOffset() time.Duration {
+	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
 }
 
 func (this *Music) GetSampleRate() uint {
@@ -124,8 +122,6 @@ func (this *Music) GetChannelCount() uint {
 	return uint(C.sfMusic_getChannelCount(this.cptr))
 }
 
-//return: time in milliseconds
-func (this *Music) GetDuration() uint {
-	duration := C.sfMusic_getDuration(this.cptr)
-	return uint(C.sfTime_asMilliseconds(duration))
+func (this *Music) GetDuration() time.Duration {
+	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
 }

@@ -27,7 +27,7 @@ type SoundStatus int
 /////////////////////////////////////
 
 type Sound struct {
-	cptr *C.sfSound
+	cptr   *C.sfSound
 	buffer *SoundBuffer
 }
 
@@ -36,13 +36,13 @@ type Sound struct {
 /////////////////////////////////////
 
 func CreateSound() *Sound {
-	sound := &Sound{C.sfSound_create(),nil}
+	sound := &Sound{C.sfSound_create(), nil}
 	runtime.SetFinalizer(sound, (*Sound).Destroy)
 	return sound
 }
 
 func (this *Sound) Copy() *Sound {
-	sound := &Sound{C.sfSound_copy(this.cptr),this.buffer}
+	sound := &Sound{C.sfSound_copy(this.cptr), this.buffer}
 	runtime.SetFinalizer(sound, (*Sound).Destroy)
 	return sound
 }
@@ -106,7 +106,7 @@ func (this *Sound) SetAttenuation(attenuation float32) {
 }
 
 func (this *Sound) SetPlayingOffset(time time.Duration) {
-	C.sfSound_setPlayingOffset(this.cptr, C.sfSeconds(C.float(float32(time.Seconds()))))
+	C.sfSound_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(time.Nanoseconds()/1e3)))
 }
 
 func (this *Sound) GetPitch() float32 {
@@ -134,8 +134,6 @@ func (this *Sound) GetAttenuation() float32 {
 	return float32(C.sfSound_getAttenuation(this.cptr))
 }
 
-//return: time in milliseconds
-func (this *Sound) GetPlayingOffset() uint {
-	time := C.sfSound_getPlayingOffset(this.cptr)
-	return uint(C.sfTime_asMilliseconds(time))
+func (this *Sound) GetPlayingOffset() time.Duration {
+	return time.Duration(C.sfTime_asMicroseconds(C.sfSound_getPlayingOffset(this.cptr))) * time.Microsecond
 }
