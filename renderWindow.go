@@ -149,6 +149,8 @@ func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
 }
 
 func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
+	if view == nil { view = this.GetDefaultView() }
+	
 	coord.fromC(C.sfRenderWindow_convertCoords(this.cptr, pos.toC(), view.cptr))
 	return
 }

@@ -31,45 +31,45 @@ type Vector3f struct {
 /////////////////////////////////////
 // Vector2i
 
-func (this *Vector2i) Plus(other Vector2i) Vector2i {
+func (this Vector2i) Plus(other Vector2i) Vector2i {
 	return Vector2i{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
-func (this *Vector2i) Minus(other Vector2i) Vector2i {
+func (this Vector2i) Minus(other Vector2i) Vector2i {
 	return Vector2i{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
-func (this *Vector2i) Length() float32 {
+func (this Vector2i) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
 
 /////////////////////////////////////
 // Vector2u
 
-func (this *Vector2u) Plus(other Vector2u) Vector2u {
+func (this Vector2u) Plus(other Vector2u) Vector2u {
 	return Vector2u{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
-func (this *Vector2u) Minus(other Vector2u) Vector2u {
+func (this Vector2u) Minus(other Vector2u) Vector2u {
 	return Vector2u{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
-func (this *Vector2u) Length() float32 {
+func (this Vector2u) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
 
 /////////////////////////////////////
 // Vector2f
 
-func (this *Vector2f) Plus(other Vector2f) Vector2f {
+func (this Vector2f) Plus(other Vector2f) Vector2f {
 	return Vector2f{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
-func (this *Vector2f) Minus(other Vector2f) Vector2f {
+func (this Vector2f) Minus(other Vector2f) Vector2f {
 	return Vector2f{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
-func (this *Vector2f) Length() float32 {
+func (this Vector2f) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
 
