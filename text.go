@@ -159,12 +159,12 @@ func (this *Text) FintCharacterPos(index uint) (pos Vector2f) {
 }
 
 func (this *Text) GetLocalBounds() (rect Rectf) {
-	rect.fromC(C.sfSprite_getLocalBounds(this.cptr))
+	rect.fromC(C.sfText_getLocalBounds(this.cptr))
 	return
 }
 
 func (this *Text) GetGlobalBounds() (rect Rectf) {
-	rect.fromC(C.sfSprite_getGlobalBounds(this.cptr))
+	rect.fromC(C.sfText_getGlobalBounds(this.cptr))
 	return
 }
 
