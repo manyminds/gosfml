@@ -12,5 +12,5 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package GoSFML2
 
-// #cgo LDFLAGS: -lcsfml-system -lcsfml-window -lcsfml-graphics -lcsfml-audio
+// #cgo LDFLAGS: -lcsfml-window -lcsfml-graphics -lcsfml-audio
 import "C"

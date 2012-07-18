@@ -47,9 +47,11 @@ type Sound struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewSound() *Sound {
+func NewSound(buffer *SoundBuffer) *Sound {
 	sound := &Sound{C.sfSound_create(), nil}
+	sound.SetBuffer(buffer)
 	runtime.SetFinalizer(sound, (*Sound).Destroy)
+
 	return sound
 }
 
@@ -77,7 +79,7 @@ func (this *Sound) Stop() {
 }
 
 func (this *Sound) SetBuffer(buffer *SoundBuffer) {
-	C.sfSound_setBuffer(this.cptr, buffer.cptr)
+	C.sfSound_setBuffer(this.cptr, buffer.toCPtr())
 	this.buffer = buffer
 }
 
@@ -118,7 +120,7 @@ func (this *Sound) SetAttenuation(attenuation float32) {
 }
 
 func (this *Sound) SetPlayingOffset(offset time.Duration) {
-	C.sfSound_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
+	C.sfSound_setPlayingOffset(this.cptr,  C.sfTime{microseconds:(C.sfInt64(offset/time.Microsecond))})
 }
 
 func (this *Sound) GetPitch() float32 {
@@ -147,5 +149,5 @@ func (this *Sound) GetAttenuation() float32 {
 }
 
 func (this *Sound) GetPlayingOffset() time.Duration {
-	return time.Duration(C.sfTime_asMicroseconds(C.sfSound_getPlayingOffset(this.cptr))) * time.Microsecond
+	return time.Duration(C.sfSound_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
 }

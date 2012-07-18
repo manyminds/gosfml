@@ -99,7 +99,7 @@ func (this *CircleShape) Rotate(angle float32) {
 }
 
 func (this *CircleShape) SetTexture(texture *Texture, resetRect bool) {
-	C.sfCircleShape_setTexture(this.cptr, texture.cptr, goBool2C(resetRect))
+	C.sfCircleShape_setTexture(this.cptr, texture.toCPtr(), goBool2C(resetRect))
 	this.texture = texture
 }
 

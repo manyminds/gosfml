@@ -94,7 +94,7 @@ func (this *Music) SetAttenuation(attenuation float32) {
 }
 
 func (this *Music) SetPlayingOffset(offset time.Duration) {
-	C.sfMusic_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
+	C.sfMusic_setPlayingOffset(this.cptr, C.sfTime{microseconds:(C.sfInt64(offset/time.Microsecond))})
 }
 
 func (this *Music) GetPitch() float32 {
@@ -123,7 +123,7 @@ func (this *Music) GetAttenuation() float32 {
 }
 
 func (this *Music) GetPlayingOffset() time.Duration {
-	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
+	return time.Duration(C.sfMusic_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
 }
 
 func (this *Music) GetSampleRate() uint {
@@ -135,5 +135,5 @@ func (this *Music) GetChannelCount() uint {
 }
 
 func (this *Music) GetDuration() time.Duration {
-	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
+	return time.Duration(C.sfMusic_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
 }

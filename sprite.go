@@ -38,9 +38,7 @@ func NewSprite(tex *Texture) *Sprite {
 	runtime.SetFinalizer(shape, (*Sprite).Destroy)
 
 	//set texture
-	if tex != nil {
-		shape.SetTexture(tex, true)
-	}
+	shape.SetTexture(tex, true)
 
 	return shape
 }
@@ -98,7 +96,7 @@ func (this *Sprite) GetOrigin() (origin Vector2f) {
 }
 
 func (this *Sprite) SetTexture(texture *Texture, resetRect bool) {
-	C.sfSprite_setTexture(this.cptr, texture.cptr, goBool2C(resetRect))
+	C.sfSprite_setTexture(this.cptr, texture.toCPtr(), goBool2C(resetRect))
 	this.texture = texture
 }
 

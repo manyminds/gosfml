@@ -39,6 +39,12 @@ type Image struct {
 ///		FUNCS
 /////////////////////////////////////
 
+func newImageFromPtr(cptr *C.sfImage) *Image {
+	image := &Image{cptr}
+	runtime.SetFinalizer(image, (*Image).Destroy)
+	return image
+}
+
 func NewImageFromFile(file string) *Image {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
@@ -88,9 +94,9 @@ func (this *Image) GetSize() (size Vector2u) {
 	return
 }
 
-//func (this *Image) CreateMaskFromColor(color Color, alpha byte) {
-//	C.sfImage_createMaskFromColor(this.cptr, color.toC(), C.sfUint8(alpha))
-//}
+func (this *Image) CreateMaskFromColor(color Color, alpha byte) {
+	C.sfImage_createMaskFromColor(this.cptr, color.toC(), C.sfUint8(alpha))
+}
 
 func (this *Image) CopyImage(source *Image, destX, destY uint, sourceRect Recti, applyAlpha bool) {
 	C.sfImage_copyImage(this.cptr, source.cptr, C.uint(destX), C.uint(destY), sourceRect.toC(), goBool2C(applyAlpha))

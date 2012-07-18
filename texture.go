@@ -87,3 +87,14 @@ func (this *Texture) IsRepeated() bool {
 func Texture_GetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *Texture) toCPtr() *C.sfTexture {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
+}

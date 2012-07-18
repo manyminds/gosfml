@@ -31,8 +31,8 @@ type RenderWindow struct {
 	cptr *C.sfRenderWindow
 }
 
-type Drawable interface{
-	Draw(target RenderTarget, renderStates *RenderStates)	
+type Drawable interface {
+	Draw(target RenderTarget, renderStates *RenderStates)
 }
 
 /////////////////////////////////////
@@ -101,12 +101,36 @@ func (this *RenderWindow) Destroy() {
 	this.cptr = nil
 }
 
+func (this *RenderWindow) SetTitle(title string) {
+	//transform GoString into CString
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
+	C.sfRenderWindow_setTitle(this.cptr, cTitle)
+}
+
+func (this *RenderWindow) SetIcon(width, height uint, data []byte) {
+	C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
+}
+
+// returns nil if there is no event
 func (this *RenderWindow) PollEvent() Event {
 	cEvent := new(RawEvent)
-	
+
 	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
 
 	if hasEvent != 0 {
+		return HandleEvent(cEvent)
+	}
+	return nil
+}
+
+func (this *RenderWindow) WaitEvent() Event {
+	cEvent := new(RawEvent)
+
+	hasError := C.sfRenderWindow_waitEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
+
+	if hasError != 0 {
 		return HandleEvent(cEvent)
 	}
 	return nil
@@ -136,6 +160,10 @@ func (this *RenderWindow) SetFramerateLimit(limit uint) {
 	C.sfRenderWindow_setFramerateLimit(this.cptr, C.uint(limit))
 }
 
+func (this *RenderWindow) SetJoystickThreshold(threshold float32) {
+	C.sfRenderWindow_setJoystickThreshold(this.cptr, C.float(threshold))
+}
+
 func (this *RenderWindow) Display() {
 	C.sfRenderWindow_display(this.cptr)
 }
@@ -157,12 +185,14 @@ func (this *RenderWindow) SetView(view *View) {
 }
 
 func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
-	drawable.Draw(this,renderStates)
+	drawable.Draw(this, renderStates)
 }
 
 func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
-	if view == nil { view = this.GetDefaultView() }
-	
+	if view == nil {
+		view = this.GetDefaultView()
+	}
+
 	coord.fromC(C.sfRenderWindow_convertCoords(this.cptr, pos.toC(), view.cptr))
 	return
 }
@@ -182,6 +212,10 @@ func (this *RenderWindow) PopGLStates() {
 
 func (this *RenderWindow) ResetGLStates() {
 	C.sfRenderWindow_resetGLStates(this.cptr)
+}
+
+func (this *RenderWindow) Capture() *Image {
+	return newImageFromPtr(C.sfRenderWindow_capture(this.cptr))
 }
 
 //Test

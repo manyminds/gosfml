@@ -20,8 +20,8 @@ import "C"
 
 import (
 	"runtime"
-	"unsafe"
 	"time"
+	"unsafe"
 )
 
 //MISSING: 	sfSoundBuffer_createFromMemory
@@ -80,5 +80,16 @@ func (this *SoundBuffer) GetChannelCount() uint {
 }
 
 func (this *SoundBuffer) GetDuration() time.Duration {
-	return time.Duration(C.sfTime_asMicroseconds(C.sfSoundBuffer_getDuration(this.cptr))) * time.Microsecond
+	return time.Duration(C.sfSoundBuffer_getDuration(this.cptr).microseconds) * time.Microsecond
+}
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *SoundBuffer) toCPtr() *C.sfSoundBuffer {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
 }

@@ -98,7 +98,7 @@ func (this *ConvexShape) Rotate(angle float32) {
 }
 
 func (this *ConvexShape) SetTexture(texture *Texture, resetRect bool) {
-	C.sfConvexShape_setTexture(this.cptr, texture.cptr, goBool2C(resetRect))
+	C.sfConvexShape_setTexture(this.cptr, texture.toCPtr(), goBool2C(resetRect))
 	this.texture = texture
 }
 
