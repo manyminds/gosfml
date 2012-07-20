@@ -71,6 +71,15 @@ func NewImageFromPixels(width, height uint, data []byte) *Image {
 	return image
 }
 
+func NewImageFromMemory(data []byte) (*Image, error) {
+	if len(data) > 0 {
+		image := &Image{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		runtime.SetFinalizer(image, (*Image).Destroy)
+		return image, nil
+	}
+	return nil, &Error{"NewImageFromMemory: no data"}
+}
+
 func (this *Image) Copy() *Image {
 	image := &Image{C.sfImage_copy(this.cptr)}
 	runtime.SetFinalizer(image, (*Image).Destroy)

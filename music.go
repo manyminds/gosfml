@@ -44,6 +44,15 @@ func NewMusicFromFile(file string) *Music {
 	return music
 }
 
+func NewMusicFromMemory(data []byte) (*Music, error) {
+	if len(data) > 0 {
+		music := &Music{C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		runtime.SetFinalizer(music, (*Music).Destroy)
+		return music, nil
+	}
+	return nil, &Error{"NewMusicFromMemory: no data"}
+}
+
 func (this *Music) Destroy() {
 	C.sfMusic_destroy(this.cptr)
 	this.cptr = nil

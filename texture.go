@@ -43,11 +43,13 @@ func NewTextureFromFile(file string) *Texture {
 	return texture
 }
 
-//needs testing
-func NewTextureFromMemory(data []byte) *Texture {
-	texture := &Texture{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
-	runtime.SetFinalizer(texture, (*Texture).Destroy)
-	return texture
+func NewTextureFromMemory(data []byte, area *Recti) (*Texture, error) {
+	if len(data) > 0 {
+		texture := &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
+		runtime.SetFinalizer(texture, (*Texture).Destroy)
+		return texture, nil
+	}
+	return nil, &Error{"NewTextureFromMemory: no data"}
 }
 
 func (this *Texture) Destroy() {

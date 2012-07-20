@@ -41,9 +41,13 @@ func NewFontFromFile(filename string) *Font {
 	return font
 }
 
-func NewFontFromMemory(data []byte) *Font {
-	//not implemented
-	return nil
+func NewFontFromMemory(data []byte) (*Font, error) {
+	if len(data) > 0 {
+		font := &Font{C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		runtime.SetFinalizer(font, (*Font).Destroy)
+		return font, nil
+	}
+	return nil, &Error{"NewFontFromMemory: no data"}
 }
 
 func NewFontFromStream() *Font {

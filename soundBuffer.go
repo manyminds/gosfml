@@ -49,6 +49,15 @@ func NewSoundBufferFromFile(file string) *SoundBuffer {
 	return buffer
 }
 
+func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
+	if len(data) > 0 {
+		buffer := &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
+		return buffer, nil
+	}
+	return nil, &Error{"NewSoundBufferFromMemory: no data"}
+}
+
 func (this *SoundBuffer) Copy() *SoundBuffer {
 	buffer := &SoundBuffer{C.sfSoundBuffer_copy(this.cptr)}
 	runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
