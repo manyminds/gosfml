@@ -115,7 +115,7 @@ func (this *Window) Destroy() {
 	this.cptr = nil
 }
 
-func (this *Window) PollEvent() Event {
+func (this *Window) PollEvent() (Event, EventType) {
 	cEvent := new(RawEvent)
 
 	r := C.sfWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
@@ -123,5 +123,5 @@ func (this *Window) PollEvent() Event {
 	if r != 0 {
 		return HandleEvent(cEvent)
 	}
-	return nil
+	return nil, Event_Error
 }

@@ -39,6 +39,7 @@ const (
 	Event_JoystickMoved
 	Event_JoystickConnected
 	Event_JoystickDisconnected
+	Event_Error
 )
 
 type EventType int
@@ -47,9 +48,7 @@ type EventType int
 ///		INTERFACES
 /////////////////////////////////////
 
-type Event interface {
-	GetType() EventType
-}
+type Event interface{}
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -64,10 +63,6 @@ type KeyEvent struct {
 	System    int
 }
 
-func (this *KeyEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //	SizeEvent
 
@@ -75,10 +70,6 @@ type SizeEvent struct {
 	EventType EventType
 	Width     uint
 	Height    uint
-}
-
-func (this *SizeEvent) GetType() EventType {
-	return this.EventType
 }
 
 ///////////////////////////////////////////////////////////////
@@ -89,10 +80,6 @@ type TextEvent struct {
 	Char      uint32
 }
 
-func (this *TextEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //	MouseMoveEvent
 
@@ -100,10 +87,6 @@ type MouseMoveEvent struct {
 	EventType EventType
 	X         int
 	Y         int
-}
-
-func (this *MouseMoveEvent) GetType() EventType {
-	return this.EventType
 }
 
 ///////////////////////////////////////////////////////////////
@@ -116,10 +99,6 @@ type MouseButtonEvent struct {
 	Y         int
 }
 
-func (this *MouseButtonEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //	MouseWheelEvent
 
@@ -128,10 +107,6 @@ type MouseWheelEvent struct {
 	Delta     int
 	X         int
 	Y         int
-}
-
-func (this *MouseWheelEvent) GetType() EventType {
-	return this.EventType
 }
 
 ///////////////////////////////////////////////////////////////
@@ -144,10 +119,6 @@ type JoystickMoveEvent struct {
 	position   float32
 }
 
-func (this *JoystickMoveEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //	JoystickButtonEvent
 
@@ -157,20 +128,12 @@ type JoystickButtonEvent struct {
 	Button     uint
 }
 
-func (this *JoystickButtonEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //	JoystickConnectEvent
 
 type JoystickConnectEvent struct {
 	EventType  EventType
 	joystickId uint
-}
-
-func (this *JoystickConnectEvent) GetType() EventType {
-	return this.EventType
 }
 
 ///////////////////////////////////////////////////////////////
@@ -182,53 +145,33 @@ type RawEvent struct {
 	data      [16]byte
 }
 
-func (this *RawEvent) GetType() EventType {
-	return this.EventType
-}
-
 ///////////////////////////////////////////////////////////////
 //standard event handling method used by Window & RenderWindow
 
-func HandleEvent(cEvent *RawEvent) Event {
-	eventType := cEvent.GetType()
+func HandleEvent(cEvent *RawEvent) (ev Event, evt EventType) {
+	evt = cEvent.EventType
 
-	switch eventType {
+	switch evt {
 	case Event_Closed:
-		return (*RawEvent)(unsafe.Pointer(cEvent))
 	case Event_Resized:
-		return (*SizeEvent)(unsafe.Pointer(cEvent))
+		ev = (*SizeEvent)(unsafe.Pointer(cEvent))
 	case Event_TextEntered:
-		return (*TextEvent)(unsafe.Pointer(cEvent))
-	case Event_KeyPressed:
-		return (*KeyEvent)(unsafe.Pointer(cEvent))
-	case Event_KeyReleased:
-		return (*KeyEvent)(unsafe.Pointer(cEvent))
+		ev = (*TextEvent)(unsafe.Pointer(cEvent))
+	case Event_KeyReleased, Event_KeyPressed:
+		ev = (*KeyEvent)(unsafe.Pointer(cEvent))
 	case Event_MouseWheelMoved:
-		return (*MouseWheelEvent)(unsafe.Pointer(cEvent))
-	case Event_MouseButtonPressed:
-		fallthrough
-	case Event_MouseButtonReleased:
-		return (*MouseButtonEvent)(unsafe.Pointer(cEvent))
-	case Event_MouseMoved:
-		fallthrough
-	case Event_MouseEntered:
-		fallthrough
-	case Event_MouseLeft:
-		return (*MouseMoveEvent)(unsafe.Pointer(cEvent))
-	case Event_JoystickButtonPressed:
-		fallthrough
-	case Event_JoystickButtonReleased:
-		fallthrough
+		ev = (*MouseWheelEvent)(unsafe.Pointer(cEvent))
+	case Event_MouseButtonReleased, Event_MouseButtonPressed:
+		ev = (*MouseButtonEvent)(unsafe.Pointer(cEvent))
+	case Event_MouseLeft, Event_MouseEntered, Event_MouseMoved:
+		ev = (*MouseMoveEvent)(unsafe.Pointer(cEvent))
+	case Event_JoystickButtonReleased, Event_JoystickButtonPressed:
+		ev = (*JoystickButtonEvent)(unsafe.Pointer(cEvent))
 	case Event_JoystickMoved:
-		fallthrough
-	case Event_JoystickConnected:
-		fallthrough
-	case Event_JoystickDisconnected:
-		fallthrough
+		ev = (*JoystickMoveEvent)(unsafe.Pointer(cEvent))
+	case Event_JoystickDisconnected, Event_JoystickConnected:
+		ev = (*JoystickConnectEvent)(unsafe.Pointer(cEvent))
 	default:
-		return (*RawEvent)(unsafe.Pointer(cEvent))
 	}
-
-	//shouldn't get here
-	return (*RawEvent)(unsafe.Pointer(cEvent))
+	return
 }

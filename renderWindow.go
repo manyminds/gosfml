@@ -114,7 +114,7 @@ func (this *RenderWindow) SetIcon(width, height uint, data []byte) {
 }
 
 // returns nil if there is no event
-func (this *RenderWindow) PollEvent() Event {
+func (this *RenderWindow) PollEvent() (Event, EventType) {
 	cEvent := new(RawEvent)
 
 	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
@@ -122,10 +122,10 @@ func (this *RenderWindow) PollEvent() Event {
 	if hasEvent != 0 {
 		return HandleEvent(cEvent)
 	}
-	return nil
+	return nil, Event_Error
 }
 
-func (this *RenderWindow) WaitEvent() Event {
+func (this *RenderWindow) WaitEvent() (Event, EventType) {
 	cEvent := new(RawEvent)
 
 	hasError := C.sfRenderWindow_waitEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
@@ -133,7 +133,7 @@ func (this *RenderWindow) WaitEvent() Event {
 	if hasError != 0 {
 		return HandleEvent(cEvent)
 	}
-	return nil
+	return nil, Event_Error
 }
 
 func (this *RenderWindow) SetVSyncEnabled(enabled bool) {
