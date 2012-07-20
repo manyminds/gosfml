@@ -13,6 +13,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 package GoSFML2
 
 // #include <SFML/Window.h>
+// int getSizeEvent() { return sizeof(sfEvent); }
 import "C"
 import "unsafe"
 
@@ -139,10 +140,9 @@ type JoystickConnectEvent struct {
 ///////////////////////////////////////////////////////////////
 //	RawEvent
 
-//20 bytes
 type RawEvent struct {
 	EventType EventType
-	data      [16]byte
+	data      [20]byte
 }
 
 ///////////////////////////////////////////////////////////////
@@ -174,4 +174,12 @@ func HandleEvent(cEvent *RawEvent) (ev Event, evt EventType) {
 	default:
 	}
 	return
+}
+
+/////////////////////////////////////
+///		Testing
+/////////////////////////////////////
+
+func sizeofEvent() int {
+	return int(C.getSizeEvent())
 }

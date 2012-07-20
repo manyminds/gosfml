@@ -13,6 +13,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 package GoSFML2
 
 // #include <SFML/Graphics.h>
+// int getSizeRecti() { return sizeof(sfIntRect); }
+// int getSizeRectf() { return sizeof(sfFloatRect); }
 import "C"
 import "unsafe"
 
@@ -88,4 +90,16 @@ func (this *Recti) toCPtr() *C.sfIntRect {
 
 func (this *Rectf) toCPtr() *C.sfFloatRect {
 	return (*C.sfFloatRect)(unsafe.Pointer(this))
+}
+
+/////////////////////////////////////
+///		Testing
+/////////////////////////////////////
+
+func sizeofRecti() int {
+	return int(C.getSizeRecti())
+}
+
+func sizeofRectf() int {
+	return int(C.getSizeRectf())
 }
