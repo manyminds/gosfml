@@ -46,10 +46,6 @@ func TestStructSizes(t *testing.T) {
 		t.Fatal("Color size mismatch: ", unsafe.Sizeof(Color{}), " != ", sizeofColor())
 	}
 
-	if int(unsafe.Sizeof(RawEvent{})) != sizeofEvent() {
-		t.Fatal("Event size mismatch: ", unsafe.Sizeof(RawEvent{}), " != ", sizeofEvent())
-	}
-
 	if int(unsafe.Sizeof(ContextSettings{})) != sizeofContextSettings() {
 		t.Fatal("ContextSettings size mismatch: ", unsafe.Sizeof(ContextSettings{}), " != ", sizeofContextSettings())
 	}

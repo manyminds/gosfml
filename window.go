@@ -52,7 +52,7 @@ func NewWindow(videoMode VideoMode, title string, style int, contextSettings *Co
 	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
-	
+
 	//create the window
 	if contextSettings != nil {
 		csettings := contextSettings.toC()
@@ -104,12 +104,21 @@ func (this *Window) Destroy() {
 }
 
 func (this *Window) PollEvent() (Event, EventType) {
-	cEvent := new(RawEvent)
+	cEvent := C.sfEvent{}
+	hasEvent := C.sfWindow_pollEvent(this.cptr, &cEvent)
 
-	r := C.sfWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
+	if hasEvent != 0 {
+		return handleEvent(&cEvent)
+	}
+	return nil, Event_Error
+}
 
-	if r != 0 {
-		return HandleEvent(cEvent)
+func (this *Window) WaitEvent() (Event, EventType) {
+	cEvent := C.sfEvent{}
+	hasError := C.sfWindow_waitEvent(this.cptr, &cEvent)
+
+	if hasError != 0 {
+		return handleEvent(&cEvent)
 	}
 	return nil, Event_Error
 }

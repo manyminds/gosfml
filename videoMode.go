@@ -22,7 +22,6 @@ package GoSFML2
 
 */
 import "C"
-import "unsafe"
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -34,10 +33,6 @@ type VideoMode struct {
 	BitsPerPixel uint ///< Video mode pixel depth, in bits per pixels
 }
 
-type fullscreenModesCount struct {
-	count uint
-}
-
 /////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
@@ -47,15 +42,15 @@ func (this *VideoMode) SetAsDesktopVideoMode() {
 }
 
 func (this *VideoMode) IsValid() bool {
-	return sfBool2Go(C.sfVideoMode_isValid(this.toC()))
+	return C.sfVideoMode_isValid(this.toC()) == 1
 }
 
 func (this *VideoMode) GetFullscreenModes() []VideoMode {
-	c := &fullscreenModesCount{}
-	cVideoModes := C.sfVideoMode_getFullscreenModes((*C.size_t)(unsafe.Pointer(c)))
+	c := C.size_t(0)
+	cVideoModes := C.sfVideoMode_getFullscreenModes(&c)
 
-	modes := make([]VideoMode, c.count)
-	for i := uint(0); i < c.count; i++ {
+	modes := make([]VideoMode, c)
+	for i := uint(0); i < uint(c); i++ {
 		modes[i].fromC(C.videoModeAt(C.size_t(i), cVideoModes))
 	}
 	return modes

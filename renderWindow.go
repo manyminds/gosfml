@@ -116,23 +116,21 @@ func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
 
 // returns nil if there is no event
 func (this *RenderWindow) PollEvent() (Event, EventType) {
-	cEvent := new(RawEvent)
-
-	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
+	cEvent := C.sfEvent{}
+	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, &cEvent)
 
 	if hasEvent != 0 {
-		return HandleEvent(cEvent)
+		return handleEvent(&cEvent)
 	}
 	return nil, Event_Error
 }
 
 func (this *RenderWindow) WaitEvent() (Event, EventType) {
-	cEvent := new(RawEvent)
-
-	hasError := C.sfRenderWindow_waitEvent(this.cptr, (*C.sfEvent)(unsafe.Pointer(cEvent)))
+	cEvent := C.sfEvent{}
+	hasError := C.sfRenderWindow_waitEvent(this.cptr, &cEvent)
 
 	if hasError != 0 {
-		return HandleEvent(cEvent)
+		return handleEvent(&cEvent)
 	}
 	return nil, Event_Error
 }

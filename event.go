@@ -13,9 +13,17 @@ and to alter it and redistribute it freely, subject to the following restriction
 package GoSFML2
 
 // #include <SFML/Window.h>
-// int getSizeEvent() { return sizeof(sfEvent); }
+// int getEventType(sfEvent* ev) { return ev->type; }
+// struct sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
+// struct sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
+// struct sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
+// struct sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
+// struct sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
+// struct sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
+// struct sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
+// struct sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
+// struct sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
 import "C"
-import "unsafe"
 
 /////////////////////////////////////
 ///		CONSTS
@@ -56,29 +64,38 @@ type Event interface{}
 /////////////////////////////////////
 
 type KeyEvent struct {
-	EventType EventType
-	Code      KeyCode
-	Alt       int
-	Control   int
-	Shift     int
-	System    int
+	Code    KeyCode
+	Alt     int
+	Control int
+	Shift   int
+	System  int
+}
+
+func newKeyEventFromC(ev *C.struct_sfKeyEvent) *KeyEvent {
+	return &KeyEvent{Code: KeyCode(ev.code), Alt: int(ev.alt), Control: int(ev.control), Shift: int(ev.shift), System: int(ev.system)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	SizeEvent
 
 type SizeEvent struct {
-	EventType EventType
-	Width     uint
-	Height    uint
+	Width  uint
+	Height uint
+}
+
+func newSizeEventFromC(ev *C.struct_sfSizeEvent) *SizeEvent {
+	return &SizeEvent{Width: uint(ev.width), Height: uint(ev.height)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	TextEvent
 
 type TextEvent struct {
-	EventType EventType
-	Char      uint32
+	Char rune
+}
+
+func newTextEventFromC(ev *C.struct_sfTextEvent) *TextEvent {
+	return &TextEvent{Char: rune(ev.unicode)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -90,96 +107,98 @@ type MouseMoveEvent struct {
 	Y         int
 }
 
+func newMouseMoveEventFromC(ev *C.struct_sfMouseMoveEvent) *MouseMoveEvent {
+	return &MouseMoveEvent{X: int(ev.x), Y: int(ev.y)}
+}
+
 ///////////////////////////////////////////////////////////////
 //	MouseButtonEvent
 
 type MouseButtonEvent struct {
-	EventType EventType
-	Button    MouseButton
-	X         int
-	Y         int
+	Button MouseButton
+	X      int
+	Y      int
+}
+
+func newMouseButtonEventFromC(ev *C.struct_sfMouseButtonEvent) *MouseButtonEvent {
+	return &MouseButtonEvent{Button: MouseButton(ev.button), X: int(ev.x), Y: int(ev.y)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	MouseWheelEvent
 
 type MouseWheelEvent struct {
-	EventType EventType
-	Delta     int
-	X         int
-	Y         int
+	Delta int
+	X     int
+	Y     int
+}
+
+func newMouseWheelEventFromC(ev *C.struct_sfMouseWheelEvent) *MouseWheelEvent {
+	return &MouseWheelEvent{Delta: int(ev.delta), X: int(ev.x), Y: int(ev.y)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	JoystickMoveEvent
 
 type JoystickMoveEvent struct {
-	EventType  EventType
 	JoystickId uint
 	Axis       JoystickAxis
 	position   float32
+}
+
+func newJoystickMoveEventFromC(ev *C.struct_sfJoystickMoveEvent) *JoystickMoveEvent {
+	return &JoystickMoveEvent{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	JoystickButtonEvent
 
 type JoystickButtonEvent struct {
-	EventType  EventType
 	JoystickId uint
 	Button     uint
+}
+
+func newJoystickButtonEventFromC(ev *C.struct_sfJoystickButtonEvent) *JoystickButtonEvent {
+	return &JoystickButtonEvent{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
 }
 
 ///////////////////////////////////////////////////////////////
 //	JoystickConnectEvent
 
 type JoystickConnectEvent struct {
-	EventType  EventType
-	joystickId uint
+	JoystickId uint
 }
 
-///////////////////////////////////////////////////////////////
-//	RawEvent
-
-type RawEvent struct {
-	EventType EventType
-	data      [20]byte
+func newJoystickConnectEventFromC(ev *C.struct_sfJoystickConnectEvent) *JoystickConnectEvent {
+	return &JoystickConnectEvent{JoystickId: uint(ev.joystickId)}
 }
 
 ///////////////////////////////////////////////////////////////
 //standard event handling method used by Window & RenderWindow
 
-func HandleEvent(cEvent *RawEvent) (ev Event, evt EventType) {
-	evt = cEvent.EventType
+func handleEvent(cEvent *C.sfEvent) (ev Event, evt EventType) {
+	evt = EventType(C.getEventType(cEvent))
 
 	switch evt {
 	case Event_Closed:
 	case Event_Resized:
-		ev = (*SizeEvent)(unsafe.Pointer(cEvent))
+		ev = newSizeEventFromC(C.getSizeEvent(cEvent))
 	case Event_TextEntered:
-		ev = (*TextEvent)(unsafe.Pointer(cEvent))
+		ev = newTextEventFromC(C.getTextEvent(cEvent))
 	case Event_KeyReleased, Event_KeyPressed:
-		ev = (*KeyEvent)(unsafe.Pointer(cEvent))
+		ev = newKeyEventFromC(C.getKeyEvent(cEvent))
 	case Event_MouseWheelMoved:
-		ev = (*MouseWheelEvent)(unsafe.Pointer(cEvent))
+		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
 	case Event_MouseButtonReleased, Event_MouseButtonPressed:
-		ev = (*MouseButtonEvent)(unsafe.Pointer(cEvent))
+		ev = newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent))
 	case Event_MouseLeft, Event_MouseEntered, Event_MouseMoved:
-		ev = (*MouseMoveEvent)(unsafe.Pointer(cEvent))
+		ev = newMouseMoveEventFromC(C.getMouseMoveEvent(cEvent))
 	case Event_JoystickButtonReleased, Event_JoystickButtonPressed:
-		ev = (*JoystickButtonEvent)(unsafe.Pointer(cEvent))
+		ev = newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent))
 	case Event_JoystickMoved:
-		ev = (*JoystickMoveEvent)(unsafe.Pointer(cEvent))
+		ev = newJoystickMoveEventFromC(C.getJoystickMoveEvent(cEvent))
 	case Event_JoystickDisconnected, Event_JoystickConnected:
-		ev = (*JoystickConnectEvent)(unsafe.Pointer(cEvent))
-	default:
+		ev = newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent))
 	}
 	return
-}
-
-/////////////////////////////////////
-///		Testing
-/////////////////////////////////////
-
-func sizeofEvent() int {
-	return int(C.getSizeEvent())
 }
