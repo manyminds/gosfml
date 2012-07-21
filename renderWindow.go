@@ -122,7 +122,7 @@ func (this *RenderWindow) PollEvent() (Event, EventType) {
 	if hasEvent != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_Error
+	return nil, Event_None
 }
 
 func (this *RenderWindow) WaitEvent() (Event, EventType) {
@@ -132,7 +132,7 @@ func (this *RenderWindow) WaitEvent() (Event, EventType) {
 	if hasError != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_Error
+	return nil, Event_None
 }
 
 func (this *RenderWindow) SetVSyncEnabled(enabled bool) {

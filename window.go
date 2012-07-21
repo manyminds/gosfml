@@ -110,7 +110,7 @@ func (this *Window) PollEvent() (Event, EventType) {
 	if hasEvent != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_Error
+	return nil, Event_None
 }
 
 func (this *Window) WaitEvent() (Event, EventType) {
@@ -120,7 +120,7 @@ func (this *Window) WaitEvent() (Event, EventType) {
 	if hasError != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_Error
+	return nil, Event_None
 }
 
 func (this *Window) SetTitle(title string) {

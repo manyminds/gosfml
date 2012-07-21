@@ -48,7 +48,7 @@ const (
 	Event_JoystickMoved
 	Event_JoystickConnected
 	Event_JoystickDisconnected
-	Event_Error
+	Event_None
 )
 
 type EventType int
@@ -191,7 +191,8 @@ func handleEvent(cEvent *C.sfEvent) (ev Event, evt EventType) {
 		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
 	case Event_MouseButtonReleased, Event_MouseButtonPressed:
 		ev = newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent))
-	case Event_MouseLeft, Event_MouseEntered, Event_MouseMoved:
+	case Event_MouseLeft, Event_MouseEntered:
+	case Event_MouseMoved:
 		ev = newMouseMoveEventFromC(C.getMouseMoveEvent(cEvent))
 	case Event_JoystickButtonReleased, Event_JoystickButtonPressed:
 		ev = newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent))
