@@ -50,10 +50,12 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 
 	shader = &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
 	runtime.SetFinalizer(shader, (*Shader).Destroy)
-	
+
 	//error check
-	if shader.cptr == nil { err = &Error{"Cannot create Shader"} }
-	
+	if shader.cptr == nil {
+		err = &Error{"Cannot create Shader"}
+	}
+
 	return
 }
 

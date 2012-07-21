@@ -39,17 +39,18 @@ type Drawable interface {
 ///		CONTRUCTOR
 /////////////////////////////////////
 
-func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *RenderWindow {
+func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *RenderWindow) {
 	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 
 	//create the window
-	window := &RenderWindow{
-		C.sfRenderWindow_create(C.sfVideoMode{C.uint(videoMode.Width), C.uint(videoMode.Height), C.uint(videoMode.BitsPerPixel)},
-			cTitle,
-			C.sfUint32(style),
-			(*C.sfContextSettings)(unsafe.Pointer(contextSettings)))}
+	if contextSettings != nil {
+		csettings := contextSettings.toC()
+		window = &RenderWindow{C.sfRenderWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), &csettings)}
+	} else {
+		window = &RenderWindow{C.sfRenderWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), nil)}
+	}
 
 	//GC cleanup
 	runtime.SetFinalizer(window, (*RenderWindow).Destroy)
@@ -61,13 +62,9 @@ func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettin
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func (this *RenderWindow) GetSettings() ContextSettings {
-	csettings := C.sfRenderWindow_getSettings(this.cptr)
-	return ContextSettings{uint(csettings.depthBits),
-		uint(csettings.stencilBits),
-		uint(csettings.antialiasingLevel),
-		uint(csettings.majorVersion),
-		uint(csettings.minorVersion)}
+func (this *RenderWindow) GetSettings() (settings ContextSettings) {
+	settings.fromC(C.sfRenderWindow_getSettings(this.cptr))
+	return
 }
 
 func (this *RenderWindow) SetSize(size Vector2u) {
@@ -109,8 +106,12 @@ func (this *RenderWindow) SetTitle(title string) {
 	C.sfRenderWindow_setTitle(this.cptr, cTitle)
 }
 
-func (this *RenderWindow) SetIcon(width, height uint, data []byte) {
-	C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
+func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
+	if len(data) > 0 {
+		C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
+		return nil
+	}
+	return &Error{"SetIcon: no data"}
 }
 
 // returns nil if there is no event
@@ -144,7 +145,7 @@ func (this *RenderWindow) SetMouseCursorVisible(visible bool) {
 	C.sfRenderWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
 }
 
-func (this *RenderWindow) SetKeyRepeaterEnabled(enabled bool) {
+func (this *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
 	C.sfRenderWindow_setKeyRepeatEnabled(this.cptr, goBool2C(enabled))
 }
 

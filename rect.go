@@ -41,19 +41,19 @@ type Recti struct {
 /////////////////////////////////////
 
 func (this Rectf) Contains(x, y float32) bool {
-	return sfBool2Go(C.sfFloatRect_contains(this.toCPtr(), C.float(x), C.float(y)))
+	return C.sfFloatRect_contains(this.toCPtr(), C.float(x), C.float(y)) == 1
 }
 
 func (this Recti) Contains(x, y int) bool {
 	return C.sfIntRect_contains(this.toCPtr(), C.int(x), C.int(y)) == 1
 }
 
-func (this Rectf) Intersects(other *Rectf) (test bool, intersection *Rectf) {
+func (this Rectf) Intersects(other Rectf) (test bool, intersection *Rectf) {
 	test = C.sfFloatRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return
 }
 
-func (this Recti) Intersects(other *Recti) (test bool, intersection *Recti) {
+func (this Recti) Intersects(other Recti) (test bool, intersection *Recti) {
 	test = C.sfIntRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return
 }

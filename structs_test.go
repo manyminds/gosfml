@@ -33,7 +33,7 @@ func TestStructSizes(t *testing.T) {
 	if int(unsafe.Sizeof(Vector3f{})) != sizeofVector3f() {
 		t.Fatal("Vector3f size mismatch: ", unsafe.Sizeof(Vector3f{}), " != ", sizeofVector3f())
 	}
-	
+
 	if int(unsafe.Sizeof(Recti{})) != sizeofRecti() {
 		t.Fatal("Recti size mismatch: ", unsafe.Sizeof(Recti{}), " != ", sizeofRecti())
 	}
@@ -41,12 +41,16 @@ func TestStructSizes(t *testing.T) {
 	if int(unsafe.Sizeof(Rectf{})) != sizeofRectf() {
 		t.Fatal("Rectf size mismatch: ", unsafe.Sizeof(Rectf{}), " != ", sizeofRectf())
 	}
-	
+
 	if int(unsafe.Sizeof(Color{})) != sizeofColor() {
 		t.Fatal("Color size mismatch: ", unsafe.Sizeof(Color{}), " != ", sizeofColor())
 	}
-	
+
 	if int(unsafe.Sizeof(RawEvent{})) != sizeofEvent() {
 		t.Fatal("Event size mismatch: ", unsafe.Sizeof(RawEvent{}), " != ", sizeofEvent())
+	}
+
+	if int(unsafe.Sizeof(ContextSettings{})) != sizeofContextSettings() {
+		t.Fatal("ContextSettings size mismatch: ", unsafe.Sizeof(ContextSettings{}), " != ", sizeofContextSettings())
 	}
 }

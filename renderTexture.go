@@ -85,7 +85,7 @@ func (this *RenderTexture) ConvertCoords(pos Vector2i, view *View) (coord Vector
 }
 
 func (this *RenderTexture) Draw(drawable Drawable, renderStates *RenderStates) {
-	drawable.Draw(this,renderStates)
+	drawable.Draw(this, renderStates)
 }
 
 func (this *RenderTexture) PushGLStates() {

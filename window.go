@@ -40,14 +40,6 @@ const (
 ///		STRUCTS
 /////////////////////////////////////
 
-type ContextSettings struct {
-	DepthBits         uint ///< Bits of the depth buffer
-	StencilBits       uint ///< Bits of the stencil buffer
-	AntialiasingLevel uint ///< Level of antialiasing
-	MajorVersion      uint ///< Major number of the context version to create
-	MinorVersion      uint ///< Minor number of the context version to create
-}
-
 type Window struct {
 	cptr *C.sfWindow
 }
@@ -56,17 +48,17 @@ type Window struct {
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) *Window {
+func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *Window) {
 	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
-
+	
 	//create the window
-	window := &Window{
-		C.sfWindow_create(C.sfVideoMode{C.uint(videoMode.Width), C.uint(videoMode.Height), C.uint(videoMode.BitsPerPixel)},
-			cTitle,
-			C.sfUint32(style),
-			(*C.sfContextSettings)(unsafe.Pointer(contextSettings))),
+	if contextSettings != nil {
+		csettings := contextSettings.toC()
+		window = &Window{C.sfWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), &csettings)}
+	} else {
+		window = &Window{C.sfWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), nil)}
 	}
 
 	//GC cleanup
@@ -75,13 +67,9 @@ func NewWindow(videoMode VideoMode, title string, style int, contextSettings *Co
 	return window
 }
 
-func (this *Window) GetSettings() ContextSettings {
-	csettings := C.sfWindow_getSettings(this.cptr)
-	return ContextSettings{uint(csettings.depthBits),
-		uint(csettings.stencilBits),
-		uint(csettings.antialiasingLevel),
-		uint(csettings.majorVersion),
-		uint(csettings.minorVersion)}
+func (this *Window) GetSettings() (settings ContextSettings) {
+	settings.fromC(C.sfWindow_getSettings(this.cptr))
+	return
 }
 
 func (this *Window) SetSize(size Vector2u) {
@@ -124,4 +112,48 @@ func (this *Window) PollEvent() (Event, EventType) {
 		return HandleEvent(cEvent)
 	}
 	return nil, Event_Error
+}
+
+func (this *Window) SetTitle(title string) {
+	//transform GoString into CString
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
+	C.sfWindow_setTitle(this.cptr, cTitle)
+}
+
+func (this *Window) SetIcon(width, height uint, data []byte) error {
+	if len(data) > 0 {
+		C.sfWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
+		return nil
+	}
+	return &Error{"SetIcon: no data"}
+}
+
+func (this *Window) SetFramerateLimit(limit uint) {
+	C.sfWindow_setFramerateLimit(this.cptr, C.uint(limit))
+}
+
+func (this *Window) SetJoystickThreshold(threshold float32) {
+	C.sfWindow_setJoystickThreshold(this.cptr, C.float(threshold))
+}
+
+func (this *Window) SetKeyRepeatEnabled(enabled bool) {
+	C.sfWindow_setKeyRepeatEnabled(this.cptr, goBool2C(enabled))
+}
+
+func (this *Window) Display() {
+	C.sfWindow_display(this.cptr)
+}
+
+func (this *Window) SetVSyncEnabled(enabled bool) {
+	C.sfWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
+}
+
+func (this *Window) SetActive(active bool) {
+	C.sfWindow_setActive(this.cptr, goBool2C(active))
+}
+
+func (this *Window) SetMouseCursorVisible(visible bool) {
+	C.sfWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
 }
