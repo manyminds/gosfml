@@ -50,11 +50,6 @@ func NewFontFromMemory(data []byte) (*Font, error) {
 	return nil, &Error{"NewFontFromMemory: no data"}
 }
 
-func NewFontFromStream() *Font {
-	//not implemented
-	return nil
-}
-
 func (this *Font) Copy() *Font {
 	return &Font{C.sfFont_copy(this.cptr)}
 }

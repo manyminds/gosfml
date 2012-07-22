@@ -18,8 +18,10 @@ package GoSFML2
  #include <stddef.h>
 */
 import "C"
-import "runtime"
-import "unsafe"
+import (
+	"runtime"
+	"unsafe"
+)
 
 /////////////////////////////////////
 ///		CONSTS
@@ -124,6 +126,12 @@ func (this *Text) SetString(text string) {
 	defer C.free(unsafe.Pointer(cText))
 
 	C.sfText_setString(this.cptr, cText)
+}
+
+func (this *Text) SetUnicodeString(text string) {
+	utf32 := []int32(text)
+	utf32 = append(utf32, 0)
+	C.sfText_setUnicodeString(this.cptr, (*C.sfUint32)(unsafe.Pointer(&utf32[0])))
 }
 
 func (this *Text) SetFont(font *Font) {
