@@ -59,6 +59,23 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 	return
 }
 
+func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, err error) {
+	cVShader := C.CString(vertexShader)
+	cFShader := C.CString(fragmentShader)
+	defer C.free(unsafe.Pointer(cVShader))
+	defer C.free(unsafe.Pointer(cFShader))
+
+	shader = &Shader{C.sfShader_createFromMemory(cVShader, cFShader)}
+	runtime.SetFinalizer(shader, (*Shader).Destroy)
+
+	//error check
+	if shader.cptr == nil {
+		err = &Error{"NewShaderFromFile: Cannot create Shader"}
+	}
+
+	return
+}
+
 func (this *Shader) Destroy() {
 	C.sfShader_destroy(this.cptr)
 	this.cptr = nil

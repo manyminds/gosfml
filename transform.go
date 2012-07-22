@@ -61,6 +61,30 @@ func (this *Transform) Combine(other *Transform) (newTrans *Transform) {
 	return
 }
 
+func (this *Transform) Translate(x, y float32) (newTrans *Transform) {
+	C.sfTransform_translate(this.toCPtr(), C.float(x), C.float(y))
+	newTrans = this
+	return
+}
+
+func (this *Transform) Rotate(angle float32) (newTrans *Transform) {
+	C.sfTransform_rotate(this.toCPtr(), C.float(angle))
+	newTrans = this
+	return
+}
+
+func (this *Transform) RotateWithCenter(angle, centerX, centerY float32) (newTrans *Transform) {
+	C.sfTransform_rotateWithCenter(this.toCPtr(), C.float(angle), C.float(centerX), C.float(centerY))
+	newTrans = this
+	return
+}
+
+func (this *Transform) Scale(scaleX, scaleY float32) (newTrans *Transform) {
+	C.sfTransform_scale(this.toCPtr(), C.float(scaleX), C.float(scaleY))
+	newTrans = this
+	return
+}
+
 /////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////

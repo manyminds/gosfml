@@ -49,7 +49,6 @@ type Window struct {
 /////////////////////////////////////
 
 func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *Window) {
-	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 
@@ -124,7 +123,6 @@ func (this *Window) WaitEvent() (Event, EventType) {
 }
 
 func (this *Window) SetTitle(title string) {
-	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 

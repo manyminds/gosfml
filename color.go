@@ -40,6 +40,20 @@ var (
 )
 
 /////////////////////////////////////
+///		FUNCS
+/////////////////////////////////////
+
+func (this Color) Add(other Color) (newColor Color) {
+	newColor.fromC(C.sfColor_add(this.toC(), other.toC()))
+	return
+}
+
+func (this Color) Modulate(other Color) (newColor Color) {
+	newColor.fromC(C.sfColor_modulate(this.toC(), other.toC()))
+	return
+}
+
+/////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////
 

@@ -51,7 +51,9 @@ func NewFontFromMemory(data []byte) (*Font, error) {
 }
 
 func (this *Font) Copy() *Font {
-	return &Font{C.sfFont_copy(this.cptr)}
+	font := &Font{C.sfFont_copy(this.cptr)}
+	runtime.SetFinalizer(font, (*Font).Destroy)
+	return font
 }
 
 func (this *Font) Destroy() {

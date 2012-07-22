@@ -23,10 +23,6 @@ import (
 	"unsafe"
 )
 
-//MISSING: 	sfImage_createFromMemory
-//			sfImage_createFromStream
-//			sfImage_getPixelsPtr
-
 /////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////

@@ -10,10 +10,6 @@ and to alter it and redistribute it freely, subject to the following restriction
 	3. 	This notice may not be removed or altered from any source distribution.
 */
 
-/*
-	COMPLETE: YES (4.7.2012)
-*/
-
 package GoSFML2
 
 /*
@@ -51,5 +47,7 @@ func Mouse_GetPosition(relativeTo *Window) (pos Vector2i) {
 }
 
 func Mouse_SetPosition(position Vector2i, relativeTo *Window) {
-	C.sfMouse_setPosition(position.toC(), relativeTo.cptr)
+	if relativeTo != nil {
+		C.sfMouse_setPosition(position.toC(), relativeTo.cptr)
+	}
 }
