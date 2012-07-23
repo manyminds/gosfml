@@ -38,6 +38,12 @@ func NewSprite(tex *Texture) *Sprite {
 	return shape
 }
 
+func (this *Sprite) Copy() *Sprite {
+	sprite := &Sprite{C.sfSprite_copy(this.cptr), this.texture}
+	runtime.SetFinalizer(sprite, (*Sprite).Destroy)
+	return sprite
+}
+
 func (this *Sprite) Destroy() {
 	C.sfSprite_destroy(this.cptr)
 	this.cptr = nil

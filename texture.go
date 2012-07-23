@@ -52,6 +52,12 @@ func NewTextureFromMemory(data []byte, area *Recti) (*Texture, error) {
 	return nil, &Error{"NewTextureFromMemory: no data"}
 }
 
+func (this *Texture) Copy() *Texture {
+	texture := &Texture{C.sfTexture_copy(this.cptr)}
+	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	return texture
+}
+
 func (this *Texture) Destroy() {
 	C.sfTexture_destroy(this.cptr)
 	this.cptr = nil

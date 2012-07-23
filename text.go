@@ -61,7 +61,9 @@ func (this *Text) Destroy() {
 }
 
 func (this *Text) Copy() *Text {
-	return &Text{C.sfText_copy(this.cptr), this.font}
+	text := &Text{C.sfText_copy(this.cptr), this.font}
+	runtime.SetFinalizer(text, (*Text).Destroy)
+	return text
 }
 
 func (this *Text) SetPosition(pos Vector2f) {
