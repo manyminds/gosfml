@@ -20,6 +20,29 @@ import (
 )
 
 /////////////////////////////////////
+///		INTERFACES
+/////////////////////////////////////
+
+type Transformer interface {
+	SetPosition(Vector2f)
+	SetScale(Vector2f)
+	SetRotation(float32)
+	SetOrigin(Vector2f)
+
+	GetRotation() float32
+	GetPosition() Vector2f
+	GetScale() Vector2f
+	GetOrigin() Vector2f
+
+	Move(Vector2f)
+	Scale(Vector2f)
+	Rotate(float32)
+
+	GetTransform() Transform
+	GetInverseTransform() Transform
+}
+
+/////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////
 
