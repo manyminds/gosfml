@@ -30,28 +30,28 @@ import "C"
 /////////////////////////////////////
 
 const (
-	Event_Closed = iota
-	Event_Resized
-	Event_LostFocus
-	Event_GainedFocus
-	Event_TextEntered
-	Event_KeyPressed
-	Event_KeyReleased
-	Event_MouseWheelMoved
-	Event_MouseButtonPressed
-	Event_MouseButtonReleased
-	Event_MouseMoved
-	Event_MouseEntered
-	Event_MouseLeft
-	Event_JoystickButtonPressed
-	Event_JoystickButtonReleased
-	Event_JoystickMoved
-	Event_JoystickConnected
-	Event_JoystickDisconnected
-	Event_None
+	event_Closed = iota
+	event_Resized
+	event_LostFocus
+	event_GainedFocus
+	event_TextEntered
+	event_KeyPressed
+	event_KeyReleased
+	event_MouseWheelMoved
+	event_MouseButtonPressed
+	event_MouseButtonReleased
+	event_MouseMoved
+	event_MouseEntered
+	event_MouseLeft
+	event_JoystickButtonPressed
+	event_JoystickButtonReleased
+	event_JoystickMoved
+	event_JoystickConnected
+	event_JoystickDisconnected
+	event_None
 )
 
-type EventType int
+type eventType int
 
 /////////////////////////////////////
 ///		INTERFACES
@@ -113,9 +113,8 @@ func newTextEventFromC(ev *C.struct_sfTextEvent) *EventTextEntered {
 //	MouseMoveEvent
 
 type EventMouseMoved struct {
-	EventType EventType
-	X         int
-	Y         int
+	X int
+	Y int
 }
 
 func newMouseMoveEventFromC(ev *C.struct_sfMouseMoveEvent) *EventMouseMoved {
@@ -197,42 +196,42 @@ func newJoystickConnectEventFromC(ev *C.struct_sfJoystickConnectEvent) *eventJoy
 //standard event handling method used by Window & RenderWindow
 
 func handleEvent(cEvent *C.sfEvent) (ev Event) {
-	switch EventType(C.getEventType(cEvent)) {
-	case Event_Resized:
+	switch eventType(C.getEventType(cEvent)) {
+	case event_Resized:
 		ev = newSizeEventFromC(C.getSizeEvent(cEvent))
-	case Event_Closed:
+	case event_Closed:
 		ev = &EventClosed{}
-	case Event_LostFocus:
+	case event_LostFocus:
 		ev = &EventLostFocus{}
-	case Event_GainedFocus:
+	case event_GainedFocus:
 		ev = &EventGainedFocus{}
-	case Event_TextEntered:
+	case event_TextEntered:
 		ev = newTextEventFromC(C.getTextEvent(cEvent))
-	case Event_KeyReleased:
+	case event_KeyReleased:
 		ev = (*EventKeyReleased)(newKeyEventFromC(C.getKeyEvent(cEvent)))
-	case Event_KeyPressed:
+	case event_KeyPressed:
 		ev = (*EventKeyPressed)(newKeyEventFromC(C.getKeyEvent(cEvent)))
-	case Event_MouseWheelMoved:
+	case event_MouseWheelMoved:
 		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
-	case Event_MouseButtonReleased:
+	case event_MouseButtonReleased:
 		ev = (*EventMouseButtonReleased)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
-	case Event_MouseButtonPressed:
+	case event_MouseButtonPressed:
 		ev = (*EventMouseButtonPressed)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
-	case Event_MouseMoved:
+	case event_MouseMoved:
 		ev = newMouseMoveEventFromC(C.getMouseMoveEvent(cEvent))
-	case Event_MouseLeft:
+	case event_MouseLeft:
 		ev = &EventMouseLeft{}
-	case Event_MouseEntered:
+	case event_MouseEntered:
 		ev = &EventMouseEntered{}
-	case Event_JoystickButtonReleased:
+	case event_JoystickButtonReleased:
 		ev = (*EventJoystickButtonReleased)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
-	case Event_JoystickButtonPressed:
+	case event_JoystickButtonPressed:
 		ev = (*EventJoystickButtonPressed)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
-	case Event_JoystickMoved:
+	case event_JoystickMoved:
 		ev = newJoystickMoveEventFromC(C.getJoystickMoveEvent(cEvent))
-	case Event_JoystickDisconnected:
+	case event_JoystickDisconnected:
 		ev = (*EventJoystickDisconnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
-	case Event_JoystickConnected:
+	case event_JoystickConnected:
 		ev = (*EventJoystickConnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
 	}
 	return
