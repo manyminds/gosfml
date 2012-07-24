@@ -136,3 +136,14 @@ func (this *Shader) Unbind() {
 func ShaderAvailable() bool {
 	return sfBool2Go(C.sfShader_isAvailable())
 }
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *Shader) toCPtr() *C.sfShader {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
+}

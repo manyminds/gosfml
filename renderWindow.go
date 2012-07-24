@@ -216,8 +216,3 @@ func (this *RenderWindow) ResetGLStates() {
 func (this *RenderWindow) Capture() *Image {
 	return newImageFromPtr(C.sfRenderWindow_capture(this.cptr))
 }
-
-//Test
-func (this *RenderWindow) AsWindow() *Window {
-	return &Window{this.cptr}
-}

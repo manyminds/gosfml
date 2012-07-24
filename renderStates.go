@@ -36,48 +36,46 @@ const (
 type BlendMode int
 
 type RenderStates struct {
-	blendMode BlendMode
-	transform Transform
-	texture   *C.sfTexture
-	shader    *C.sfShader
+	cptr C.sfRenderStates
 }
 
 /////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
 
-func NewRenderStates(blendMode BlendMode, transform Transform, texture Texture, shader Shader) (rt RenderStates) {
-	rt.blendMode = blendMode
-	rt.transform = transform
-	rt.shader = shader.cptr
-	rt.texture = texture.cptr
+func NewRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt *RenderStates) {
+	rt = new(RenderStates)
+	rt.cptr.blendMode = C.sfBlendMode(blendMode)
+	rt.cptr.transform = transform.toC()
+	rt.cptr.shader = shader.toCPtr()
+	rt.cptr.texture = texture.toCPtr()
 	return
 }
 
 // shader can be nil
 func (this *RenderStates) SetShader(shader *Shader) {
 	if shader == nil {
-		this.shader = nil
+		this.cptr.shader = nil
 	} else {
-		this.shader = shader.cptr
+		this.cptr.shader = shader.cptr
 	}
 }
 
 // texture can be nil
 func (this *RenderStates) SetTexture(texture *Texture) {
 	if texture == nil {
-		this.texture = nil
+		this.cptr.texture = nil
 	} else {
-		this.texture = texture.cptr
+		this.cptr.texture = texture.cptr
 	}
 }
 
 func (this *RenderStates) SetTramsform(transform Transform) {
-	this.transform = transform
+	this.cptr.transform = transform.toC()
 }
 
 func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
-	this.blendMode = blendMode
+	this.cptr.blendMode = C.sfBlendMode(blendMode)
 }
 
 /////////////////////////////////////
@@ -85,5 +83,5 @@ func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
 /////////////////////////////////////
 
 func (this *RenderStates) toCPtr() *C.sfRenderStates {
-	return (*C.sfRenderStates)(unsafe.Pointer(this))
+	return (*C.sfRenderStates)(unsafe.Pointer(&this.cptr))
 }
