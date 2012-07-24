@@ -102,24 +102,24 @@ func (this *Window) Destroy() {
 	this.cptr = nil
 }
 
-func (this *Window) PollEvent() (Event, EventType) {
+func (this *Window) PollEvent() Event {
 	cEvent := C.sfEvent{}
 	hasEvent := C.sfWindow_pollEvent(this.cptr, &cEvent)
 
 	if hasEvent != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_None
+	return nil
 }
 
-func (this *Window) WaitEvent() (Event, EventType) {
+func (this *Window) WaitEvent() Event {
 	cEvent := C.sfEvent{}
 	hasError := C.sfWindow_waitEvent(this.cptr, &cEvent)
 
 	if hasError != 0 {
 		return handleEvent(&cEvent)
 	}
-	return nil, Event_None
+	return nil
 }
 
 func (this *Window) SetTitle(title string) {
