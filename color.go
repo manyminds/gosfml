@@ -32,11 +32,15 @@ type Color struct {
 /////////////////////////////////////
 
 var (
-	Color_Black = Color{0, 0, 0, 255}
-	Color_Red   = Color{255, 0, 0, 255}
-	Color_Green = Color{0, 255, 0, 255}
-	Color_Blue  = Color{0, 0, 255, 255}
-	Color_White = Color{255, 255, 255, 255}
+	Color_Black       = Color{0, 0, 0, 255}
+	Color_White       = Color{255, 255, 255, 255}
+	Color_Red         = Color{255, 0, 0, 255}
+	Color_Green       = Color{0, 255, 0, 255}
+	Color_Blue        = Color{0, 0, 255, 255}
+	Color_Yellow      = Color{255, 255, 0, 255}
+	Color_Magenta     = Color{255, 0, 255, 255}
+	Color_Cyan        = Color{0, 255, 255, 255}
+	Color_Transparent = Color{0, 0, 0, 0}
 )
 
 /////////////////////////////////////
