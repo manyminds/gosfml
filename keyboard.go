@@ -133,6 +133,6 @@ type KeyCode int
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func Keyboard_IsKeyPressed(key KeyCode) bool {
+func KeyboardIsKeyPressed(key KeyCode) bool {
 	return sfBool2Go(C.sfKeyboard_isKeyPressed(C.sfKeyCode(key)))
 }

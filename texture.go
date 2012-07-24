@@ -92,7 +92,7 @@ func (this *Texture) IsRepeated() bool {
 	return sfBool2Go(C.sfTexture_isRepeated(this.cptr))
 }
 
-func Texture_GetMaximumSize() uint {
+func TextureGetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
 

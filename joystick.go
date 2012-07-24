@@ -44,26 +44,26 @@ type JoystickAxis int
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func Joystick_IsConnected(joystick uint) bool {
+func JoystickIsConnected(joystick uint) bool {
 	return sfBool2Go(C.sfJoystick_isConnected(C.uint(joystick)))
 }
 
-func Joystick_GetButtonCount(joystick uint) uint {
+func JoystickGetButtonCount(joystick uint) uint {
 	return uint(C.sfJoystick_getButtonCount(C.uint(joystick)))
 }
 
-func Joystick_HasAxis(joystick uint, axis JoystickAxis) bool {
+func JoystickHasAxis(joystick uint, axis JoystickAxis) bool {
 	return sfBool2Go(C.sfJoystick_hasAxis(C.uint(joystick), C.sfJoystickAxis(axis)))
 }
 
-func Joystick_IsButtonPressed(joystick uint, button uint) bool {
+func JoystickIsButtonPressed(joystick uint, button uint) bool {
 	return sfBool2Go(C.sfJoystick_isButtonPressed(C.uint(joystick), C.uint(button)))
 }
 
-func Joystick_GetAxisPosition(joystick uint, axis JoystickAxis) float32 {
+func JoystickGetAxisPosition(joystick uint, axis JoystickAxis) float32 {
 	return float32(C.sfJoystick_getAxisPosition(C.uint(joystick), C.sfJoystickAxis(axis)))
 }
 
-func Joystick_Update() {
+func JoystickUpdate() {
 	C.sfJoystick_update()
 }

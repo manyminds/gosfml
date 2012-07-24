@@ -37,16 +37,16 @@ type MouseButton int
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func Mouse_IsButtonPressed(button MouseButton) bool {
+func MouseIsButtonPressed(button MouseButton) bool {
 	return sfBool2Go(C.sfMouse_isButtonPressed(C.sfMouseButton(button)))
 }
 
-func Mouse_GetPosition(relativeTo *Window) (pos Vector2i) {
+func MouseGetPosition(relativeTo *Window) (pos Vector2i) {
 	pos.fromC(C.sfMouse_getPosition(relativeTo.cptr))
 	return
 }
 
-func Mouse_SetPosition(position Vector2i, relativeTo *Window) {
+func MouseSetPosition(position Vector2i, relativeTo *Window) {
 	if relativeTo != nil {
 		C.sfMouse_setPosition(position.toC(), relativeTo.cptr)
 	}
