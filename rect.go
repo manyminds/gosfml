@@ -10,11 +10,13 @@ and to alter it and redistribute it freely, subject to the following restriction
 	3. 	This notice may not be removed or altered from any source distribution.
 */
 
-package GoSFML2
+package gosfml2
 
-// #include <SFML/Graphics.h>
-// int getSizeRecti() { return sizeof(sfIntRect); }
-// int getSizeRectf() { return sizeof(sfFloatRect); }
+/*
+ #include <SFML/Graphics.h>
+ int getSizeRecti() { return sizeof(sfIntRect); }
+ int getSizeRectf() { return sizeof(sfFloatRect); }
+*/
 import "C"
 import "unsafe"
 

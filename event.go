@@ -10,19 +10,20 @@ and to alter it and redistribute it freely, subject to the following restriction
 	3. 	This notice may not be removed or altered from any source distribution.
 */
 
-package GoSFML2
-
-// #include <SFML/Window.h>
-// int getEventType(sfEvent* ev) { return ev->type; }
-// struct sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
-// struct sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
-// struct sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
-// struct sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
-// struct sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
-// struct sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
-// struct sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
-// struct sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
-// struct sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
+package gosfml2
+/*
+ #include <SFML/Window.h>
+ int getEventType(sfEvent* ev) { return ev->type; }
+ struct sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
+ struct sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
+ struct sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
+ struct sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
+ struct sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
+ struct sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
+ struct sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
+ struct sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
+ struct sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
+*/
 import "C"
 
 /////////////////////////////////////

@@ -9,7 +9,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 	2. 	Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. 	This notice may not be removed or altered from any source distribution.
 */
-package GoSFML2
+package gosfml2
 
 // #include <SFML/Graphics.h> 
 import "C"
