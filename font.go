@@ -77,7 +77,3 @@ func (this *Font) GetLineSpacing(characterSize uint) int {
 func (this *Font) GetTexture(characterSize uint) Texture {
 	return Texture{C.sfFont_getTexture(this.cptr, C.uint(characterSize))}
 }
-
-func GetDefaultFont() *Font {
-	return &Font{C.sfFont_getDefaultFont()}
-}
