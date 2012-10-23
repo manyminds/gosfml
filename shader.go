@@ -129,10 +129,6 @@ func (this *Shader) Bind() {
 	C.sfShader_bind(this.cptr)
 }
 
-func (this *Shader) Unbind() {
-	C.sfShader_unbind(this.cptr)
-}
-
 func ShaderAvailable() bool {
 	return sfBool2Go(C.sfShader_isAvailable())
 }
