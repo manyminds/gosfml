@@ -14,15 +14,15 @@ package gosfml2
 /*
  #include <SFML/Window.h>
  int getEventType(sfEvent* ev) { return ev->type; }
- struct sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
- struct sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
- struct sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
- struct sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
- struct sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
- struct sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
- struct sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
- struct sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
- struct sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
+ sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
+ sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
+ sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
+ sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
+ sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
+ sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
+ sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
+ sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
+ sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
 */
 import "C"
 
@@ -83,7 +83,7 @@ type eventKey struct {
 type EventKeyPressed eventKey
 type EventKeyReleased eventKey
 
-func newKeyEventFromC(ev *C.struct_sfKeyEvent) *eventKey {
+func newKeyEventFromC(ev *C.sfKeyEvent) *eventKey {
 	return &eventKey{Code: KeyCode(ev.code), Alt: int(ev.alt), Control: int(ev.control), Shift: int(ev.shift), System: int(ev.system)}
 }
 
@@ -95,7 +95,7 @@ type EventResized struct {
 	Height uint
 }
 
-func newSizeEventFromC(ev *C.struct_sfSizeEvent) *EventResized {
+func newSizeEventFromC(ev *C.sfSizeEvent) *EventResized {
 	return &EventResized{Width: uint(ev.width), Height: uint(ev.height)}
 }
 
@@ -106,7 +106,7 @@ type EventTextEntered struct {
 	Char rune //32bits
 }
 
-func newTextEventFromC(ev *C.struct_sfTextEvent) *EventTextEntered {
+func newTextEventFromC(ev *C.sfTextEvent) *EventTextEntered {
 	return &EventTextEntered{Char: rune(ev.unicode)}
 }
 
@@ -118,7 +118,7 @@ type EventMouseMoved struct {
 	Y int
 }
 
-func newMouseMoveEventFromC(ev *C.struct_sfMouseMoveEvent) *EventMouseMoved {
+func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) *EventMouseMoved {
 	return &EventMouseMoved{X: int(ev.x), Y: int(ev.y)}
 }
 
@@ -134,7 +134,7 @@ type eventMouseButton struct {
 type EventMouseButtonPressed eventMouseButton
 type EventMouseButtonReleased eventMouseButton
 
-func newMouseButtonEventFromC(ev *C.struct_sfMouseButtonEvent) *eventMouseButton {
+func newMouseButtonEventFromC(ev *C.sfMouseButtonEvent) *eventMouseButton {
 	return &eventMouseButton{Button: MouseButton(ev.button), X: int(ev.x), Y: int(ev.y)}
 }
 
@@ -147,7 +147,7 @@ type EventMouseWheelMoved struct {
 	Y     int
 }
 
-func newMouseWheelEventFromC(ev *C.struct_sfMouseWheelEvent) *EventMouseWheelMoved {
+func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) *EventMouseWheelMoved {
 	return &EventMouseWheelMoved{Delta: int(ev.delta), X: int(ev.x), Y: int(ev.y)}
 }
 
@@ -160,7 +160,7 @@ type EventJoystickMoved struct {
 	position   float32
 }
 
-func newJoystickMoveEventFromC(ev *C.struct_sfJoystickMoveEvent) *EventJoystickMoved {
+func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) *EventJoystickMoved {
 	return &EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
 }
 
@@ -175,7 +175,7 @@ type eventJoystickButton struct {
 type EventJoystickButtonPressed eventJoystickButton
 type EventJoystickButtonReleased eventJoystickButton
 
-func newJoystickButtonEventFromC(ev *C.struct_sfJoystickButtonEvent) *eventJoystickButton {
+func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) *eventJoystickButton {
 	return &eventJoystickButton{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
 }
 
@@ -189,7 +189,7 @@ type eventJoystickConnection struct {
 type EventJoystickConnected eventJoystickConnection
 type EventJoystickDisconnected eventJoystickConnection
 
-func newJoystickConnectEventFromC(ev *C.struct_sfJoystickConnectEvent) *eventJoystickConnection {
+func newJoystickConnectEventFromC(ev *C.sfJoystickConnectEvent) *eventJoystickConnection {
 	return &eventJoystickConnection{JoystickId: uint(ev.joystickId)}
 }
 
