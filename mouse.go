@@ -14,6 +14,7 @@ package gosfml2
 
 /*
  #include <SFML/Window.h>
+ #include <SFML/Graphics.h>
 */
 import "C"
 
@@ -41,13 +42,24 @@ func MouseIsButtonPressed(button MouseButton) bool {
 	return sfBool2Go(C.sfMouse_isButtonPressed(C.sfMouseButton(button)))
 }
 
-func MouseGetPosition(relativeTo *Window) (pos Vector2i) {
+func MouseGetPositionFromWindow(relativeTo *Window) (pos Vector2i) {
 	pos.fromC(C.sfMouse_getPosition(relativeTo.cptr))
 	return
 }
 
-func MouseSetPosition(position Vector2i, relativeTo *Window) {
+func MouseGetPositionFromRenderWindow(relativeTo *RenderWindow) (pos Vector2i) {
+	pos.fromC(C.sfMouse_getPositionRenderWindow(relativeTo.cptr))
+	return
+}
+
+func MouseSetPositionWindow(position Vector2i, relativeTo *Window) {
 	if relativeTo != nil {
 		C.sfMouse_setPosition(position.toC(), relativeTo.cptr)
+	}
+}
+
+func MouseSetPositionRenderWindow(position Vector2i, relativeTo *RenderWindow) {
+	if relativeTo != nil {
+		C.sfMouse_setPositionRenderWindow(position.toC(), relativeTo.cptr)
 	}
 }
