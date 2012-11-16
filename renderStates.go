@@ -12,9 +12,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Graphics/RenderStates.h>
-*/
+// #include <SFML/Graphics/RenderStates.h>
 import "C"
 import "unsafe"
 
@@ -30,12 +28,6 @@ const (
 )
 
 /////////////////////////////////////
-///		VARS
-/////////////////////////////////////
-
-var RenderStates_Default = NewRenderStates(Blend_Alpha, Transform_Identity, nil, nil)
-
-/////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////
 
@@ -46,10 +38,18 @@ type RenderStates struct {
 }
 
 /////////////////////////////////////
+///		CONTS
+/////////////////////////////////////
+
+func RenderStatesDefault() RenderStates {
+	return MakeRenderStates(Blend_Alpha, Transform_Identity, nil, nil)
+}
+
+/////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
 
-func NewRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
+func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
 	rt.cRenderStates.blendMode = C.sfBlendMode(blendMode)
 	rt.cRenderStates.transform = transform.toC()
 	rt.cRenderStates.shader = shader.toCPtr()

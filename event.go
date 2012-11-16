@@ -12,19 +12,17 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Window.h>
- int getEventType(sfEvent* ev) { return ev->type; }
- sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
- sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
- sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
- sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
- sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
- sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
- sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
- sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
- sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
-*/
+// #include <SFML/Window.h>
+// int getEventType(sfEvent* ev) { return ev->type; }
+// sfSizeEvent* getSizeEvent(sfEvent* ev) { return &ev->size; }
+// sfKeyEvent* getKeyEvent(sfEvent* ev) { return &ev->key; }
+// sfTextEvent* getTextEvent(sfEvent* ev) { return &ev->text; }
+// sfMouseMoveEvent* getMouseMoveEvent(sfEvent* ev) { return &ev->mouseMove; }
+// sfMouseButtonEvent* getMouseButtonEvent(sfEvent* ev) { return &ev->mouseButton; }
+// sfMouseWheelEvent* getMouseWheelEvent(sfEvent* ev) { return &ev->mouseWheel; }
+// sfJoystickMoveEvent* getJoystickMoveEvent(sfEvent* ev) { return &ev->joystickMove; }
+// sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
+// sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
 import "C"
 
 /////////////////////////////////////

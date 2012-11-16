@@ -12,9 +12,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Graphics/Glyph.h> 
-*/
+// #include <SFML/Graphics/Glyph.h> 
 import "C"
 
 /////////////////////////////////////

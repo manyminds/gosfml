@@ -30,5 +30,5 @@ type RenderTarget interface {
 	ResetGLStates()
 	GetSize() Vector2u
 	//Renderstates can be nil (Default RenderStates)
-	Draw(Drawable, *RenderStates)
+	Draw(Drawer, *RenderStates)
 }

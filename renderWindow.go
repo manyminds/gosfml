@@ -12,10 +12,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Graphics/RenderWindow.h>
- #include <stdlib.h>
-*/
+// #include <SFML/Graphics/RenderWindow.h>
+// #include <stdlib.h>
 import "C"
 
 import (
@@ -178,8 +176,8 @@ func (this *RenderWindow) SetView(view *View) {
 	C.sfRenderWindow_setView(this.cptr, view.cptr)
 }
 
-func (this *RenderWindow) Draw(drawable Drawable, renderStates *RenderStates) {
-	drawable.Draw(this, renderStates)
+func (this *RenderWindow) Draw(drawer Drawer, renderStates *RenderStates) {
+	drawer.Draw(this, renderStates)
 }
 
 func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {

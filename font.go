@@ -12,10 +12,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Graphics/Font.h> 
- #include <stdlib.h>
-*/
+// #include <SFML/Graphics/Font.h> 
+// #include <stdlib.h>
 import "C"
 import "runtime"
 import "unsafe"

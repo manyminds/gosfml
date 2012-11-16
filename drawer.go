@@ -16,7 +16,7 @@ package gosfml2
 ///		INTERFACES
 /////////////////////////////////////
 
-//implemented by Sprite,CircleShape,ConvexShape,Text,RenderTexture,VertexArray
-type Drawable interface {
+//satisfied by Sprite,CircleShape,ConvexShape,Text,RenderTexture,VertexArray
+type Drawer interface {
 	Draw(target RenderTarget, renderStates *RenderStates)
 }

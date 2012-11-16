@@ -12,13 +12,11 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/System.h>
- int getSizeVector2i() { return sizeof(sfVector2i); }
- int getSizeVector2u() { return sizeof(sfVector2u); }
- int getSizeVector2f() { return sizeof(sfVector2f); }
- int getSizeVector3f() { return sizeof(sfVector3f); }
-*/
+// #include <SFML/System.h>
+// int getSizeVector2i() { return sizeof(sfVector2i); }
+// int getSizeVector2u() { return sizeof(sfVector2u); }
+// int getSizeVector2f() { return sizeof(sfVector2f); }
+// int getSizeVector3f() { return sizeof(sfVector3f); }
 import "C"
 import "math"
 

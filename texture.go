@@ -12,10 +12,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Graphics/Texture.h> 
- #include <stdlib.h>
-*/
+// #include <SFML/Graphics/Texture.h> 
+// #include <stdlib.h>
 import "C"
 
 import (

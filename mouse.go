@@ -12,11 +12,9 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Window/Mouse.h>
- #include <SFML/Window/Window.h>
- #include <SFML/Graphics/RenderWindow.h>
-*/
+// #include <SFML/Window/Mouse.h>
+// #include <SFML/Window/Window.h>
+// #include <SFML/Graphics/RenderWindow.h>
 import "C"
 
 /////////////////////////////////////

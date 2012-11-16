@@ -12,10 +12,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Window/Window.h>
- #include <stdlib.h>
-*/
+// #include <SFML/Window/Window.h>
+// #include <stdlib.h>
 import "C"
 
 import (
@@ -48,7 +46,7 @@ type Window struct {
 ///		INTERFACES
 /////////////////////////////////////
 
-//implemented by Window, RenderWindow
+//satisfied by Window, RenderWindow
 type SystemWindow interface {
 	SetVSyncEnabled(bool)
 	SetFramerateLimit(uint)

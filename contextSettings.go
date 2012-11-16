@@ -12,10 +12,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Window/Window.h>
- int getSizeContextSettings() { return sizeof(sfContextSettings); }
-*/
+// #include <SFML/Window/Window.h>
+// int getSizeContextSettings() { return sizeof(sfContextSettings); }
 import "C"
 
 /////////////////////////////////////

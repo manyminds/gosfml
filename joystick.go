@@ -12,9 +12,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-/*
- #include <SFML/Window/Joystick.h>
-*/
+// #include <SFML/Window/Joystick.h>
 import "C"
 
 /////////////////////////////////////
