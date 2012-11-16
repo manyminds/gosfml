@@ -12,7 +12,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 
 package gosfml2
 
-// #include <SFML/Graphics.h>
+// #include <SFML/Graphics/Color.h>
 // int getSizeColor() { return sizeof(sfColor); }
 import "C"
 
@@ -24,7 +24,7 @@ type Color struct {
 	R byte
 	G byte
 	B byte
-	A byte //< 0=transparent
+	A byte //<< 0 = transparent
 }
 
 /////////////////////////////////////
@@ -68,7 +68,7 @@ func (this *Color) fromC(color C.sfColor) {
 	this.A = byte(color.a)
 }
 
-func (this *Color) toC() C.sfColor {
+func (this Color) toC() C.sfColor {
 	return C.sfColor{r: C.sfUint8(this.R), g: C.sfUint8(this.G), b: C.sfUint8(this.B), a: C.sfUint8(this.A)}
 }
 

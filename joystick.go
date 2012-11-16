@@ -13,7 +13,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 /*
- #include <SFML/Window.h>
+ #include <SFML/Window/Joystick.h>
 */
 import "C"
 
@@ -44,26 +44,26 @@ type JoystickAxis int
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func IsJoystickConnected(joystick uint) bool {
+func JoystickIsConnected(joystick uint) bool {
 	return sfBool2Go(C.sfJoystick_isConnected(C.uint(joystick)))
 }
 
-func GetJoystickButtonCount(joystick uint) uint {
+func JoystickGetButtonCount(joystick uint) uint {
 	return uint(C.sfJoystick_getButtonCount(C.uint(joystick)))
 }
 
-func HasJoystickAxis(joystick uint, axis JoystickAxis) bool {
+func JoystickHasAxis(joystick uint, axis JoystickAxis) bool {
 	return sfBool2Go(C.sfJoystick_hasAxis(C.uint(joystick), C.sfJoystickAxis(axis)))
 }
 
-func IsJoystickButtonPressed(joystick uint, button uint) bool {
+func JoystickIsButtonPressed(joystick uint, button uint) bool {
 	return sfBool2Go(C.sfJoystick_isButtonPressed(C.uint(joystick), C.uint(button)))
 }
 
-func GetJoystickAxisPosition(joystick uint, axis JoystickAxis) float32 {
+func JoystickGetAxisPosition(joystick uint, axis JoystickAxis) float32 {
 	return float32(C.sfJoystick_getAxisPosition(C.uint(joystick), C.sfJoystickAxis(axis)))
 }
 
-func UpdateJoystick() {
+func JoystickUpdate() {
 	C.sfJoystick_update()
 }

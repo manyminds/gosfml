@@ -13,7 +13,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 /*
- #include <SFML/Graphics.h>
+ #include <SFML/Graphics/RenderStates.h>
 */
 import "C"
 import "unsafe"

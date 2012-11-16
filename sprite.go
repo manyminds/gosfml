@@ -11,7 +11,9 @@ and to alter it and redistribute it freely, subject to the following restriction
 */
 package gosfml2
 
-// #include <SFML/Graphics.h> 
+// #include <SFML/Graphics/Sprite.h> 
+// #include <SFML/Graphics/RenderWindow.h> 
+// #include <SFML/Graphics/RenderTexture.h> 
 import "C"
 import "runtime"
 

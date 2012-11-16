@@ -13,7 +13,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 /*
- #include <SFML/Audio.h> 
+ #include <SFML/Audio/SoundBuffer.h> 
  #include <stdlib.h>
 */
 import "C"

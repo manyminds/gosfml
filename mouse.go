@@ -13,8 +13,9 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 /*
- #include <SFML/Window.h>
- #include <SFML/Graphics.h>
+ #include <SFML/Window/Mouse.h>
+ #include <SFML/Window/Window.h>
+ #include <SFML/Graphics/RenderWindow.h>
 */
 import "C"
 
@@ -42,7 +43,7 @@ func IsMouseButtonPressed(button MouseButton) bool {
 	return sfBool2Go(C.sfMouse_isButtonPressed(C.sfMouseButton(button)))
 }
 
-func SetMousePosition(position Vector2i, relativeTo SystemWindow) {
+func MouseSetPosition(position Vector2i, relativeTo SystemWindow) {
 	switch relativeTo.(type) {
 	case *RenderWindow:
 		C.sfMouse_setPositionRenderWindow(position.toC(), relativeTo.(*RenderWindow).cptr)
@@ -52,7 +53,7 @@ func SetMousePosition(position Vector2i, relativeTo SystemWindow) {
 	}
 }
 
-func GetMousePosition(relativeTo SystemWindow) (pos Vector2i) {
+func MouseGetPosition(relativeTo SystemWindow) (pos Vector2i) {
 	switch relativeTo.(type) {
 	case *RenderWindow:
 		pos.fromC(C.sfMouse_getPositionRenderWindow(relativeTo.(*RenderWindow).cptr))

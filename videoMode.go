@@ -13,7 +13,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 /*
- #include <SFML/Window.h>
+ #include <SFML/Window/Window.h>
  #include <stdlib.h>
 
  sfVideoMode videoModeAt(size_t index, sfVideoMode* modes) {
