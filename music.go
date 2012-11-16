@@ -36,21 +36,30 @@ type Music struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewMusicFromFile(file string) *Music {
+func NewMusicFromFile(file string) (music *Music, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	music := &Music{C.sfMusic_createFromFile(cFile)}
+	music = &Music{C.sfMusic_createFromFile(cFile)}
 	runtime.SetFinalizer(music, (*Music).Destroy)
-	return music
+
+	if music.cptr == nil {
+		err = &Error{"NewMusicFromFile: Cannot load music " + file}
+	}
+
+	return
 }
 
-func NewMusicFromMemory(data []byte) (*Music, error) {
+func NewMusicFromMemory(data []byte) (music *Music, err error) {
 	if len(data) > 0 {
-		music := &Music{C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		music = &Music{C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
 		runtime.SetFinalizer(music, (*Music).Destroy)
-		return music, nil
+
+		if music.cptr == nil {
+			err = &Error{"NewMusicFromMemory: Cannot load music"}
+		}
+		return
 	}
-	return nil, &Error{"NewMusicFromMemory: no data"}
+	return
 }
 
 func (this *Music) Destroy() {

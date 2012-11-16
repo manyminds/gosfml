@@ -45,6 +45,25 @@ type Window struct {
 }
 
 /////////////////////////////////////
+///		INTERFACES
+/////////////////////////////////////
+
+//implemented by Window, RenderWindow
+type SystemWindow interface {
+	SetVSyncEnabled(bool)
+	SetFramerateLimit(uint)
+	SetJoystickThreshold(float32)
+	SetKeyRepeatEnabled(bool)
+	Display()
+	IsOpen() bool
+	Close()
+	SetTitle(string)
+	SetIcon(uint, uint, []byte) error
+	SetMouseCursorVisible(bool)
+	SetActive(bool)
+}
+
+/////////////////////////////////////
 ///		FUNCTIONS
 /////////////////////////////////////
 

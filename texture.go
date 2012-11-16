@@ -35,21 +35,26 @@ type Texture struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewTextureFromFile(file string) *Texture {
+func NewTextureFromFile(file string) (texture *Texture, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	texture := &Texture{C.sfTexture_createFromFile(cFile, nil)}
+	texture = &Texture{C.sfTexture_createFromFile(cFile, nil)}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
-	return texture
+
+	if texture.cptr == nil {
+		err = &Error{"NewTextureFromFile: Cannot load texture " + file}
+	}
+
+	return
 }
 
-func NewTextureFromMemory(data []byte, area *Recti) (*Texture, error) {
+func NewTextureFromMemory(data []byte, area *Recti) (texture *Texture, err error) {
 	if len(data) > 0 {
-		texture := &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
+		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
 		runtime.SetFinalizer(texture, (*Texture).Destroy)
-		return texture, nil
 	}
-	return nil, &Error{"NewTextureFromMemory: no data"}
+	err = &Error{"NewTextureFromMemory: no data"}
+	return
 }
 
 func (this *Texture) Copy() *Texture {

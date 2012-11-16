@@ -53,7 +53,7 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 
 	//error check
 	if shader.cptr == nil {
-		err = &Error{"NewShaderFromFile: Cannot create Shader"}
+		err = &Error{"NewShaderFromFile: Cannot create Shader " + vertexShaderFile + " " + fragmentShaderFile}
 	}
 
 	return

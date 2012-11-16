@@ -43,12 +43,16 @@ type Transformer interface {
 }
 
 /////////////////////////////////////
+///		VARS
+/////////////////////////////////////
+
+var Transform_Identity Transform = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
+
+/////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////
 
 type Transform [9]float32
-
-var Transform_Identity Transform = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
 
 /////////////////////////////////////
 ///		FUNCS

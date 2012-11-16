@@ -11,6 +11,7 @@ and to alter it and redistribute it freely, subject to the following restriction
 */
 
 package gosfml2
+
 /*
  #include <SFML/Window.h>
  int getEventType(sfEvent* ev) { return ev->type; }

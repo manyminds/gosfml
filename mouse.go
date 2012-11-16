@@ -38,28 +38,27 @@ type MouseButton int
 ///		FUNCTIONS
 /////////////////////////////////////
 
-func MouseIsButtonPressed(button MouseButton) bool {
+func IsMouseButtonPressed(button MouseButton) bool {
 	return sfBool2Go(C.sfMouse_isButtonPressed(C.sfMouseButton(button)))
 }
 
-func MouseGetPositionFromWindow(relativeTo *Window) (pos Vector2i) {
-	pos.fromC(C.sfMouse_getPosition(relativeTo.cptr))
-	return
-}
-
-func MouseGetPositionFromRenderWindow(relativeTo *RenderWindow) (pos Vector2i) {
-	pos.fromC(C.sfMouse_getPositionRenderWindow(relativeTo.cptr))
-	return
-}
-
-func MouseSetPositionWindow(position Vector2i, relativeTo *Window) {
-	if relativeTo != nil {
-		C.sfMouse_setPosition(position.toC(), relativeTo.cptr)
+func SetMousePosition(position Vector2i, relativeTo SystemWindow) {
+	switch relativeTo.(type) {
+	case *RenderWindow:
+		C.sfMouse_setPositionRenderWindow(position.toC(), relativeTo.(*RenderWindow).cptr)
+	case *Window:
+		C.sfMouse_setPosition(position.toC(), relativeTo.(*Window).cptr)
+	default:
 	}
 }
 
-func MouseSetPositionRenderWindow(position Vector2i, relativeTo *RenderWindow) {
-	if relativeTo != nil {
-		C.sfMouse_setPositionRenderWindow(position.toC(), relativeTo.cptr)
+func GetMousePosition(relativeTo SystemWindow) (pos Vector2i) {
+	switch relativeTo.(type) {
+	case *RenderWindow:
+		pos.fromC(C.sfMouse_getPositionRenderWindow(relativeTo.(*RenderWindow).cptr))
+	case *Window:
+		pos.fromC(C.sfMouse_getPosition(relativeTo.(*Window).cptr))
+	default:
 	}
+	return
 }

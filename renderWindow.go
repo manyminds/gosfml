@@ -31,10 +31,6 @@ type RenderWindow struct {
 	cptr *C.sfRenderWindow
 }
 
-type Drawable interface {
-	Draw(target RenderTarget, renderStates *RenderStates)
-}
-
 /////////////////////////////////////
 ///		CONTRUCTOR
 /////////////////////////////////////
@@ -99,7 +95,6 @@ func (this *RenderWindow) Destroy() {
 }
 
 func (this *RenderWindow) SetTitle(title string) {
-	//transform GoString into CString
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 

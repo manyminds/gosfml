@@ -16,19 +16,7 @@ package gosfml2
 ///		INTERFACES
 /////////////////////////////////////
 
-//implemented by RenderTexture and RenderWindow
-type RenderTarget interface {
-	Clear(Color)
-	Display()
-	SetView(*View)
-	GetView() *View
-	GetDefaultView() *View
-	GetViewport(view *View) Recti
-	ConvertCoords(Vector2i, *View) Vector2f
-	PushGLStates()
-	PopGLStates()
-	ResetGLStates()
-	GetSize() Vector2u
-	//Renderstates can be nil (Default RenderStates)
-	Draw(Drawable, *RenderStates)
+//implemented by Sprite,CircleShape,ConvexShape,Text,RenderTexture,VertexArray
+type Drawable interface {
+	Draw(target RenderTarget, renderStates *RenderStates)
 }

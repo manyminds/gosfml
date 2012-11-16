@@ -30,52 +30,57 @@ const (
 )
 
 /////////////////////////////////////
+///		VARS
+/////////////////////////////////////
+
+var RenderStates_Default = NewRenderStates(Blend_Alpha, Transform_Identity, nil, nil)
+
+/////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////
 
 type BlendMode int
 
 type RenderStates struct {
-	cptr C.sfRenderStates
+	cRenderStates C.sfRenderStates
 }
 
 /////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
 
-func NewRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt *RenderStates) {
-	rt = new(RenderStates)
-	rt.cptr.blendMode = C.sfBlendMode(blendMode)
-	rt.cptr.transform = transform.toC()
-	rt.cptr.shader = shader.toCPtr()
-	rt.cptr.texture = texture.toCPtr()
+func NewRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
+	rt.cRenderStates.blendMode = C.sfBlendMode(blendMode)
+	rt.cRenderStates.transform = transform.toC()
+	rt.cRenderStates.shader = shader.toCPtr()
+	rt.cRenderStates.texture = texture.toCPtr()
 	return
 }
 
-// shader can be nil
+// shader can be nil (no shader)
 func (this *RenderStates) SetShader(shader *Shader) {
 	if shader == nil {
-		this.cptr.shader = nil
+		this.cRenderStates.shader = nil
 	} else {
-		this.cptr.shader = shader.cptr
+		this.cRenderStates.shader = shader.cptr
 	}
 }
 
-// texture can be nil
+// texture can be nil (no texture)
 func (this *RenderStates) SetTexture(texture *Texture) {
 	if texture == nil {
-		this.cptr.texture = nil
+		this.cRenderStates.texture = nil
 	} else {
-		this.cptr.texture = texture.cptr
+		this.cRenderStates.texture = texture.cptr
 	}
 }
 
 func (this *RenderStates) SetTramsform(transform Transform) {
-	this.cptr.transform = transform.toC()
+	this.cRenderStates.transform = transform.toC()
 }
 
 func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
-	this.cptr.blendMode = C.sfBlendMode(blendMode)
+	this.cRenderStates.blendMode = C.sfBlendMode(blendMode)
 }
 
 /////////////////////////////////////
@@ -83,5 +88,5 @@ func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
 /////////////////////////////////////
 
 func (this *RenderStates) toCPtr() *C.sfRenderStates {
-	return (*C.sfRenderStates)(unsafe.Pointer(&this.cptr))
+	return (*C.sfRenderStates)(unsafe.Pointer(&this.cRenderStates))
 }
