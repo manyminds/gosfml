@@ -49,9 +49,11 @@ type Text struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewText() *Text {
+func NewText(font *Font) *Text {
 	text := &Text{C.sfText_create(), nil}
 	runtime.SetFinalizer(text, (*Text).Destroy)
+	text.SetFont(font)
+
 	return text
 }
 
@@ -137,7 +139,7 @@ func (this *Text) SetUnicodeString(text string) {
 }
 
 func (this *Text) SetFont(font *Font) {
-	C.sfText_setFont(this.cptr, font.cptr)
+	C.sfText_setFont(this.cptr, font.toCPtr())
 	this.font = font
 }
 

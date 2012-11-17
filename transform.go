@@ -43,10 +43,10 @@ type Transformer interface {
 }
 
 /////////////////////////////////////
-///		VARS
+///		CONSTS
 /////////////////////////////////////
 
-var Transform_Identity Transform = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
+func TransformIdentity() Transform { return Transform{1, 0, 0, 0, 1, 0, 0, 0, 1} }
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -66,7 +66,7 @@ func (this *Transform) GetMatrix() (matrix [14]float32) {
 func (this *Transform) GetInverse() (inverse Transform, exists bool) {
 	inv := C.sfTransform_getInverse(this.toCPtr())
 	inverse.fromC(inv)
-	exists = (inverse != Transform_Identity)
+	exists = (inverse != TransformIdentity())
 	return
 }
 

@@ -82,8 +82,8 @@ type eventKey struct {
 type EventKeyPressed eventKey
 type EventKeyReleased eventKey
 
-func newKeyEventFromC(ev *C.sfKeyEvent) *eventKey {
-	return &eventKey{Code: KeyCode(ev.code), Alt: int(ev.alt), Control: int(ev.control), Shift: int(ev.shift), System: int(ev.system)}
+func newKeyEventFromC(ev *C.sfKeyEvent) eventKey {
+	return eventKey{Code: KeyCode(ev.code), Alt: int(ev.alt), Control: int(ev.control), Shift: int(ev.shift), System: int(ev.system)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -94,8 +94,8 @@ type EventResized struct {
 	Height uint
 }
 
-func newSizeEventFromC(ev *C.sfSizeEvent) *EventResized {
-	return &EventResized{Width: uint(ev.width), Height: uint(ev.height)}
+func newSizeEventFromC(ev *C.sfSizeEvent) EventResized {
+	return EventResized{Width: uint(ev.width), Height: uint(ev.height)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -105,8 +105,8 @@ type EventTextEntered struct {
 	Char rune //32bits
 }
 
-func newTextEventFromC(ev *C.sfTextEvent) *EventTextEntered {
-	return &EventTextEntered{Char: rune(ev.unicode)}
+func newTextEventFromC(ev *C.sfTextEvent) EventTextEntered {
+	return EventTextEntered{Char: rune(ev.unicode)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -117,8 +117,8 @@ type EventMouseMoved struct {
 	Y int
 }
 
-func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) *EventMouseMoved {
-	return &EventMouseMoved{X: int(ev.x), Y: int(ev.y)}
+func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) EventMouseMoved {
+	return EventMouseMoved{X: int(ev.x), Y: int(ev.y)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -133,8 +133,8 @@ type eventMouseButton struct {
 type EventMouseButtonPressed eventMouseButton
 type EventMouseButtonReleased eventMouseButton
 
-func newMouseButtonEventFromC(ev *C.sfMouseButtonEvent) *eventMouseButton {
-	return &eventMouseButton{Button: MouseButton(ev.button), X: int(ev.x), Y: int(ev.y)}
+func newMouseButtonEventFromC(ev *C.sfMouseButtonEvent) eventMouseButton {
+	return eventMouseButton{Button: MouseButton(ev.button), X: int(ev.x), Y: int(ev.y)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -146,8 +146,8 @@ type EventMouseWheelMoved struct {
 	Y     int
 }
 
-func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) *EventMouseWheelMoved {
-	return &EventMouseWheelMoved{Delta: int(ev.delta), X: int(ev.x), Y: int(ev.y)}
+func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) EventMouseWheelMoved {
+	return EventMouseWheelMoved{Delta: int(ev.delta), X: int(ev.x), Y: int(ev.y)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -159,8 +159,8 @@ type EventJoystickMoved struct {
 	position   float32
 }
 
-func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) *EventJoystickMoved {
-	return &EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
+func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) EventJoystickMoved {
+	return EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -174,8 +174,8 @@ type eventJoystickButton struct {
 type EventJoystickButtonPressed eventJoystickButton
 type EventJoystickButtonReleased eventJoystickButton
 
-func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) *eventJoystickButton {
-	return &eventJoystickButton{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
+func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) eventJoystickButton {
+	return eventJoystickButton{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -188,8 +188,8 @@ type eventJoystickConnection struct {
 type EventJoystickConnected eventJoystickConnection
 type EventJoystickDisconnected eventJoystickConnection
 
-func newJoystickConnectEventFromC(ev *C.sfJoystickConnectEvent) *eventJoystickConnection {
-	return &eventJoystickConnection{JoystickId: uint(ev.joystickId)}
+func newJoystickConnectEventFromC(ev *C.sfJoystickConnectEvent) eventJoystickConnection {
+	return eventJoystickConnection{JoystickId: uint(ev.joystickId)}
 }
 
 ///////////////////////////////////////////////////////////////
@@ -200,39 +200,39 @@ func handleEvent(cEvent *C.sfEvent) (ev Event) {
 	case event_Resized:
 		ev = newSizeEventFromC(C.getSizeEvent(cEvent))
 	case event_Closed:
-		ev = &EventClosed{}
+		ev = EventClosed{}
 	case event_LostFocus:
-		ev = &EventLostFocus{}
+		ev = EventLostFocus{}
 	case event_GainedFocus:
-		ev = &EventGainedFocus{}
+		ev = EventGainedFocus{}
 	case event_TextEntered:
 		ev = newTextEventFromC(C.getTextEvent(cEvent))
 	case event_KeyReleased:
-		ev = (*EventKeyReleased)(newKeyEventFromC(C.getKeyEvent(cEvent)))
+		ev = (EventKeyReleased)(newKeyEventFromC(C.getKeyEvent(cEvent)))
 	case event_KeyPressed:
-		ev = (*EventKeyPressed)(newKeyEventFromC(C.getKeyEvent(cEvent)))
+		ev = (EventKeyPressed)(newKeyEventFromC(C.getKeyEvent(cEvent)))
 	case event_MouseWheelMoved:
 		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
 	case event_MouseButtonReleased:
-		ev = (*EventMouseButtonReleased)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
+		ev = (EventMouseButtonReleased)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
 	case event_MouseButtonPressed:
-		ev = (*EventMouseButtonPressed)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
+		ev = (EventMouseButtonPressed)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
 	case event_MouseMoved:
 		ev = newMouseMoveEventFromC(C.getMouseMoveEvent(cEvent))
 	case event_MouseLeft:
-		ev = &EventMouseLeft{}
+		ev = EventMouseLeft{}
 	case event_MouseEntered:
-		ev = &EventMouseEntered{}
+		ev = EventMouseEntered{}
 	case event_JoystickButtonReleased:
-		ev = (*EventJoystickButtonReleased)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
+		ev = (EventJoystickButtonReleased)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
 	case event_JoystickButtonPressed:
-		ev = (*EventJoystickButtonPressed)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
+		ev = (EventJoystickButtonPressed)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
 	case event_JoystickMoved:
 		ev = newJoystickMoveEventFromC(C.getJoystickMoveEvent(cEvent))
 	case event_JoystickDisconnected:
-		ev = (*EventJoystickDisconnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
+		ev = (EventJoystickDisconnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
 	case event_JoystickConnected:
-		ev = (*EventJoystickConnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
+		ev = (EventJoystickConnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
 	}
 	return
 }

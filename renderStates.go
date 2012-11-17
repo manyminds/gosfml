@@ -38,11 +38,17 @@ type RenderStates struct {
 }
 
 /////////////////////////////////////
+///		VARS
+/////////////////////////////////////
+
+var renderStatesDefault = MakeRenderStates(Blend_Alpha, TransformIdentity(), nil, nil)
+
+/////////////////////////////////////
 ///		CONTS
 /////////////////////////////////////
 
-func RenderStatesDefault() RenderStates {
-	return MakeRenderStates(Blend_Alpha, Transform_Identity, nil, nil)
+func RenderStatesDefault() *RenderStates {
+	return &renderStatesDefault
 }
 
 /////////////////////////////////////

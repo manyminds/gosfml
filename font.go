@@ -30,13 +30,18 @@ type Font struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewFontFromFile(filename string) *Font {
+func NewFontFromFile(filename string) (font *Font, err error) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 
-	font := &Font{C.sfFont_createFromFile(cFilename)}
+	font = &Font{C.sfFont_createFromFile(cFilename)}
 	runtime.SetFinalizer(font, (*Font).Destroy)
-	return font
+
+	if font.cptr == nil {
+		err = &Error{"NewFontFromFile: Cannot load font " + filename}
+	}
+
+	return
 }
 
 func NewFontFromMemory(data []byte) (*Font, error) {
@@ -74,4 +79,15 @@ func (this *Font) GetLineSpacing(characterSize uint) int {
 
 func (this *Font) GetTexture(characterSize uint) Texture {
 	return Texture{C.sfFont_getTexture(this.cptr, C.uint(characterSize))}
+}
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *Font) toCPtr() *C.sfFont {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
 }
