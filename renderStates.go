@@ -47,8 +47,8 @@ var renderStatesDefault = MakeRenderStates(Blend_Alpha, TransformIdentity(), nil
 ///		CONTS
 /////////////////////////////////////
 
-func RenderStatesDefault() *RenderStates {
-	return &renderStatesDefault
+func RenderStatesDefault() RenderStates {
+	return renderStatesDefault
 }
 
 /////////////////////////////////////
