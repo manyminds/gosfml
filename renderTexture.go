@@ -61,7 +61,7 @@ func (this *RenderTexture) Clear(color Color) {
 }
 
 func (this *RenderTexture) SetView(view *View) {
-	C.sfRenderTexture_setView(this.cptr, view.cptr)
+	C.sfRenderTexture_setView(this.cptr, view.toCPtr())
 }
 
 func (this *RenderTexture) GetView() *View {
@@ -73,12 +73,12 @@ func (this *RenderTexture) GetDefaultView() *View {
 }
 
 func (this *RenderTexture) GetViewport(view *View) (viewport Recti) {
-	viewport.fromC(C.sfRenderTexture_getViewport(this.cptr, view.cptr))
+	viewport.fromC(C.sfRenderTexture_getViewport(this.cptr, view.toCPtr()))
 	return
 }
 
 func (this *RenderTexture) MapPixelToCoords(pos Vector2i, view *View) (coords Vector2f) {
-	coords.fromC(C.sfRenderTexture_mapPixelToCoords(this.cptr, pos.toC(), view.cptr))
+	coords.fromC(C.sfRenderTexture_mapPixelToCoords(this.cptr, pos.toC(), view.toCPtr()))
 	return
 }
 
