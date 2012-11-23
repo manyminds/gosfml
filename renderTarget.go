@@ -23,7 +23,7 @@ type RenderTarget interface {
 	SetView(*View)
 	GetView() *View
 	GetDefaultView() *View
-	GetViewport(view *View) Recti
+	GetViewport(view *View) IntRect
 	MapPixelToCoords(Vector2i, *View) Vector2f
 	MapCoordsToPixel(Vector2f, *View) Vector2i
 	PushGLStates()

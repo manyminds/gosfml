@@ -182,12 +182,12 @@ func (this *Text) FintCharacterPos(index uint) (pos Vector2f) {
 	return
 }
 
-func (this *Text) GetLocalBounds() (rect Rectf) {
+func (this *Text) GetLocalBounds() (rect FloatRect) {
 	rect.fromC(C.sfText_getLocalBounds(this.cptr))
 	return
 }
 
-func (this *Text) GetGlobalBounds() (rect Rectf) {
+func (this *Text) GetGlobalBounds() (rect FloatRect) {
 	rect.fromC(C.sfText_getGlobalBounds(this.cptr))
 	return
 }

@@ -76,7 +76,7 @@ func (this *Transform) TransformPoint(point Vector2f) (tansPoint Vector2f) {
 	return
 }
 
-func (this *Transform) TransformRect(rect Rectf) (tansRect Rectf) {
+func (this *Transform) TransformRect(rect FloatRect) (tansRect FloatRect) {
 	rec := C.sfTransform_transformRect(this.toCPtr(), rect.toC())
 	tansRect.fromC(rec)
 	return

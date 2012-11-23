@@ -72,7 +72,7 @@ func (this *RenderTexture) GetDefaultView() *View {
 	return &View{C.sfRenderTexture_getDefaultView(this.cptr)}
 }
 
-func (this *RenderTexture) GetViewport(view *View) (viewport Recti) {
+func (this *RenderTexture) GetViewport(view *View) (viewport IntRect) {
 	viewport.fromC(C.sfRenderTexture_getViewport(this.cptr, view.toCPtr()))
 	return
 }

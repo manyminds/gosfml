@@ -46,7 +46,7 @@ func NewTextureFromFile(file string) (texture *Texture, err error) {
 	return
 }
 
-func NewTextureFromMemory(data []byte, area *Recti) (texture *Texture, err error) {
+func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err error) {
 	if len(data) > 0 {
 		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
 		runtime.SetFinalizer(texture, (*Texture).Destroy)

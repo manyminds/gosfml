@@ -100,7 +100,7 @@ func (this *RectangleShape) SetTexture(texture *Texture, resetRect bool) {
 	this.texture = texture
 }
 
-func (this *RectangleShape) SetTextureRect(rect Recti) {
+func (this *RectangleShape) SetTextureRect(rect IntRect) {
 	C.sfRectangleShape_setTextureRect(this.cptr, rect.toC())
 }
 
@@ -108,7 +108,7 @@ func (this *RectangleShape) GetTexture() *Texture {
 	return this.texture
 }
 
-func (this *RectangleShape) GetTextureRect() (rect Recti) {
+func (this *RectangleShape) GetTextureRect() (rect IntRect) {
 	rect.fromC(C.sfRectangleShape_getTextureRect(this.cptr))
 	return
 }
@@ -167,12 +167,12 @@ func (this *RectangleShape) GetPoint(index uint) (point Vector2f) {
 	return
 }
 
-func (this *RectangleShape) GetLocalBounds() (rect Rectf) {
+func (this *RectangleShape) GetLocalBounds() (rect FloatRect) {
 	rect.fromC(C.sfRectangleShape_getLocalBounds(this.cptr))
 	return
 }
 
-func (this *RectangleShape) GetGlobalBounds() (rect Rectf) {
+func (this *RectangleShape) GetGlobalBounds() (rect FloatRect) {
 	rect.fromC(C.sfRectangleShape_getGlobalBounds(this.cptr))
 	return
 }

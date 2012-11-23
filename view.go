@@ -37,7 +37,7 @@ func NewView() *View {
 	return view
 }
 
-func NewViewFromRect(rect *Rectf) *View {
+func NewViewFromRect(rect *FloatRect) *View {
 	view := &View{C.sfView_createFromRect(rect.toC())}
 	runtime.SetFinalizer(view, (*View).Destroy)
 	return view
@@ -66,11 +66,11 @@ func (this *View) SetRotation(rotation float32) {
 	C.sfView_setRotation(this.cptr, C.float(rotation))
 }
 
-func (this *View) SetViewport(viewport Rectf) {
+func (this *View) SetViewport(viewport FloatRect) {
 	C.sfView_setViewport(this.cptr, viewport.toC())
 }
 
-func (this *View) Reset(rect Rectf) {
+func (this *View) Reset(rect FloatRect) {
 	C.sfView_reset(this.cptr, rect.toC())
 }
 
@@ -88,7 +88,7 @@ func (this *View) GetRotation() float32 {
 	return float32(C.sfView_getRotation(this.cptr))
 }
 
-func (this *View) GetViewport() (rect Rectf) {
+func (this *View) GetViewport() (rect FloatRect) {
 	rect.fromC(C.sfView_getViewport(this.cptr))
 	return
 }

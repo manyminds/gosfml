@@ -101,7 +101,7 @@ func (this *Image) CreateMaskFromColor(color Color, alpha byte) {
 	C.sfImage_createMaskFromColor(this.cptr, color.toC(), C.sfUint8(alpha))
 }
 
-func (this *Image) CopyImage(source *Image, destX, destY uint, sourceRect Recti, applyAlpha bool) {
+func (this *Image) CopyImage(source *Image, destX, destY uint, sourceRect IntRect, applyAlpha bool) {
 	C.sfImage_copyImage(this.cptr, source.cptr, C.uint(destX), C.uint(destY), sourceRect.toC(), goBool2C(applyAlpha))
 }
 

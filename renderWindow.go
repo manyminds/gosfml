@@ -190,7 +190,7 @@ func (this *RenderWindow) MapCoordsToPixel(pos Vector2f, view *View) (coords Vec
 	return
 }
 
-func (this *RenderWindow) GetViewport(view *View) (viewport Recti) {
+func (this *RenderWindow) GetViewport(view *View) (viewport IntRect) {
 	viewport.fromC(C.sfRenderWindow_getViewport(this.cptr, view.toCPtr()))
 	return
 }

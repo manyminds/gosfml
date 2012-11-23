@@ -100,7 +100,7 @@ func (this *ConvexShape) SetTexture(texture *Texture, resetRect bool) {
 	this.texture = texture
 }
 
-func (this *ConvexShape) SetTextureRect(rect Recti) {
+func (this *ConvexShape) SetTextureRect(rect IntRect) {
 	C.sfConvexShape_setTextureRect(this.cptr, rect.toC())
 }
 
@@ -130,7 +130,7 @@ func (this *ConvexShape) GetInverseTransform() (transform Transform) {
 	return
 }
 
-func (this *ConvexShape) GetTextureRect() (rect Recti) {
+func (this *ConvexShape) GetTextureRect() (rect IntRect) {
 	rect.fromC(C.sfConvexShape_getTextureRect(this.cptr))
 	return
 }
@@ -166,12 +166,12 @@ func (this *ConvexShape) SetPoint(index uint, point Vector2f) {
 	C.sfConvexShape_setPoint(this.cptr, C.uint(index), point.toC())
 }
 
-func (this *ConvexShape) GetLocalBounds() (rect Rectf) {
+func (this *ConvexShape) GetLocalBounds() (rect FloatRect) {
 	rect.fromC(C.sfConvexShape_getLocalBounds(this.cptr))
 	return
 }
 
-func (this *ConvexShape) GetGlobalBounds() (rect Rectf) {
+func (this *ConvexShape) GetGlobalBounds() (rect FloatRect) {
 	rect.fromC(C.sfConvexShape_getGlobalBounds(this.cptr))
 	return
 }

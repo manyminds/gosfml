@@ -105,7 +105,7 @@ func (this *VertexArray) GetPrimitiveType() PrimitiveType {
 	return PrimitiveType(C.sfVertexArray_getPrimitiveType(this.cptr))
 }
 
-func (this *VertexArray) GetBounds() (rect Rectf) {
+func (this *VertexArray) GetBounds() (rect FloatRect) {
 	rect.fromC(C.sfVertexArray_getBounds(this.cptr))
 	return
 }

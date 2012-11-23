@@ -103,7 +103,7 @@ func (this *Sprite) SetTexture(texture *Texture, resetRect bool) {
 	this.texture = texture
 }
 
-func (this *Sprite) SetTextureRect(rect Recti) {
+func (this *Sprite) SetTextureRect(rect IntRect) {
 	C.sfSprite_setTextureRect(this.cptr, rect.toC())
 }
 
@@ -111,7 +111,7 @@ func (this *Sprite) GetTexture() *Texture {
 	return this.texture
 }
 
-func (this *Sprite) GetTextureRect() (rect Recti) {
+func (this *Sprite) GetTextureRect() (rect IntRect) {
 	rect.fromC(C.sfSprite_getTextureRect(this.cptr))
 	return
 }
@@ -135,12 +135,12 @@ func (this *Sprite) GetInverseTransform() (transform Transform) {
 	return
 }
 
-func (this *Sprite) GetLocalBounds() (rect Rectf) {
+func (this *Sprite) GetLocalBounds() (rect FloatRect) {
 	rect.fromC(C.sfSprite_getLocalBounds(this.cptr))
 	return
 }
 
-func (this *Sprite) GetGlobalBounds() (rect Rectf) {
+func (this *Sprite) GetGlobalBounds() (rect FloatRect) {
 	rect.fromC(C.sfSprite_getGlobalBounds(this.cptr))
 	return
 }

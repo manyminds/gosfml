@@ -13,8 +13,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 // #include <SFML/Graphics/Rect.h>
-// int getSizeRecti() { return sizeof(sfIntRect); }
-// int getSizeRectf() { return sizeof(sfFloatRect); }
+// int getSizeIntRect() { return sizeof(sfIntRect); }
+// int getSizeFloatRect() { return sizeof(sfFloatRect); }
 import "C"
 import "unsafe"
 
@@ -22,14 +22,14 @@ import "unsafe"
 ///		STRUCTS
 /////////////////////////////////////
 
-type Rectf struct {
+type FloatRect struct {
 	Left   float32
 	Top    float32
 	Width  float32
 	Height float32
 }
 
-type Recti struct {
+type IntRect struct {
 	Left   int
 	Top    int
 	Width  int
@@ -40,20 +40,20 @@ type Recti struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func (this Rectf) Contains(x, y float32) bool {
+func (this FloatRect) Contains(x, y float32) bool {
 	return C.sfFloatRect_contains(this.toCPtr(), C.float(x), C.float(y)) == 1
 }
 
-func (this Recti) Contains(x, y int) bool {
+func (this IntRect) Contains(x, y int) bool {
 	return C.sfIntRect_contains(this.toCPtr(), C.int(x), C.int(y)) == 1
 }
 
-func (this Rectf) Intersects(other Rectf) (test bool, intersection *Rectf) {
+func (this FloatRect) Intersects(other FloatRect) (test bool, intersection *FloatRect) {
 	test = C.sfFloatRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return
 }
 
-func (this Recti) Intersects(other Recti) (test bool, intersection *Recti) {
+func (this IntRect) Intersects(other IntRect) (test bool, intersection *IntRect) {
 	test = C.sfIntRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return
 }
@@ -62,33 +62,33 @@ func (this Recti) Intersects(other Recti) (test bool, intersection *Recti) {
 ///		GO <-> C
 /////////////////////////////////////
 
-func (this *Rectf) fromC(rect C.sfFloatRect) {
+func (this *FloatRect) fromC(rect C.sfFloatRect) {
 	this.Left = float32(rect.left)
 	this.Top = float32(rect.top)
 	this.Width = float32(rect.width)
 	this.Height = float32(rect.height)
 }
 
-func (this *Recti) fromC(rect C.sfIntRect) {
+func (this *IntRect) fromC(rect C.sfIntRect) {
 	this.Left = int(rect.left)
 	this.Top = int(rect.top)
 	this.Width = int(rect.width)
 	this.Height = int(rect.height)
 }
 
-func (this *Recti) toC() C.sfIntRect {
+func (this *IntRect) toC() C.sfIntRect {
 	return C.sfIntRect{left: C.int(this.Left), top: C.int(this.Top), width: C.int(this.Width), height: C.int(this.Height)}
 }
 
-func (this *Rectf) toC() C.sfFloatRect {
+func (this *FloatRect) toC() C.sfFloatRect {
 	return C.sfFloatRect{left: C.float(this.Left), top: C.float(this.Top), width: C.float(this.Width), height: C.float(this.Height)}
 }
 
-func (this *Recti) toCPtr() *C.sfIntRect {
+func (this *IntRect) toCPtr() *C.sfIntRect {
 	return (*C.sfIntRect)(unsafe.Pointer(this))
 }
 
-func (this *Rectf) toCPtr() *C.sfFloatRect {
+func (this *FloatRect) toCPtr() *C.sfFloatRect {
 	return (*C.sfFloatRect)(unsafe.Pointer(this))
 }
 
@@ -96,10 +96,10 @@ func (this *Rectf) toCPtr() *C.sfFloatRect {
 ///		Testing
 /////////////////////////////////////
 
-func sizeofRecti() int {
-	return int(C.getSizeRecti())
+func sizeofIntRect() int {
+	return int(C.getSizeIntRect())
 }
 
-func sizeofRectf() int {
-	return int(C.getSizeRectf())
+func sizeofFloatRect() int {
+	return int(C.getSizeFloatRect())
 }

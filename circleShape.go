@@ -101,7 +101,7 @@ func (this *CircleShape) SetTexture(texture *Texture, resetRect bool) {
 	this.texture = texture
 }
 
-func (this *CircleShape) SetTextureRect(rect Recti) {
+func (this *CircleShape) SetTextureRect(rect IntRect) {
 	C.sfCircleShape_setTextureRect(this.cptr, rect.toC())
 }
 
@@ -131,7 +131,7 @@ func (this *CircleShape) GetInverseTransform() (transform Transform) {
 	return
 }
 
-func (this *CircleShape) GetTextureRect() (rect Recti) {
+func (this *CircleShape) GetTextureRect() (rect IntRect) {
 	rect.fromC(C.sfCircleShape_getTextureRect(this.cptr))
 	return
 }
@@ -171,12 +171,12 @@ func (this *CircleShape) SetPointCount(count uint) {
 	C.sfCircleShape_setPointCount(this.cptr, C.uint(count))
 }
 
-func (this *CircleShape) GetLocalBounds() (rect Rectf) {
+func (this *CircleShape) GetLocalBounds() (rect FloatRect) {
 	rect.fromC(C.sfCircleShape_getLocalBounds(this.cptr))
 	return
 }
 
-func (this *CircleShape) GetGlobalBounds() (rect Rectf) {
+func (this *CircleShape) GetGlobalBounds() (rect FloatRect) {
 	rect.fromC(C.sfCircleShape_getGlobalBounds(this.cptr))
 	return
 }
