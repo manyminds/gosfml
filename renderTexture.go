@@ -77,8 +77,13 @@ func (this *RenderTexture) GetViewport(view *View) (viewport Recti) {
 	return
 }
 
-func (this *RenderTexture) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
-	coord.fromC(C.sfRenderTexture_convertCoords(this.cptr, pos.toC(), view.cptr))
+func (this *RenderTexture) MapPixelToCoords(pos Vector2i, view *View) (coords Vector2f) {
+	coords.fromC(C.sfRenderTexture_mapPixelToCoords(this.cptr, pos.toC(), view.cptr))
+	return
+}
+
+func (this *RenderTexture) MapCoordsToPixel(pos Vector2f, view *View) (coords Vector2i) {
+	coords.fromC(C.sfRenderTexture_mapCoordsToPixel(this.cptr, pos.toC(), view.toCPtr()))
 	return
 }
 

@@ -180,12 +180,13 @@ func (this *RenderWindow) Draw(drawer Drawer, renderStates *RenderStates) {
 	drawer.Draw(this, renderStates)
 }
 
-func (this *RenderWindow) ConvertCoords(pos Vector2i, view *View) (coord Vector2f) {
-	if view == nil {
-		view = this.GetDefaultView()
-	}
+func (this *RenderWindow) MapPixelToCoords(pos Vector2i, view *View) (coords Vector2f) {
+	coords.fromC(C.sfRenderWindow_mapPixelToCoords(this.cptr, pos.toC(), view.cptr))
+	return
+}
 
-	coord.fromC(C.sfRenderWindow_convertCoords(this.cptr, pos.toC(), view.cptr))
+func (this *RenderWindow) MapCoordsToPixel(pos Vector2f, view *View) (coords Vector2i) {
+	coords.fromC(C.sfRenderWindow_mapCoordsToPixel(this.cptr, pos.toC(), view.cptr))
 	return
 }
 

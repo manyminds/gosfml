@@ -16,7 +16,7 @@ package gosfml2
 ///		INTERFACES
 /////////////////////////////////////
 
-//implemented by RenderTexture and RenderWindow
+//satisfied by RenderTexture and RenderWindow
 type RenderTarget interface {
 	Clear(Color)
 	Display()
@@ -24,7 +24,8 @@ type RenderTarget interface {
 	GetView() *View
 	GetDefaultView() *View
 	GetViewport(view *View) Recti
-	ConvertCoords(Vector2i, *View) Vector2f
+	MapPixelToCoords(Vector2i, *View) Vector2f
+	MapCoordsToPixel(Vector2f, *View) Vector2i
 	PushGLStates()
 	PopGLStates()
 	ResetGLStates()

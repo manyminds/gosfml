@@ -104,3 +104,14 @@ func (this *View) Rotate(angle float32) {
 func (this *View) Zoom(factor float32) {
 	C.sfView_zoom(this.cptr, C.float(factor))
 }
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *View) toCPtr() *C.sfView {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
+}
