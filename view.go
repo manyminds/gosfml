@@ -37,7 +37,7 @@ func NewView() *View {
 	return view
 }
 
-func NewViewFromRect(rect *FloatRect) *View {
+func NewViewFromRect(rect FloatRect) *View {
 	view := &View{C.sfView_createFromRect(rect.toC())}
 	runtime.SetFinalizer(view, (*View).Destroy)
 	return view
