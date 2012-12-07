@@ -34,12 +34,12 @@ func TestStructSizes(t *testing.T) {
 		t.Fatal("Vector3f size mismatch: ", unsafe.Sizeof(Vector3f{}), " != ", sizeofVector3f())
 	}
 
-	if int(unsafe.Sizeof(Recti{})) != sizeofRecti() {
-		t.Fatal("Recti size mismatch: ", unsafe.Sizeof(Recti{}), " != ", sizeofRecti())
+	if int(unsafe.Sizeof(IntRect{})) != sizeofIntRect() {
+		t.Fatal("IntRect size mismatch: ", unsafe.Sizeof(IntRect{}), " != ", sizeofIntRect())
 	}
 
-	if int(unsafe.Sizeof(Rectf{})) != sizeofRectf() {
-		t.Fatal("Rectf size mismatch: ", unsafe.Sizeof(Rectf{}), " != ", sizeofRectf())
+	if int(unsafe.Sizeof(FloatRect{})) != sizeofFloatRect() {
+		t.Fatal("FloatRect size mismatch: ", unsafe.Sizeof(FloatRect{}), " != ", sizeofFloatRect())
 	}
 
 	if int(unsafe.Sizeof(Color{})) != sizeofColor() {
