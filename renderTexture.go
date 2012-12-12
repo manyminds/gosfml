@@ -35,6 +35,7 @@ type RenderTexture struct {
 func NewRenderTexture(width, height uint, depthbuffer bool) *RenderTexture {
 	renderTexture := &RenderTexture{C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer))}
 	runtime.SetFinalizer(renderTexture, (*RenderTexture).Destroy)
+
 	return renderTexture
 }
 

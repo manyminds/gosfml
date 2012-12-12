@@ -176,6 +176,11 @@ func (this *RenderWindow) SetView(view *View) {
 	C.sfRenderWindow_setView(this.cptr, view.toCPtr())
 }
 
+func (this *RenderWindow) GetViewport(view *View) (viewport IntRect) {
+	viewport.fromC(C.sfRenderWindow_getViewport(this.cptr, view.toCPtr()))
+	return
+}
+
 func (this *RenderWindow) Draw(drawer Drawer, renderStates *RenderStates) {
 	drawer.Draw(this, renderStates)
 }
@@ -187,11 +192,6 @@ func (this *RenderWindow) MapPixelToCoords(pos Vector2i, view *View) (coords Vec
 
 func (this *RenderWindow) MapCoordsToPixel(pos Vector2f, view *View) (coords Vector2i) {
 	coords.fromC(C.sfRenderWindow_mapCoordsToPixel(this.cptr, pos.toC(), view.toCPtr()))
-	return
-}
-
-func (this *RenderWindow) GetViewport(view *View) (viewport IntRect) {
-	viewport.fromC(C.sfRenderWindow_getViewport(this.cptr, view.toCPtr()))
 	return
 }
 

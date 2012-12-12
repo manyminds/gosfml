@@ -65,11 +65,7 @@ func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture
 
 // shader can be nil (no shader)
 func (this *RenderStates) SetShader(shader *Shader) {
-	if shader == nil {
-		this.cRenderStates.shader = nil
-	} else {
-		this.cRenderStates.shader = shader.cptr
-	}
+	this.cRenderStates.shader = shader.toCPtr()
 }
 
 // texture can be nil (no texture)
