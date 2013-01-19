@@ -55,6 +55,17 @@ func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err err
 	return
 }
 
+func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err error) {
+	texture = &Texture{C.sfTexture_createFromImage(image.toCPtr(), area.toCPtr())}
+	runtime.SetFinalizer(texture, (*Texture).Destroy)
+
+	if texture.cptr == nil {
+		err = &Error{"NewTextureFromFile: Cannot create texture from image"}
+	}
+
+	return
+}
+
 func (this *Texture) Copy() *Texture {
 	texture := &Texture{C.sfTexture_copy(this.cptr)}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
@@ -77,6 +88,10 @@ func (this *Texture) UpdateFromWindow(window *Window, x, y uint) {
 
 func (this *Texture) UpdateFromRenderWindow(window *RenderWindow, x, y uint) {
 	C.sfTexture_updateFromRenderWindow(this.cptr, window.cptr, C.uint(x), C.uint(y))
+}
+
+func (this *Texture) UpdateFromImage(image *Image, x, y uint) {
+	C.sfTexture_updateFromImage(this.cptr, image.toCPtr(), C.uint(x), C.uint(y))
 }
 
 func (this *Texture) SetSmooth(smooth bool) {

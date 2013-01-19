@@ -121,3 +121,14 @@ func (this *Image) FlipHorizontally() {
 func (this *Image) FlipVertically() {
 	C.sfImage_flipVertically(this.cptr)
 }
+
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
+func (this *Image) toCPtr() *C.sfImage {
+	if this != nil {
+		return this.cptr
+	}
+	return nil
+}
