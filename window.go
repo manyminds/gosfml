@@ -17,9 +17,9 @@ package gosfml2
 import "C"
 
 import (
+	"errors"
 	"runtime"
 	"unsafe"
-	"errors"
 )
 
 /////////////////////////////////////
@@ -62,21 +62,24 @@ type SystemWindow interface {
 	SetActive(bool)
 }
 
+//TEST
+var _ SystemWindow = &RenderWindow{}
+var _ SystemWindow = &Window{}
+
 /////////////////////////////////////
 ///		FUNCTIONS
 /////////////////////////////////////
 
 func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *Window) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+	//string conversion
+	utf32 := append([]int32(title), 0)
+
+	//convert contextSettings to C
+	cs := contextSettings.toC()
+	defer C.free(unsafe.Pointer(cs))
 
 	//create the window
-	if contextSettings != nil {
-		csettings := contextSettings.toC()
-		window = &Window{C.sfWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), &csettings)}
-	} else {
-		window = &Window{C.sfWindow_create(videoMode.toC(), cTitle, C.sfUint32(style), nil)}
-	}
+	window = &Window{C.sfWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
 
 	//GC cleanup
 	runtime.SetFinalizer(window, (*Window).Destroy)

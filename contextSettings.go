@@ -13,7 +13,8 @@ and to alter it and redistribute it freely, subject to the following restriction
 package gosfml2
 
 // #include <SFML/Window/Window.h>
-// int getSizeContextSettings() { return sizeof(sfContextSettings); }
+// #include <stdlib.h>
+// size_t getSizeContextSettings() { return sizeof(sfContextSettings); }
 import "C"
 
 /////////////////////////////////////
@@ -40,13 +41,20 @@ func (this *ContextSettings) fromC(csettings C.sfContextSettings) {
 	this.MinorVersion = uint(csettings.minorVersion)
 }
 
-func (this *ContextSettings) toC() C.sfContextSettings {
-	return C.sfContextSettings{
-		depthBits:         C.uint(this.DepthBits),
-		stencilBits:       C.uint(this.StencilBits),
-		antialiasingLevel: C.uint(this.AntialiasingLevel),
-		majorVersion:      C.uint(this.MajorVersion),
-		minorVersion:      C.uint(this.MinorVersion)}
+//allocates memory!
+func (this *ContextSettings) toC() *C.sfContextSettings {
+	if this == nil {
+		return nil
+	}
+
+	cs := (*C.sfContextSettings)(C.malloc(C.getSizeContextSettings()))
+	cs.depthBits = C.uint(this.DepthBits)
+	cs.stencilBits = C.uint(this.StencilBits)
+	cs.antialiasingLevel = C.uint(this.AntialiasingLevel)
+	cs.majorVersion = C.uint(this.MajorVersion)
+	cs.minorVersion = C.uint(this.MinorVersion)
+
+	return cs
 }
 
 /////////////////////////////////////

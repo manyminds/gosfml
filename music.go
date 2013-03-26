@@ -17,10 +17,10 @@ package gosfml2
 import "C"
 
 import (
+	"errors"
 	"runtime"
 	"time"
 	"unsafe"
-	"errors"
 )
 
 /////////////////////////////////////

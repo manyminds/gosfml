@@ -17,9 +17,9 @@ package gosfml2
 import "C"
 
 import (
+	"errors"
 	"runtime"
 	"unsafe"
-	"errors"
 )
 
 /////////////////////////////////////
