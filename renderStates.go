@@ -38,17 +38,11 @@ type RenderStates struct {
 }
 
 /////////////////////////////////////
-///		VARS
-/////////////////////////////////////
-
-var renderStatesDefault = MakeRenderStates(Blend_Alpha, TransformIdentity(), nil, nil)
-
-/////////////////////////////////////
 ///		CONTS
 /////////////////////////////////////
 
 func RenderStatesDefault() RenderStates {
-	return renderStatesDefault
+	return MakeRenderStates(Blend_Alpha, TransformIdentity(), nil, nil)
 }
 
 /////////////////////////////////////
@@ -70,11 +64,7 @@ func (this *RenderStates) SetShader(shader *Shader) {
 
 // texture can be nil (no texture)
 func (this *RenderStates) SetTexture(texture *Texture) {
-	if texture == nil {
-		this.cRenderStates.texture = nil
-	} else {
-		this.cRenderStates.texture = texture.cptr
-	}
+		this.cRenderStates.texture = texture.toCPtr()
 }
 
 func (this *RenderStates) SetTramsform(transform Transform) {
