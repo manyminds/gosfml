@@ -17,6 +17,7 @@ package gosfml2
 import "C"
 
 import (
+	"errors"
 	"runtime"
 	"unsafe"
 )
@@ -40,7 +41,7 @@ func NewTextureFromFile(file string) (texture *Texture, err error) {
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 
 	if texture.cptr == nil {
-		err = &Error{"NewTextureFromFile: Cannot load texture " + file}
+		err = errors.New("NewTextureFromFile: Cannot load texture " + file)
 	}
 
 	return
@@ -51,7 +52,7 @@ func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err err
 		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
 		runtime.SetFinalizer(texture, (*Texture).Destroy)
 	}
-	err = &Error{"NewTextureFromMemory: no data"}
+	err = errors.New("NewTextureFromMemory: no data")
 	return
 }
 
@@ -60,7 +61,7 @@ func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err err
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 
 	if texture.cptr == nil {
-		err = &Error{"NewTextureFromFile: Cannot create texture from image"}
+		err = errors.New("NewTextureFromFile: Cannot create texture from image")
 	}
 
 	return

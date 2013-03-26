@@ -19,6 +19,7 @@ import "C"
 import (
 	"runtime"
 	"unsafe"
+	"errors"
 )
 
 /////////////////////////////////////
@@ -104,7 +105,7 @@ func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
 		C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
 		return nil
 	}
-	return &Error{"SetIcon: no data"}
+	return errors.New("SetIcon: no data")
 }
 
 // returns nil if there is no event

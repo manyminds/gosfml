@@ -16,7 +16,7 @@ package gosfml2
 ///		INTERFACES
 /////////////////////////////////////
 
-//satisfied by RenderTexture and RenderWindow
+//RenderTexture and RenderWindow are RenderTargets
 type RenderTarget interface {
 	Clear(Color)
 	Display()
@@ -33,3 +33,10 @@ type RenderTarget interface {
 	//Renderstates can be nil (Default RenderStates)
 	Draw(Drawer, *RenderStates)
 }
+
+/////////////////////////////////////
+///		TEST
+/////////////////////////////////////
+
+var _ RenderTarget = &RenderTexture{}
+var _ RenderTarget = &RenderWindow{}

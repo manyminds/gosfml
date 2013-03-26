@@ -17,6 +17,7 @@ package gosfml2
 import "C"
 
 import (
+	"errors"
 	"runtime"
 	"time"
 	"unsafe"
@@ -53,7 +54,7 @@ func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
 		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
 		return buffer, nil
 	}
-	return nil, &Error{"NewSoundBufferFromMemory: no data"}
+	return nil, errors.New("NewSoundBufferFromMemory: no data")
 }
 
 func (this *SoundBuffer) Copy() *SoundBuffer {

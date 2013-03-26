@@ -19,6 +19,7 @@ import "C"
 import (
 	"runtime"
 	"unsafe"
+	"errors"
 )
 
 /////////////////////////////////////
@@ -71,7 +72,7 @@ func NewImageFromMemory(data []byte) (*Image, error) {
 		runtime.SetFinalizer(image, (*Image).Destroy)
 		return image, nil
 	}
-	return nil, &Error{"NewImageFromMemory: no data"}
+	return nil, errors.New("NewImageFromMemory: no data")
 }
 
 func (this *Image) Copy() *Image {

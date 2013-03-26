@@ -16,7 +16,19 @@ package gosfml2
 ///		INTERFACES
 /////////////////////////////////////
 
-//satisfied by Sprite,CircleShape,ConvexShape,Text,RenderTexture,VertexArray
+//Sprite, CircleShape, ConvexShape, RectangleShape, Text and VertexArray are Drawers
+//A Drawer can be drawn on a RenderTarget
 type Drawer interface {
 	Draw(target RenderTarget, renderStates *RenderStates)
 }
+
+/////////////////////////////////////
+///		TEST
+/////////////////////////////////////
+
+var _ Drawer = &Sprite{}
+var _ Drawer = &CircleShape{}
+var _ Drawer = &ConvexShape{}
+var _ Drawer = &RectangleShape{}
+var _ Drawer = &Text{}
+var _ Drawer = &VertexArray{}

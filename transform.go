@@ -132,3 +132,13 @@ func (this *Transform) toC() (transform C.sfTransform) {
 func (this *Transform) toCPtr() *C.sfTransform {
 	return (*C.sfTransform)(unsafe.Pointer(this))
 }
+
+/////////////////////////////////////
+///		TEST
+/////////////////////////////////////
+
+var _ Transformer = &Sprite{}
+var _ Transformer = &Text{}
+var _ Transformer = &RectangleShape{}
+var _ Transformer = &CircleShape{}
+var _ Transformer = &ConvexShape{}

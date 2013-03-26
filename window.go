@@ -19,6 +19,7 @@ import "C"
 import (
 	"runtime"
 	"unsafe"
+	"errors"
 )
 
 /////////////////////////////////////
@@ -151,7 +152,7 @@ func (this *Window) SetIcon(width, height uint, data []byte) error {
 		C.sfWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
 		return nil
 	}
-	return &Error{"SetIcon: no data"}
+	return errors.New("SetIcon: no data")
 }
 
 func (this *Window) SetFramerateLimit(limit uint) {

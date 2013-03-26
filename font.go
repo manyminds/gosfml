@@ -15,8 +15,12 @@ package gosfml2
 // #include <SFML/Graphics/Font.h> 
 // #include <stdlib.h>
 import "C"
-import "runtime"
-import "unsafe"
+
+import (
+	"errors"
+	"runtime"
+	"unsafe"
+)
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -38,7 +42,7 @@ func NewFontFromFile(filename string) (font *Font, err error) {
 	runtime.SetFinalizer(font, (*Font).Destroy)
 
 	if font.cptr == nil {
-		err = &Error{"NewFontFromFile: Cannot load font " + filename}
+		err = errors.New("NewFontFromFile: Cannot load font " + filename)
 	}
 
 	return
@@ -50,7 +54,7 @@ func NewFontFromMemory(data []byte) (*Font, error) {
 		runtime.SetFinalizer(font, (*Font).Destroy)
 		return font, nil
 	}
-	return nil, &Error{"NewFontFromMemory: no data"}
+	return nil, errors.New("NewFontFromMemory: no data")
 }
 
 func (this *Font) Copy() *Font {

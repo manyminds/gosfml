@@ -20,6 +20,7 @@ import (
 	"runtime"
 	"time"
 	"unsafe"
+	"errors"
 )
 
 /////////////////////////////////////
@@ -41,7 +42,7 @@ func NewMusicFromFile(file string) (music *Music, err error) {
 	runtime.SetFinalizer(music, (*Music).Destroy)
 
 	if music.cptr == nil {
-		err = &Error{"NewMusicFromFile: Cannot load music " + file}
+		err = errors.New("NewMusicFromFile: Cannot load music " + file)
 	}
 
 	return
@@ -53,7 +54,7 @@ func NewMusicFromMemory(data []byte) (music *Music, err error) {
 		runtime.SetFinalizer(music, (*Music).Destroy)
 
 		if music.cptr == nil {
-			err = &Error{"NewMusicFromMemory: Cannot load music"}
+			err = errors.New("NewMusicFromMemory: Cannot load music")
 		}
 		return
 	}

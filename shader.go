@@ -15,8 +15,12 @@ package gosfml2
 // #include <SFML/Graphics/Shader.h> 
 // #include <stdlib.h>
 import "C"
-import "runtime"
-import "unsafe"
+
+import (
+	"errors"
+	"runtime"
+	"unsafe"
+)
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -51,7 +55,7 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 
 	//error check
 	if shader.cptr == nil {
-		err = &Error{"NewShaderFromFile: Cannot create Shader " + vertexShaderFile + " " + fragmentShaderFile}
+		err = errors.New("NewShaderFromFile: Cannot create Shader " + vertexShaderFile + " " + fragmentShaderFile)
 	}
 
 	return
@@ -68,7 +72,7 @@ func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, e
 
 	//error check
 	if shader.cptr == nil {
-		err = &Error{"NewShaderFromFile: Cannot create Shader"}
+		err = errors.New("NewShaderFromFile: Cannot create Shader")
 	}
 
 	return
