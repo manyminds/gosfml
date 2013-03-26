@@ -75,7 +75,7 @@ func NewWindow(videoMode VideoMode, title string, style int, contextSettings *Co
 	utf32 := append([]int32(title), 0)
 
 	//convert contextSettings to C
-	cs := contextSettings.toC()
+	cs := contextSettings.toCPtr()
 	defer C.free(unsafe.Pointer(cs))
 
 	//create the window

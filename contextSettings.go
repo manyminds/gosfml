@@ -42,7 +42,7 @@ func (this *ContextSettings) fromC(csettings C.sfContextSettings) {
 }
 
 //allocates memory!
-func (this *ContextSettings) toC() *C.sfContextSettings {
+func (this *ContextSettings) toCPtr() *C.sfContextSettings {
 	if this == nil {
 		return nil
 	}
