@@ -20,109 +20,109 @@ import "C"
 /////////////////////////////////////
 
 const (
-	Key_A         = iota ///< The A key
-	Key_B                ///< The B key
-	Key_C                ///< The C key
-	Key_D                ///< The D key
-	Key_E                ///< The E key
-	Key_F                ///< The F key
-	Key_G                ///< The G key
-	Key_H                ///< The H key
-	Key_I                ///< The I key
-	Key_J                ///< The J key
-	Key_K                ///< The K key
-	Key_L                ///< The L key
-	Key_M                ///< The M key
-	Key_N                ///< The N key
-	Key_O                ///< The O key
-	Key_P                ///< The P key
-	Key_Q                ///< The Q key
-	Key_R                ///< The R key
-	Key_S                ///< The S key
-	Key_T                ///< The T key
-	Key_U                ///< The U key
-	Key_V                ///< The V key
-	Key_W                ///< The W key
-	Key_X                ///< The X key
-	Key_Y                ///< The Y key
-	Key_Z                ///< The Z key
-	Key_Num0             ///< The 0 key
-	Key_Num1             ///< The 1 key
-	Key_Num2             ///< The 2 key
-	Key_Num3             ///< The 3 key
-	Key_Num4             ///< The 4 key
-	Key_Num5             ///< The 5 key
-	Key_Num6             ///< The 6 key
-	Key_Num7             ///< The 7 key
-	Key_Num8             ///< The 8 key
-	Key_Num9             ///< The 9 key
-	Key_Escape           ///< The Escape key
-	Key_LControl         ///< The left Control key
-	Key_LShift           ///< The left Shift key
-	Key_LAlt             ///< The left Alt key
-	Key_LSystem          ///< The left OS specific key: window (Windows and Linux), apple (MacOS X), ...
-	Key_RControl         ///< The right Control key
-	Key_RShift           ///< The right Shift key
-	Key_RAl              ///< The right Alt key
-	Key_RSystem          ///< The right OS specific key: window (Windows and Linux), apple (MacOS X), ...
-	Key_Menu             ///< The Menu key
-	Key_LBracket         ///< The [ key
-	Key_RBracket         ///< The ] key
-	Key_SemiColon        ///< The ; key
-	Key_Comma            ///< The , key
-	Key_Period           ///< The . key
-	Key_Quote            ///< The ' key
-	Key_Slash            ///< The / key
-	Key_BackSlash        ///< The \ key
-	Key_Tilde            ///< The ~ key
-	Key_Equal            ///< The = key
-	Key_Dash             ///< The - key
-	Key_Space            ///< The Space key
-	Key_Return           ///< The Return key
-	Key_Back             ///< The Backspace key
-	Key_Tab              ///< The Tabulation key
-	Key_PageUp           ///< The Page up key
-	Key_PageDown         ///< The Page down key
-	Key_End              ///< The End key
-	Key_Home             ///< The Home key
-	Key_Insert           ///< The Insert key
-	Key_Delete           ///< The Delete key
-	Key_Add              ///< +
-	Key_Subtract         ///< -
-	Key_Multiply         ///< *
-	Key_Divide           ///< /
-	Key_Left             ///< Left arrow
-	Key_Right            ///< Right arrow
-	Key_Up               ///< Up arrow
-	Key_Down             ///< Down arrow
-	Key_Numpad0          ///< The numpad 0 key
-	Key_Numpad1          ///< The numpad 1 key
-	Key_Numpad2          ///< The numpad 2 key
-	Key_Numpad3          ///< The numpad 3 key
-	Key_Numpad4          ///< The numpad 4 key
-	Key_Numpad5          ///< The numpad 5 key
-	Key_Numpad6          ///< The numpad 6 key
-	Key_Numpad7          ///< The numpad 7 key
-	Key_Numpad8          ///< The numpad 8 key
-	Key_Numpad9          ///< The numpad 9 key
-	Key_F1               ///< The F1 key
-	Key_F2               ///< The F2 key
-	Key_F3               ///< The F3 key
-	Key_F4               ///< The F4 key
-	Key_F5               ///< The F5 key
-	Key_F6               ///< The F6 key
-	Key_F7               ///< The F7 key
-	Key_F8               ///< The F8 key
-	Key_F9               ///< The F8 key
-	Key_F10              ///< The F10 key
-	Key_F11              ///< The F11 key
-	Key_F12              ///< The F12 key
-	Key_F13              ///< The F13 key
-	Key_F14              ///< The F14 key
-	Key_F15              ///< The F15 key
-	Key_Pause            ///< The Pause key
+	KeyA         = iota ///< The A key
+	KeyB                ///< The B key
+	KeyC                ///< The C key
+	KeyD                ///< The D key
+	KeyE                ///< The E key
+	KeyF                ///< The F key
+	KeyG                ///< The G key
+	KeyH                ///< The H key
+	KeyI                ///< The I key
+	KeyJ                ///< The J key
+	KeyK                ///< The K key
+	KeyL                ///< The L key
+	KeyM                ///< The M key
+	KeyN                ///< The N key
+	KeyO                ///< The O key
+	KeyP                ///< The P key
+	KeyQ                ///< The Q key
+	KeyR                ///< The R key
+	KeyS                ///< The S key
+	KeyT                ///< The T key
+	KeyU                ///< The U key
+	KeyV                ///< The V key
+	KeyW                ///< The W key
+	KeyX                ///< The X key
+	KeyY                ///< The Y key
+	KeyZ                ///< The Z key
+	KeyNum0             ///< The 0 key
+	KeyNum1             ///< The 1 key
+	KeyNum2             ///< The 2 key
+	KeyNum3             ///< The 3 key
+	KeyNum4             ///< The 4 key
+	KeyNum5             ///< The 5 key
+	KeyNum6             ///< The 6 key
+	KeyNum7             ///< The 7 key
+	KeyNum8             ///< The 8 key
+	KeyNum9             ///< The 9 key
+	KeyEscape           ///< The Escape key
+	KeyLControl         ///< The left Control key
+	KeyLShift           ///< The left Shift key
+	KeyLAlt             ///< The left Alt key
+	KeyLSystem          ///< The left OS specific key: window (Windows and Linux), apple (MacOS X), ...
+	KeyRControl         ///< The right Control key
+	KeyRShift           ///< The right Shift key
+	KeyRAlt             ///< The right Alt key
+	KeyRSystem          ///< The right OS specific key: window (Windows and Linux), apple (MacOS X), ...
+	KeyMenu             ///< The Menu key
+	KeyLBracket         ///< The [ key
+	KeyRBracket         ///< The ] key
+	KeySemiColon        ///< The ; key
+	KeyComma            ///< The , key
+	KeyPeriod           ///< The . key
+	KeyQuote            ///< The ' key
+	KeySlash            ///< The / key
+	KeyBackSlash        ///< The \ key
+	KeyTilde            ///< The ~ key
+	KeyEqual            ///< The = key
+	KeyDash             ///< The - key
+	KeySpace            ///< The Space key
+	KeyReturn           ///< The Return key
+	KeyBack             ///< The Backspace key
+	KeyTab              ///< The Tabulation key
+	KeyPageUp           ///< The Page up key
+	KeyPageDown         ///< The Page down key
+	KeyEnd              ///< The End key
+	KeyHome             ///< The Home key
+	KeyInsert           ///< The Insert key
+	KeyDelete           ///< The Delete key
+	KeyAdd              ///< +
+	KeySubtract         ///< -
+	KeyMultiply         ///< *
+	KeyDivide           ///< /
+	KeyLeft             ///< Left arrow
+	KeyRight            ///< Right arrow
+	KeyUp               ///< Up arrow
+	KeyDown             ///< Down arrow
+	KeyNumpad0          ///< The numpad 0 key
+	KeyNumpad1          ///< The numpad 1 key
+	KeyNumpad2          ///< The numpad 2 key
+	KeyNumpad3          ///< The numpad 3 key
+	KeyNumpad4          ///< The numpad 4 key
+	KeyNumpad5          ///< The numpad 5 key
+	KeyNumpad6          ///< The numpad 6 key
+	KeyNumpad7          ///< The numpad 7 key
+	KeyNumpad8          ///< The numpad 8 key
+	KeyNumpad9          ///< The numpad 9 key
+	KeyF1               ///< The F1 key
+	KeyF2               ///< The F2 key
+	KeyF3               ///< The F3 key
+	KeyF4               ///< The F4 key
+	KeyF5               ///< The F5 key
+	KeyF6               ///< The F6 key
+	KeyF7               ///< The F7 key
+	KeyF8               ///< The F8 key
+	KeyF9               ///< The F8 key
+	KeyF10              ///< The F10 key
+	KeyF11              ///< The F11 key
+	KeyF12              ///< The F12 key
+	KeyF13              ///< The F13 key
+	KeyF14              ///< The F14 key
+	KeyF15              ///< The F15 key
+	KeyPause            ///< The Pause key
 
-	Key_Count ///< Keep last -- the total number of keyboard keys
+	KeyCount ///< Keep last -- the total number of keyboard keys
 )
 
 type KeyCode int

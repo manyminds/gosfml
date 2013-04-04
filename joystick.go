@@ -20,20 +20,20 @@ import "C"
 /////////////////////////////////////
 
 const (
-	Joystick_X    = iota ///< The X axis
-	Joystick_Y           ///< The Y axis
-	Joystick_Z           ///< The Z axis
-	Joystick_R           ///< The R axis
-	Joystick_U           ///< The U axis
-	Joystick_V           ///< The V axis
-	Joystick_PovX        ///< The X axis of the point-of-view hat
-	Joystick_PovY        ///< The Y axis of the point-of-view hat
+	JoystickX    = iota ///< The X axis
+	JoystickY           ///< The Y axis
+	JoystickZ           ///< The Z axis
+	JoystickR           ///< The R axis
+	JoystickU           ///< The U axis
+	JoystickV           ///< The V axis
+	JoystickPovX        ///< The X axis of the point-of-view hat
+	JoystickPovY        ///< The Y axis of the point-of-view hat
 )
 
 const (
-	Joystick_Count       = 8  ///< Maximum number of supported joysticks
-	Joystick_ButtonCount = 32 ///< Maximum number of supported buttons
-	Joystick_AxisCount   = 8  ///< Maximum number of supported axes
+	JoystickCount       = 8  ///< Maximum number of supported joysticks
+	JoystickButtonCount = 32 ///< Maximum number of supported buttons
+	JoystickAxisCount   = 8  ///< Maximum number of supported axes
 )
 
 type JoystickAxis int

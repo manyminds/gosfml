@@ -28,10 +28,10 @@ import (
 /////////////////////////////////////
 
 const (
-	Text_Regular    = 0      ///< Regular characters, no style
-	Text_Bold       = 1 << 0 ///< Characters are bold
-	Text_Italic     = 1 << 1 ///< Characters are in italic
-	Text_Underlined = 1 << 2 ///< Characters are underlined
+	TextRegular    = 0      ///< Regular characters, no style
+	TextBold       = 1 << 0 ///< Characters are bold
+	TextItalic     = 1 << 1 ///< Characters are in italic
+	TextUnderlined = 1 << 2 ///< Characters are underlined
 )
 
 type TextStyle uint32

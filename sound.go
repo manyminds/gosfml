@@ -25,9 +25,9 @@ import (
 /////////////////////////////////////
 
 const (
-	SoundStatus_Stopped = iota ///< Sound / music is not playing
-	SoundStatus_Paused         ///< Sound / music is paused
-	SoundStatus_Playing        ///< Sound / music is playing
+	SoundStatusStopped = iota ///< Sound / music is not playing
+	SoundStatusPaused         ///< Sound / music is paused
+	SoundStatusPlaying        ///< Sound / music is playing
 )
 
 type SoundStatus int
