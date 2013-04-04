@@ -21,10 +21,10 @@ import "C"
 /////////////////////////////////////
 
 type Color struct {
-	R byte
-	G byte
-	B byte
-	A byte //<< 0 = transparent
+	R byte //<< Red component
+	G byte //<< Green component
+	B byte //<< Blue component
+	A byte //<< Alpha component (0 = transparent)
 }
 
 /////////////////////////////////////
@@ -45,11 +45,13 @@ func ColorTransparent() Color { return Color{0, 0, 0, 0} }
 ///		FUNCS
 /////////////////////////////////////
 
+//Component-wise saturated addition of the two colors
 func (this Color) Add(other Color) (newColor Color) {
 	newColor.fromC(C.sfColor_add(this.toC(), other.toC()))
 	return
 }
 
+//Component-wise multiplication of the two colors
 func (this Color) Modulate(other Color) (newColor Color) {
 	newColor.fromC(C.sfColor_modulate(this.toC(), other.toC()))
 	return
