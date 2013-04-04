@@ -64,7 +64,7 @@ func (this *RenderStates) SetShader(shader *Shader) {
 
 // texture can be nil (no texture)
 func (this *RenderStates) SetTexture(texture *Texture) {
-		this.cRenderStates.texture = texture.toCPtr()
+	this.cRenderStates.texture = texture.toCPtr()
 }
 
 func (this *RenderStates) SetTramsform(transform Transform) {
