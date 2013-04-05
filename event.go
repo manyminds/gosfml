@@ -62,21 +62,30 @@ type Event interface{}
 ///////////////////////////////////////////////////////////////
 //	EmptyEvents
 
+//The window lost the focus (no data)
 type EventLostFocus struct{}
+
+//The window gained the focus (no data)
 type EventGainedFocus struct{}
+
+//The mouse cursor entered the area of the window (no data)
 type EventMouseEntered struct{}
+
+//The mouse cursor left the area of the window (no data)
 type EventMouseLeft struct{}
+
+//The window requested to be closed (no data)
 type EventClosed struct{}
 
 ///////////////////////////////////////////////////////////////
 //	KeyEvent
 
 type eventKey struct {
-	Code    KeyCode
-	Alt     int
-	Control int
-	Shift   int
-	System  int
+	Code    KeyCode //< Code of the key that has been pressed
+	Alt     int     //< Is the Alt key pressed?
+	Control int     //< Is the Control key pressed?
+	Shift   int     //< Is the Shift key pressed?
+	System  int     //< Is the System key pressed?
 }
 
 type EventKeyPressed eventKey
@@ -90,8 +99,8 @@ func newKeyEventFromC(ev *C.sfKeyEvent) eventKey {
 //	SizeEvent
 
 type EventResized struct {
-	Width  uint
-	Height uint
+	Width  uint //< New width, in pixels
+	Height uint //< New height, in pixels
 }
 
 func newSizeEventFromC(ev *C.sfSizeEvent) EventResized {
@@ -102,7 +111,7 @@ func newSizeEventFromC(ev *C.sfSizeEvent) EventResized {
 //	TextEvent
 
 type EventTextEntered struct {
-	Char rune //32bits
+	Char rune //< Value of the rune
 }
 
 func newTextEventFromC(ev *C.sfTextEvent) EventTextEntered {
@@ -113,8 +122,8 @@ func newTextEventFromC(ev *C.sfTextEvent) EventTextEntered {
 //	MouseMoveEvent
 
 type EventMouseMoved struct {
-	X int
-	Y int
+	X int //< X position of the mouse pointer, relative to the left of the owner window
+	Y int //< Y position of the mouse pointer, relative to the top of the owner window
 }
 
 func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) EventMouseMoved {
@@ -125,9 +134,9 @@ func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) EventMouseMoved {
 //	MouseButtonEvent
 
 type eventMouseButton struct {
-	Button MouseButton
-	X      int
-	Y      int
+	Button MouseButton //< Code of the button that has been pressed
+	X      int         //< X position of the mouse pointer, relative to the left of the owner window
+	Y      int         //< Y position of the mouse pointer, relative to the top of the owner window
 }
 
 type EventMouseButtonPressed eventMouseButton
@@ -141,9 +150,9 @@ func newMouseButtonEventFromC(ev *C.sfMouseButtonEvent) eventMouseButton {
 //	MouseWheelEvent
 
 type EventMouseWheelMoved struct {
-	Delta int
-	X     int
-	Y     int
+	Delta int //< Number of ticks the wheel has moved (positive is up, negative is down)
+	X     int //< X position of the mouse pointer, relative to the left of the owner window
+	Y     int //< Y position of the mouse pointer, relative to the top of the owner window
 }
 
 func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) EventMouseWheelMoved {
@@ -154,9 +163,9 @@ func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) EventMouseWheelMoved {
 //	JoystickMoveEvent
 
 type EventJoystickMoved struct {
-	JoystickId uint
-	Axis       JoystickAxis
-	position   float32
+	JoystickId uint         //< Index of the joystick (in range [0 .. JoystickCount - 1])
+	Axis       JoystickAxis //< Axis on which the joystick moved
+	position   float32      //< New position on the axis (in range [-100 .. 100])
 }
 
 func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) EventJoystickMoved {
@@ -167,8 +176,8 @@ func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) EventJoystickMoved {
 //	JoystickButtonEvent
 
 type eventJoystickButton struct {
-	JoystickId uint
-	Button     uint
+	JoystickId uint //< Index of the joystick (in range [0 .. JoystickCount - 1])
+	Button     uint //< Index of the button that has been pressed (in range [0 .. JoystickButtonCount - 1])
 }
 
 type EventJoystickButtonPressed eventJoystickButton
@@ -182,7 +191,7 @@ func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) eventJoystickButto
 //	JoystickConnectEvent
 
 type eventJoystickConnection struct {
-	JoystickId uint
+	JoystickId uint //< Index of the joystick (in range [0 .. JoystickCount - 1])
 }
 
 type EventJoystickConnected eventJoystickConnection
