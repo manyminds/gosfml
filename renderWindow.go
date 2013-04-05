@@ -92,10 +92,9 @@ func (this *RenderWindow) Destroy() {
 }
 
 func (this *RenderWindow) SetTitle(title string) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+	utf32 := append([]int32(title), 0)
 
-	C.sfRenderWindow_setTitle(this.cptr, cTitle)
+	C.sfRenderWindow_setUnicodeTitle(this.cptr, (*C.sfUint32)(unsafe.Pointer(&utf32[0])))
 }
 
 func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
@@ -143,8 +142,8 @@ func (this *RenderWindow) SetVisible(visible bool) {
 	C.sfRenderWindow_setVisible(this.cptr, goBool2C(visible))
 }
 
-func (this *RenderWindow) SetActive(active bool) {
-	C.sfRenderWindow_setActive(this.cptr, goBool2C(active))
+func (this *RenderWindow) SetActive(active bool) bool {
+	return sfBool2Go(C.sfRenderWindow_setActive(this.cptr, goBool2C(active)))
 }
 
 func (this *RenderWindow) SetFramerateLimit(limit uint) {

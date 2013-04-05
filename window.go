@@ -59,7 +59,7 @@ type SystemWindow interface {
 	SetTitle(string)
 	SetIcon(uint, uint, []byte) error
 	SetMouseCursorVisible(bool)
-	SetActive(bool)
+	SetActive(bool) bool
 }
 
 //TEST
@@ -144,10 +144,9 @@ func (this *Window) WaitEvent() Event {
 }
 
 func (this *Window) SetTitle(title string) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+	utf32 := append([]int32(title), 0)
 
-	C.sfWindow_setTitle(this.cptr, cTitle)
+	C.sfWindow_setUnicodeTitle(this.cptr, (*C.sfUint32)(unsafe.Pointer(&utf32[0])))
 }
 
 func (this *Window) SetIcon(width, height uint, data []byte) error {
@@ -178,8 +177,8 @@ func (this *Window) SetVSyncEnabled(enabled bool) {
 	C.sfWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
 }
 
-func (this *Window) SetActive(active bool) {
-	C.sfWindow_setActive(this.cptr, goBool2C(active))
+func (this *Window) SetActive(active bool) bool {
+	return sfBool2Go(C.sfWindow_setActive(this.cptr, goBool2C(active)))
 }
 
 func (this *Window) SetMouseCursorVisible(visible bool) {
