@@ -31,9 +31,9 @@ const (
 )
 
 const (
-	JoystickCount       = 8  ///< Maximum number of supported joysticks
-	JoystickButtonCount = 32 ///< Maximum number of supported buttons
-	JoystickAxisCount   = 8  ///< Maximum number of supported axes
+	JoystickCount       = C.sfJoystickCount       ///< Maximum number of supported joysticks
+	JoystickButtonCount = C.sfJoystickButtonCount ///< Maximum number of supported buttons
+	JoystickAxisCount   = C.sfJoystickAxisCount   ///< Maximum number of supported axes
 )
 
 type JoystickAxis int
