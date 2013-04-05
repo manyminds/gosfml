@@ -49,6 +49,7 @@ func RenderStatesDefault() RenderStates {
 ///		FUNCS
 /////////////////////////////////////
 
+// Initializes a RenderStates object.
 func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
 	rt.cRenderStates.blendMode = C.sfBlendMode(blendMode)
 	rt.cRenderStates.transform = transform.toC()
@@ -57,20 +58,26 @@ func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture
 	return
 }
 
-// shader can be nil (no shader)
+// Sets the shader of the RenderStates.
+//
+// shader: can be nil (no shader)
 func (this *RenderStates) SetShader(shader *Shader) {
 	this.cRenderStates.shader = shader.toCPtr()
 }
 
-// texture can be nil (no texture)
+// Sets the texture of the RenderStates.
+//
+// texture: can be nil (no texture)
 func (this *RenderStates) SetTexture(texture *Texture) {
-		this.cRenderStates.texture = texture.toCPtr()
+	this.cRenderStates.texture = texture.toCPtr()
 }
 
+// Sets the transformation of the RenderStates.
 func (this *RenderStates) SetTramsform(transform Transform) {
 	this.cRenderStates.transform = transform.toC()
 }
 
+// Sets the blend mode of the RenderStates.
 func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
 	this.cRenderStates.blendMode = C.sfBlendMode(blendMode)
 }
