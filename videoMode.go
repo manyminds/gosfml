@@ -31,14 +31,33 @@ type VideoMode struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Get the current desktop video mode
 func (this *VideoMode) SetAsDesktopVideoMode() {
 	this.fromC(C.sfVideoMode_getDesktopMode())
 }
 
+// Tell whether or not a video mode is valid
+//
+// The validity of video modes is only relevant when using
+// fullscreen windows; otherwise any video mode can be used
+// with no restriction.
+//
+// return true if the video mode is valid for fullscreen mode
 func (this *VideoMode) IsValid() bool {
 	return C.sfVideoMode_isValid(this.toC()) == 1
 }
 
+// Retrieve all the video modes supported in fullscreen mode
+//
+// When creating a fullscreen window, the video mode is restricted
+// to be compatible with what the graphics driver and monitor
+// support. This function returns the complete list of all video
+// modes that can be used in fullscreen mode.
+// The returned array is sorted from best to worst, so that
+// the first element will always give the best mode (higher
+// width, height and bits-per-pixel).
+//
+// Slice containing all the supported fullscreen modes
 func (this *VideoMode) GetFullscreenModes() []VideoMode {
 	c := C.size_t(0)
 	cVideoModes := C.sfVideoMode_getFullscreenModes(&c)

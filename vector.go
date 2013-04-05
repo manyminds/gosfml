@@ -47,14 +47,17 @@ type Vector3f struct {
 /////////////////////////////////////
 // Vector2i
 
+// Returns the sum of two vectors.
 func (this Vector2i) Plus(other Vector2i) Vector2i {
 	return Vector2i{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
+// Returns the difference of two vectors.
 func (this Vector2i) Minus(other Vector2i) Vector2i {
 	return Vector2i{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
+// Returns the length of the vector.
 func (this Vector2i) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
@@ -62,14 +65,17 @@ func (this Vector2i) Length() float32 {
 /////////////////////////////////////
 // Vector2u
 
+// Returns the sum of two vectors.
 func (this Vector2u) Plus(other Vector2u) Vector2u {
 	return Vector2u{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
+// Returns the difference of two vectors.
 func (this Vector2u) Minus(other Vector2u) Vector2u {
 	return Vector2u{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
+// Returns the length of the vector.
 func (this Vector2u) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
@@ -77,14 +83,17 @@ func (this Vector2u) Length() float32 {
 /////////////////////////////////////
 // Vector2f
 
+// Returns the sum of two vectors.
 func (this Vector2f) Plus(other Vector2f) Vector2f {
 	return Vector2f{X: this.X + other.X, Y: this.Y + other.Y}
 }
 
+// Returns the difference of two vectors.
 func (this Vector2f) Minus(other Vector2f) Vector2f {
 	return Vector2f{X: this.X - other.X, Y: this.Y - other.Y}
 }
 
+// Returns the length of the vector.
 func (this Vector2f) Length() float32 {
 	return float32(math.Sqrt(float64(this.X*this.X + this.Y*this.Y)))
 }
