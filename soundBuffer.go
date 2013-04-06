@@ -43,12 +43,17 @@ type SoundBuffer struct {
 // Here is a complete list of all the supported audio formats:
 // ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
-func NewSoundBufferFromFile(file string) *SoundBuffer {
+func NewSoundBufferFromFile(file string) (*SoundBuffer, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	buffer := &SoundBuffer{C.sfSoundBuffer_createFromFile(cFile)}
 	runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
-	return buffer
+
+	if buffer.cptr == nil {
+		return nil, errors.New("NewSoundBufferFromFile: Cannot create SoundBuffer")
+	}
+
+	return buffer, nil
 }
 
 // Create a new sound buffer and load it from a file in memory
@@ -58,13 +63,17 @@ func NewSoundBufferFromFile(file string) *SoundBuffer {
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
 // 	data: Slice of file data
-func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
+func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 	if len(data) > 0 {
-		buffer := &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+		buffer = &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
-		return buffer, nil
+		
+		if buffer.cptr == nil {
+			err = errors.New("NewSoundBufferFromMemory: Cannot create SoundBuffer")
+		}
+		return
 	}
-	return nil, errors.New("NewSoundBufferFromMemory: no data")
+	return nil, errors.New("NewSoundBufferFromMemory: NewSoundBufferFromMemory: no data")
 }
 
 // Create a new sound buffer by copying an existing one
