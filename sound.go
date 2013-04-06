@@ -121,6 +121,10 @@ func (this *Sound) SetPlayingOffset(offset time.Duration) {
 	C.sfSound_setPlayingOffset(this.cptr, C.sfTime{microseconds: (C.sfInt64(offset / time.Microsecond))})
 }
 
+func (this *Sound) GetLoop() bool {
+	return sfBool2Go(C.sfSound_getLoop(this.cptr))
+}
+
 func (this *Sound) GetPitch() float32 {
 	return float32(C.sfSound_getPitch(this.cptr))
 }
