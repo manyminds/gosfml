@@ -201,12 +201,12 @@ func (this *RenderWindow) SetActive(active bool) {
 
 // Limit the framerate to a maximum fixed frequency for a render window
 //
-// limit: Framerate limit, in frames per seconds (use 0 to disable limit)
+// 	limit: Framerate limit, in frames per seconds (use 0 to disable limit)
 func (this *RenderWindow) SetFramerateLimit(limit uint) {
 	C.sfRenderWindow_setFramerateLimit(this.cptr, C.uint(limit))
 }
 
-///Change the joystick threshold, ie. the value below which no move event will be generated
+// Change the joystick threshold, ie. the value below which no move event will be generated
 //
 // 	threshold: New threshold, in range [0, 100]
 func (this *RenderWindow) SetJoystickThreshold(threshold float32) {
