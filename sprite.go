@@ -237,9 +237,9 @@ func (this *Sprite) GetGlobalBounds() (rect FloatRect) {
 	return
 }
 
-//Draws a RectangleShape on a render target
+// Draws a RectangleShape on a render target
 //
-//renderStates: can be nil to use the default render states
+// 	renderStates: can be nil to use the default render states
 func (this *Sprite) Draw(target RenderTarget, renderStates *RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:

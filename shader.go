@@ -150,8 +150,8 @@ func (this *Shader) SetTransformParameter(name string, trans Transform) {
 // The corresponding parameter in the shader must be a 2D texture
 // (sampler2D GLSL type).
 //
-// name    Name of the texture in the shader
-// texture Texture to assign
+// 	name:    Name of the texture in the shader
+// 	texture: Texture to assign
 func (this *Shader) SetTextureParameter(name string, texture *Texture) {
 	cname := C.CString(name)
 	defer C.free(unsafe.Pointer(cname))

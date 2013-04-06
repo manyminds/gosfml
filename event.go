@@ -62,19 +62,19 @@ type Event interface{}
 ///////////////////////////////////////////////////////////////
 //	EmptyEvents
 
-//The window lost the focus (no data)
+// The window lost the focus (no data)
 type EventLostFocus struct{}
 
-//The window gained the focus (no data)
+// The window gained the focus (no data)
 type EventGainedFocus struct{}
 
-//The mouse cursor entered the area of the window (no data)
+// The mouse cursor entered the area of the window (no data)
 type EventMouseEntered struct{}
 
-//The mouse cursor left the area of the window (no data)
+// The mouse cursor left the area of the window (no data)
 type EventMouseLeft struct{}
 
-//The window requested to be closed (no data)
+// The window requested to be closed (no data)
 type EventClosed struct{}
 
 ///////////////////////////////////////////////////////////////

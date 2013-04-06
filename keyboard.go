@@ -133,7 +133,7 @@ type KeyCode int
 
 //Check if a key is pressed
 //
-//key: Key to check
+//		key: Key to check
 func KeyboardIsKeyPressed(key KeyCode) bool {
 	return sfBool2Go(C.sfKeyboard_isKeyPressed(C.sfKeyCode(key)))
 }

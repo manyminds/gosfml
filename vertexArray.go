@@ -117,14 +117,14 @@ func (this *VertexArray) Clear() {
 // If vertexCount is less than the current size, existing vertices
 // are removed from the array.
 //
-// vertexCount: New size of the array (number of vertices)
+// 	vertexCount: New size of the array (number of vertices)
 func (this *VertexArray) Resize(vertexCount uint) {
 	C.sfVertexArray_resize(this.cptr, C.uint(vertexCount))
 }
 
 // Add a vertex to a vertex array array
 //
-// vertex: Vertex to add
+// 	vertex: Vertex to add
 func (this *VertexArray) Append(vertex Vertex) {
 	C.sfVertexArray_append(this.cptr, vertex.toC())
 }
@@ -139,7 +139,7 @@ func (this *VertexArray) Append(vertex Vertex) {
 // As quads
 // The default primitive type is Points.
 //
-// type: Type of primitive
+// 	type: Type of primitive
 func (this *VertexArray) SetPrimitiveType(ptype PrimitiveType) {
 	C.sfVertexArray_setPrimitiveType(this.cptr, C.sfPrimitiveType(ptype))
 }

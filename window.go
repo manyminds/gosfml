@@ -72,10 +72,10 @@ var _ SystemWindow = &Window{}
 
 // Construct a new window
 //
-// videoMode:       Video mode to use
-// title:           Title of the window
-// style:           Window style
-// contextSettings: Creation settings (pass nil to use default values)
+// 	videoMode:       Video mode to use
+// 	title:           Title of the window
+// 	style:           Window style
+// 	contextSettings: Creation settings (pass nil to use default values)
 func NewWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *Window) {
 	//string conversion
 	utf32 := append([]int32(title), 0)
@@ -101,7 +101,7 @@ func (this *Window) GetSettings() (settings ContextSettings) {
 
 // Change the size of the rendering region of a window
 //
-// size: New size, in pixels
+// 	size: New size, in pixels
 func (this *Window) SetSize(size Vector2u) {
 	C.sfWindow_setSize(this.cptr, size.toC())
 }
@@ -116,7 +116,7 @@ func (this *Window) GetSize() Vector2u {
 //
 // Only works for top-level windows
 //
-// pos: New position, in pixels
+// 	pos: New position, in pixels
 func (this *Window) SetPosition(pos Vector2i) {
 	C.sfWindow_setPosition(this.cptr, pos.toC())
 }
@@ -169,7 +169,7 @@ func (this *Window) WaitEvent() Event {
 
 // Change the title of a window
 //
-// title: New title
+// 	title: New title
 func (this *Window) SetTitle(title string) {
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
@@ -179,9 +179,9 @@ func (this *Window) SetTitle(title string) {
 
 // Change a window's icon
 //
-// width:  Icon's width, in pixels
-// height: Icon's height, in pixels
-// pixels: Slice of pixels, format must be RGBA 32 bits
+// 	width:  Icon's width, in pixels
+// 	height: Icon's height, in pixels
+// 	pixels: Slice of pixels, format must be RGBA 32 bits
 func (this *Window) SetIcon(width, height uint, data []byte) error {
 	if len(data) > 0 {
 		C.sfWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
@@ -192,7 +192,7 @@ func (this *Window) SetIcon(width, height uint, data []byte) error {
 
 // Limit the framerate to a maximum fixed frequency for a window
 //
-// limit: Framerate limit, in frames per seconds (use 0 to disable limit)
+// 	limit: Framerate limit, in frames per seconds (use 0 to disable limit)
 func (this *Window) SetFramerateLimit(limit uint) {
 	C.sfWindow_setFramerateLimit(this.cptr, C.uint(limit))
 }
@@ -222,14 +222,14 @@ func (this *Window) Display() {
 
 // Enable / disable vertical synchronization on a window
 //
-// enabled: true to enable v-sync, false to deactivate
+// 	enabled: true to enable v-sync, false to deactivate
 func (this *Window) SetVSyncEnabled(enabled bool) {
 	C.sfWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
 }
 
 // Activate or deactivate a window as the current target for rendering
 //
-// active: true to activate, false to deactivate
+// 	active: true to activate, false to deactivate
 //
 // return True if operation was successful, false otherwise
 func (this *Window) SetActive(active bool) {
@@ -238,7 +238,7 @@ func (this *Window) SetActive(active bool) {
 
 // Show or hide the mouse cursor on a render window
 //
-// visible: true to show, false to hide
+// 	visible: true to show, false to hide
 func (this *Window) SetMouseCursorVisible(visible bool) {
 	C.sfWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
 }

@@ -59,8 +59,8 @@ func NewImageFromFile(file string) *Image {
 //
 // This image is filled with black pixels.
 //
-// width:  Width of the image
-// height: Height of the image
+// 	width:  Width of the image
+// 	height: Height of the image
 func NewImage(width, height uint) *Image {
 	image := &Image{C.sfImage_create(C.uint(width), C.uint(height))}
 	runtime.SetFinalizer(image, (*Image).Destroy)
@@ -69,9 +69,9 @@ func NewImage(width, height uint) *Image {
 
 // Create an image and fill it with a unique color
 //
-// width:  Width of the image
-// height: Height of the image
-// color:  Fill color
+// 	width:  Width of the image
+// 	height: Height of the image
+// 	color:  Fill color
 func NewImageFromColor(width, height uint, color Color) *Image {
 	image := &Image{C.sfImage_createFromColor(C.uint(width), C.uint(height), color.toC())}
 	runtime.SetFinalizer(image, (*Image).Destroy)
@@ -85,9 +85,9 @@ func NewImageFromColor(width, height uint, color Color) *Image {
 // an undefined behaviour.
 // If pixels is nil, an empty image is created.
 //
-// width:  Width of the image
-// height: Height of the image
-// pixels: Slice of pixels to copy to the image
+// 	width:  Width of the image
+// 	height: Height of the image
+// 	pixels: Slice of pixels to copy to the image
 func NewImageFromPixels(width, height uint, data []byte) *Image {
 	image := &Image{C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))}
 	runtime.SetFinalizer(image, (*Image).Destroy)
@@ -100,7 +100,7 @@ func NewImageFromPixels(width, height uint, data []byte) *Image {
 // psd, hdr and pic. Some format options are not supported,
 // like progressive jpeg.
 //
-// data: Slice containing the file data
+// 	data: Slice containing the file data
 func NewImageFromMemory(data []byte) (*Image, error) {
 	if len(data) > 0 {
 		image := &Image{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
@@ -130,7 +130,7 @@ func (this *Image) Destroy() {
 // tga and jpg. The destination file is overwritten
 // if it already exists. This function fails if the image is empty.
 //
-// filename: Path of the file to save
+// 	filename: Path of the file to save
 func (this *Image) SaveToFile(file string) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
@@ -150,8 +150,8 @@ func (this *Image) GetSize() (size Vector2u) {
 // the given color to alpha (0 by default), so that they
 // become transparent.
 //
-// color: Color to make transparent
-// alpha: Alpha value to assign to transparent pixels
+// 	color: Color to make transparent
+// 	alpha: Alpha value to assign to transparent pixels
 func (this *Image) CreateMaskFromColor(color Color, alpha byte) {
 	C.sfImage_createMaskFromColor(this.cptr, color.toC(), C.sfUint8(alpha))
 }
@@ -168,11 +168,11 @@ func (this *Image) CreateMaskFromColor(color Color, alpha byte) {
 // source pixels is applied. If it is false, the pixels are
 // copied unchanged with their alpha value.
 //
-// source:     Source image to copy
-// destX:      X coordinate of the destination position
-// destY:      Y coordinate of the destination position
-// sourceRect: Sub-rectangle of the source image to copy
-// applyAlpha: Should the copy take in account the source transparency?
+// 	source:     Source image to copy
+// 	destX:      X coordinate of the destination position
+// 	destY:      Y coordinate of the destination position
+// 	sourceRect: Sub-rectangle of the source image to copy
+// 	applyAlpha: Should the copy take in account the source transparency?
 func (this *Image) CopyImage(source *Image, destX, destY uint, sourceRect IntRect, applyAlpha bool) {
 	C.sfImage_copyImage(this.cptr, source.cptr, C.uint(destX), C.uint(destY), sourceRect.toC(), goBool2C(applyAlpha))
 }
@@ -183,9 +183,9 @@ func (this *Image) CopyImage(source *Image, destX, destY uint, sourceRect IntRec
 // coordinates, using out-of-range values will result in
 // an undefined behaviour.
 //
-// x:     X coordinate of pixel to change
-// y:     Y coordinate of pixel to change
-// color: New color of the pixel
+// 	x:     X coordinate of pixel to change
+// 	y:     Y coordinate of pixel to change
+// 	color: New color of the pixel
 func (this *Image) SetPixel(x, y uint, color Color) {
 	C.sfImage_setPixel(this.cptr, C.uint(x), C.uint(y), color.toC())
 }
@@ -196,8 +196,8 @@ func (this *Image) SetPixel(x, y uint, color Color) {
 // coordinates, using out-of-range values will result in
 // an undefined behaviour.
 //
-// x:     X coordinate of pixel to get
-// y:     Y coordinate of pixel to get
+// 	x:     X coordinate of pixel to get
+// 	y:     Y coordinate of pixel to get
 func (this *Image) GetPixel(x, y uint) (color Color) {
 	color.fromC(C.sfImage_getPixel(this.cptr, C.uint(x), C.uint(y)))
 	return

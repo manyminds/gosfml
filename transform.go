@@ -149,8 +149,8 @@ func (this *Transform) RotateWithCenter(angle, centerX, centerY float32) (newTra
 
 // Combine the current transform with a scaling
 //
-// scaleX: Scaling factor on the X axis
-// scaleY: Scaling factor on the Y axis
+// 	scaleX: Scaling factor on the X axis
+// 	scaleY: Scaling factor on the Y axis
 func (this *Transform) Scale(scaleX, scaleY float32) (newTrans *Transform) {
 	C.sfTransform_scale(this.toCPtr(), C.float(scaleX), C.float(scaleY))
 	newTrans = this

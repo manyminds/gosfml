@@ -25,7 +25,7 @@ import "C"
 // the individual volume of each sound / music.
 // The default value for the volume is 100 (maximum).
 //
-// volume: New global volume, in the range [0, 100]
+// 	volume: New global volume, in the range [0, 100]
 func ListenerSetGlobalVolume(volume float32) {
 	C.sfListener_setGlobalVolume(C.float(volume))
 }
@@ -41,7 +41,7 @@ func ListenerGetGlobalVolume() float32 {
 //
 // The default listener's position is (0, 0, 0).
 //
-// position: New position of the listener
+// 	position: New position of the listener
 func ListenerSetPosition(pos Vector3f) {
 	C.sfListener_setPosition(pos.toC())
 }
@@ -59,7 +59,7 @@ func ListenerGetPosition() (pos Vector3f) {
 // doesn't have to be normalized.
 // The default listener's orientation is (0, 0, -1).
 //
-// position: New direction of the listener
+// 	position: New direction of the listener
 func ListenerSetDirection(dir Vector3f) {
 	C.sfListener_setPosition(dir.toC())
 }

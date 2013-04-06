@@ -36,10 +36,10 @@ type RenderWindow struct {
 
 // Construct a new render window
 //
-// mode:            Video mode to use
-// title:           Title of the window
-// style:           Window style
-// contextSettings: Creation settings (pass nil to use default values)
+// 	mode:            Video mode to use
+// 	title:           Title of the window
+// 	style:           Window style
+// 	contextSettings: Creation settings (pass nil to use default values)
 func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *RenderWindow) {
 	//string conversion
 	utf32 := append([]int32(title), 0)
@@ -69,7 +69,7 @@ func (this *RenderWindow) GetSettings() (settings ContextSettings) {
 
 // Change the size of the rendering region of a render window
 //
-// size: New size, in pixels
+// 	size: New size, in pixels
 func (this *RenderWindow) SetSize(size Vector2u) {
 	C.sfRenderWindow_setSize(this.cptr, size.toC())
 }
@@ -84,7 +84,7 @@ func (this *RenderWindow) GetSize() (size Vector2u) {
 //
 // Only works for top-level windows
 //
-// pos: New position, in pixels
+// 	pos: New position, in pixels
 func (this *RenderWindow) SetPosition(pos Vector2i) {
 	C.sfRenderWindow_setPosition(this.cptr, pos.toC())
 }
@@ -113,7 +113,7 @@ func (this *RenderWindow) Destroy() {
 
 // Change the title of a render window
 //
-// title: New title
+// 	title: New title
 func (this *RenderWindow) SetTitle(title string) {
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
@@ -123,9 +123,9 @@ func (this *RenderWindow) SetTitle(title string) {
 
 // Change a render window's icon
 //
-// width:  Icon's width, in pixels
-// height: Icon's height, in pixels
-// pixels: Slice of pixels, format must be RGBA 32 bits
+// 	width:  Icon's width, in pixels
+// 	height: Icon's height, in pixels
+// 	pixels: Slice of pixels, format must be RGBA 32 bits
 func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
 	if len(data) > 0 {
 		C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
@@ -160,14 +160,14 @@ func (this *RenderWindow) WaitEvent() Event {
 
 // Enable / disable vertical synchronization on a render window
 //
-// enabled: true to enable v-sync, false to deactivate
+// 	enabled: true to enable v-sync, false to deactivate
 func (this *RenderWindow) SetVSyncEnabled(enabled bool) {
 	C.sfRenderWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
 }
 
 // Show or hide the mouse cursor on a render window
 //
-// visible: true to show, false to hide
+// 	visible: true to show, false to hide
 func (this *RenderWindow) SetMouseCursorVisible(visible bool) {
 	C.sfRenderWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
 }
@@ -185,14 +185,14 @@ func (this *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
 
 // Show or hide a render window
 //
-// visible: true to show the window, false to hide it
+// 	visible: true to show the window, false to hide it
 func (this *RenderWindow) SetVisible(visible bool) {
 	C.sfRenderWindow_setVisible(this.cptr, goBool2C(visible))
 }
 
 // Activate or deactivate a render window as the current target for rendering
 //
-// active: true to activate, false to deactivate
+// 	active: true to activate, false to deactivate
 //
 // return True if operation was successful, false otherwise
 func (this *RenderWindow) SetActive(active bool) {
@@ -208,7 +208,7 @@ func (this *RenderWindow) SetFramerateLimit(limit uint) {
 
 ///Change the joystick threshold, ie. the value below which no move event will be generated
 //
-// threshold: New threshold, in range [0, 100]
+// 	threshold: New threshold, in range [0, 100]
 func (this *RenderWindow) SetJoystickThreshold(threshold float32) {
 	C.sfRenderWindow_setJoystickThreshold(this.cptr, C.float(threshold))
 }
@@ -220,7 +220,7 @@ func (this *RenderWindow) Display() {
 
 // Clear a render window with the given color
 //
-// color: Fill color
+// 	color: Fill color
 func (this *RenderWindow) Clear(color Color) {
 	C.sfRenderWindow_clear(this.cptr, color.toC())
 }
@@ -237,14 +237,14 @@ func (this *RenderWindow) GetDefaultView() *View {
 
 // Change the current active view of a render window
 //
-// view: Pointer to the new view
+// 	view: Pointer to the new view
 func (this *RenderWindow) SetView(view *View) {
 	C.sfRenderWindow_setView(this.cptr, view.toCPtr())
 }
 
 // Get the viewport of a view applied to this target
 //
-// view: Target view
+// 	view: Target view
 func (this *RenderWindow) GetViewport(view *View) (viewport IntRect) {
 	viewport.fromC(C.sfRenderWindow_getViewport(this.cptr, view.toCPtr()))
 	return
@@ -275,8 +275,8 @@ func (this *RenderWindow) Draw(drawer Drawer, renderStates *RenderStates) {
 // overload of the function if you want to use the current view of the
 // render-window.
 //
-// point: Pixel to convert
-// view:  The view to use for converting the point
+// 	point: Pixel to convert
+// 	view:  The view to use for converting the point
 //
 // return The converted point, in "world" units
 func (this *RenderWindow) MapPixelToCoords(pos Vector2i, view *View) (coords Vector2f) {
@@ -300,8 +300,8 @@ func (this *RenderWindow) MapPixelToCoords(pos Vector2i, view *View) (coords Vec
 // overload of the function if you want to use the current view of the
 // render-window.
 //
-// point Point to convert
-// view The view to use for converting the point
+// 	point Point to convert
+// 	view The view to use for converting the point
 //
 // return The converted point, in target coordinates (pixels)
 func (this *RenderWindow) MapCoordsToPixel(pos Vector2f, view *View) (coords Vector2i) {

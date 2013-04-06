@@ -83,9 +83,9 @@ func (this *Font) Destroy() {
 
 // Retrieve a glyph of the font
 //
-// codePoint     Unicode code point of the character to get
-// characterSize Reference character size
-// bold          Retrieve the bold version or the regular one?
+// 	codePoint:     Unicode code point of the character to get
+// 	characterSize: Reference character size
+// 	bold:          Retrieve the bold version or the regular one?
 //
 // return The glyph corresponding to codePoint and characterSize
 func (this *Font) GetGlyph(codePoint uint, characterSize uint32, bold bool) (glyph Glyph) {
@@ -101,9 +101,9 @@ func (this *Font) GetGlyph(codePoint uint, characterSize uint32, bold bool) (gly
 // closer than other characters. Most of the glyphs pairs have a
 // kerning offset of zero, though.
 //
-// first         Unicode code point of the first character
-// second        Unicode code point of the second character
-// characterSize Reference character size
+// 	first:         Unicode code point of the first character
+// 	second:        Unicode code point of the second character
+// 	characterSize: Reference character size
 //
 // return Kerning value for first and second, in pixels
 func (this *Font) GetKerning(first uint32, second uint32, characterSize uint) int {
@@ -115,7 +115,7 @@ func (this *Font) GetKerning(first uint32, second uint32, characterSize uint) in
 // Line spacing is the vertical offset to apply between two
 // consecutive lines of text.
 //
-// characterSize Reference character size
+// 	characterSize: Reference character size
 //
 // return Line spacing, in pixels
 func (this *Font) GetLineSpacing(characterSize uint) int {
@@ -127,7 +127,7 @@ func (this *Font) GetLineSpacing(characterSize uint) int {
 // The contents of the returned texture changes as more glyphs
 // are requested, thus it is not very relevant.
 //
-// characterSize Reference character size
+// 	characterSize: Reference character size
 //
 // Texture containing the glyphs of the requested size
 func (this *Font) GetTexture(characterSize uint) Texture {

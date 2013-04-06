@@ -39,7 +39,7 @@ type MouseButton int
 
 // Check if a mouse button is pressed
 //
-// button: Button to check
+// 	button: Button to check
 func IsMouseButtonPressed(button MouseButton) bool {
 	return sfBool2Go(C.sfMouse_isButtonPressed(C.sfMouseButton(button)))
 }
@@ -49,8 +49,8 @@ func IsMouseButtonPressed(button MouseButton) bool {
 // This function sets the current position of the mouse
 // cursor relative to the given window, or desktop if nil is passed.
 //
-// position:   New position of the mouse
-// relativeTo: Reference window
+// 	position:   New position of the mouse
+// 	relativeTo: Reference window
 func MouseSetPosition(position Vector2i, relativeTo SystemWindow) {
 	switch relativeTo.(type) {
 	case *RenderWindow:
@@ -66,7 +66,7 @@ func MouseSetPosition(position Vector2i, relativeTo SystemWindow) {
 // This function returns the current position of the mouse
 // cursor relative to the given window, or desktop if nil is passed.
 //
-// relativeTo: Reference window
+// 	relativeTo: Reference window
 func MouseGetPosition(relativeTo SystemWindow) (pos Vector2i) {
 	switch relativeTo.(type) {
 	case *RenderWindow:

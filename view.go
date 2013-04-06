@@ -42,7 +42,7 @@ func NewView() *View {
 
 // Construct a view from a rectangle
 //
-// rect: Rectangle defining the zone to display
+// 	rect: Rectangle defining the zone to display
 func NewViewFromRect(rect FloatRect) *View {
 	view := &View{C.sfView_createFromRect(rect.toC())}
 	runtime.SetFinalizer(view, (*View).Destroy)
@@ -64,14 +64,14 @@ func (this *View) Copy() *View {
 
 // Set the center of a view
 //
-// center: New center
+// 	center: New center
 func (this *View) SetCenter(center Vector2f) {
 	C.sfView_setCenter(this.cptr, center.toC())
 }
 
 // Set the size of a view
 //
-// size: New size of the view
+// 	size: New size of the view
 func (this *View) SetSize(size Vector2f) {
 	C.sfView_setSize(this.cptr, size.toC())
 }
@@ -80,7 +80,7 @@ func (this *View) SetSize(size Vector2f) {
 //
 // The default rotation of a view is 0 degree.
 //
-// rotation: New angle, in degrees
+// 	rotation: New angle, in degrees
 func (this *View) SetRotation(rotation float32) {
 	C.sfView_setRotation(this.cptr, C.float(rotation))
 }
@@ -94,7 +94,7 @@ func (this *View) SetRotation(rotation float32) {
 // be defined by a rect of (0, 0, 0.5, 1).
 // By default, a view has a viewport which covers the entire target.
 //
-// viewport: New viewport rectangle
+// 	viewport: New viewport rectangle
 func (this *View) SetViewport(viewport FloatRect) {
 	C.sfView_setViewport(this.cptr, viewport.toC())
 }
@@ -103,7 +103,7 @@ func (this *View) SetViewport(viewport FloatRect) {
 //
 // Note that this function resets the rotation angle to 0.
 //
-// rect: Rectangle defining the zone to display
+// 	rect: Rectangle defining the zone to display
 func (this *View) Reset(rect FloatRect) {
 	C.sfView_reset(this.cptr, rect.toC())
 }
@@ -138,7 +138,7 @@ func (this *View) Move(offset Vector2f) {
 
 // Rotate a view relatively to its current orientation
 //
-// angle: Angle to rotate, in degrees
+// 	angle: Angle to rotate, in degrees
 func (this *View) Rotate(angle float32) {
 	C.sfView_rotate(this.cptr, C.float(angle))
 }
@@ -149,14 +149,11 @@ func (this *View) Rotate(angle float32) {
 // screen grows or shrinks.
 //
 // factor is a multiplier:
+// 	1 keeps the size unchanged
+// 	> 1 makes the view bigger (objects appear smaller)
+// 	< 1 makes the view smaller (objects appear bigger)
 //
-// 1 keeps the size unchanged
-//
-// > 1 makes the view bigger (objects appear smaller)
-//
-// < 1 makes the view smaller (objects appear bigger)
-//
-// factor: Zoom factor to apply
+// 	factor: Zoom factor to apply
 func (this *View) Zoom(factor float32) {
 	C.sfView_zoom(this.cptr, C.float(factor))
 }

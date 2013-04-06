@@ -57,7 +57,7 @@ func (this *RectangleShape) Destroy() {
 // See sfRectangleShape_move to apply an offset based on the previous position instead.
 // The default position of a circle Shape object is (0, 0).
 //
-// position: New position
+// 	position: New position
 func (this *RectangleShape) SetPosition(pos Vector2f) {
 	C.sfRectangleShape_setPosition(this.cptr, pos.toC())
 }
@@ -68,7 +68,7 @@ func (this *RectangleShape) SetPosition(pos Vector2f) {
 // See sfRectangleShape_scale to add a factor based on the previous scale instead.
 // The default scale of a circle Shape object is (1, 1).
 //
-// scale: New scale factors
+// 	scale: New scale factors
 func (this *RectangleShape) SetScale(scale Vector2f) {
 	C.sfRectangleShape_setScale(this.cptr, scale.toC())
 }
@@ -82,7 +82,7 @@ func (this *RectangleShape) SetScale(scale Vector2f) {
 // transformations (position, scale, rotation).
 // The default origin of a circle Shape object is (0, 0).
 //
-// origin: New origin
+// 	origin: New origin
 func (this *RectangleShape) SetOrigin(orig Vector2f) {
 	C.sfRectangleShape_setOrigin(this.cptr, orig.toC())
 }
@@ -93,7 +93,7 @@ func (this *RectangleShape) SetOrigin(orig Vector2f) {
 // See sfRectangleShape_rotate to add an angle based on the previous rotation instead.
 // The default rotation of a circle Shape object is 0.
 //
-// angle: New rotation, in degrees
+// 	angle: New rotation, in degrees
 func (this *RectangleShape) SetRotation(rot float32) {
 	C.sfRectangleShape_setRotation(this.cptr, C.float(rot))
 }
@@ -154,8 +154,8 @@ func (this *RectangleShape) Rotate(angle float32) {
 // the shape is automatically adjusted to the size of the new
 // texture. If it is false, the texture rect is left unchanged.
 //
-// texture:   New texture
-// resetRect: Should the texture rect be reset to the size of the new texture?
+// 	texture:   New texture
+// 	resetRect: Should the texture rect be reset to the size of the new texture?
 func (this *RectangleShape) SetTexture(texture *Texture, resetRect bool) {
 	C.sfRectangleShape_setTexture(this.cptr, texture.cptr, goBool2C(resetRect))
 	this.texture = texture
@@ -167,7 +167,7 @@ func (this *RectangleShape) SetTexture(texture *Texture, resetRect bool) {
 // the whole texture, but rather a part of it.
 // By default, the texture rect covers the entire texture.
 //
-// rect:  Rectangle defining the region of the texture to display
+// 	rect:  Rectangle defining the region of the texture to display
 func (this *RectangleShape) SetTextureRect(rect IntRect) {
 	C.sfRectangleShape_setTextureRect(this.cptr, rect.toC())
 }
@@ -194,7 +194,7 @@ func (this *RectangleShape) GetTextureRect() (rect IntRect) {
 // the shape transparent, and have the outline alone.
 // By default, the shape's fill color is opaque white.
 //
-// color: New color of the shape
+// 	color: New color of the shape
 func (this *RectangleShape) SetFillColor(color Color) {
 	C.sfRectangleShape_setFillColor(this.cptr, color.toC())
 }
@@ -204,7 +204,7 @@ func (this *RectangleShape) SetFillColor(color Color) {
 // You can use sfTransparent to disable the outline.
 // By default, the shape's outline color is opaque white.
 //
-// color: New outline color of the shape
+// 	color: New outline color of the shape
 func (this *RectangleShape) SetOutlineColor(color Color) {
 	C.sfRectangleShape_setOutlineColor(this.cptr, color.toC())
 }
@@ -215,7 +215,7 @@ func (this *RectangleShape) SetOutlineColor(color Color) {
 // the outline.
 // By default, the outline thickness is 0.
 //
-// thickness: New outline thickness
+// 	thickness: New outline thickness
 func (this *RectangleShape) SetOutlineThickness(thickness float32) {
 	C.sfRectangleShape_setOutlineThickness(this.cptr, C.float(thickness))
 }
@@ -252,7 +252,7 @@ func (this *RectangleShape) GetInverseTransform() (transform Transform) {
 // the shape transparent, and have the outline alone.
 // By default, the shape's fill color is opaque white.
 //
-// color: New color of the shape
+// 	color: New color of the shape
 func (this *RectangleShape) GetFillColor() (color Color) {
 	color.fromC(C.sfRectangleShape_getFillColor(this.cptr))
 	return
@@ -310,7 +310,7 @@ func (this *RectangleShape) GetGlobalBounds() (rect FloatRect) {
 
 //Draws a RectangleShape on a render target
 //
-//renderStates: can be nil to use the default render states
+//	renderStates: can be nil to use the default render states
 func (this *RectangleShape) Draw(target RenderTarget, renderStates *RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:

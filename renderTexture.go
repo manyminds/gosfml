@@ -34,9 +34,9 @@ type RenderTexture struct {
 
 // Construct a new render texture
 //
-// width:       Width of the render texture
-// height:      Height of the render texture
-// depthBuffer: Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
+// 	width:       Width of the render texture
+// 	height:      Height of the render texture
+// 	depthBuffer: Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
 func NewRenderTexture(width, height uint, depthbuffer bool) *RenderTexture {
 	renderTexture := &RenderTexture{C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer))}
 	runtime.SetFinalizer(renderTexture, (*RenderTexture).Destroy)
@@ -58,7 +58,7 @@ func (this *RenderTexture) GetSize() (size Vector2u) {
 
 // Activate or deactivate a render texture as the current target for rendering
 //
-// active: sfTrue to activate, sfFalse to deactivate
+// 	active: sfTrue to activate, sfFalse to deactivate
 func (this *RenderTexture) SetActive(active bool) {
 	C.sfRenderTexture_setActive(this.cptr, goBool2C(active))
 }
@@ -70,14 +70,14 @@ func (this *RenderTexture) Display() {
 
 // Clear the rendertexture with the given color
 //
-// color: Fill color
+// 	color: Fill color
 func (this *RenderTexture) Clear(color Color) {
 	C.sfRenderTexture_clear(this.cptr, color.toC())
 }
 
 // Change the current active view of a render texture
 //
-// view: Pointer to the new view
+// 	view: Pointer to the new view
 func (this *RenderTexture) SetView(view *View) {
 	C.sfRenderTexture_setView(this.cptr, view.toCPtr())
 }
@@ -94,7 +94,7 @@ func (this *RenderTexture) GetDefaultView() *View {
 
 // Get the viewport of a view applied to this target
 //
-// view: Target view
+// 	view: Target view
 func (this *RenderTexture) GetViewport(view *View) (viewport IntRect) {
 	viewport.fromC(C.sfRenderTexture_getViewport(this.cptr, view.toCPtr()))
 	return
@@ -117,8 +117,8 @@ func (this *RenderTexture) GetViewport(view *View) (viewport IntRect) {
 // overload of the function if you want to use the current view of the
 // render-texture.
 //
-// point: Pixel to convert
-// view:  The view to use for converting the point
+// 	point: Pixel to convert
+// 	view:  The view to use for converting the point
 func (this *RenderTexture) MapPixelToCoords(pos Vector2i, view *View) (coords Vector2f) {
 	coords.fromC(C.sfRenderTexture_mapPixelToCoords(this.cptr, pos.toC(), view.toCPtr()))
 	return
@@ -139,9 +139,9 @@ func (this *RenderTexture) MapPixelToCoords(pos Vector2i, view *View) (coords Ve
 // This version uses a custom view for calculations, see the other
 // overload of the function if you want to use the current view of the
 // render-texture.
-//t
-// point: Point to convert
-// view:  The view to use for converting the point
+//
+// 	point: Point to convert
+// 	view:  The view to use for converting the point
 func (this *RenderTexture) MapCoordsToPixel(pos Vector2f, view *View) (coords Vector2i) {
 	coords.fromC(C.sfRenderTexture_mapCoordsToPixel(this.cptr, pos.toC(), view.toCPtr()))
 	return
@@ -200,7 +200,7 @@ func (this *RenderTexture) GetTexture() *Texture {
 
 // Enable or disable the smooth filter on a render texture
 //
-// smooth: true to enable smoothing, false to disable it
+// 	smooth: true to enable smoothing, false to disable it
 func (this *RenderTexture) SetSmooth(smooth bool) {
 	C.sfRenderTexture_setSmooth(this.cptr, goBool2C(smooth))
 }

@@ -59,7 +59,7 @@ func NewSoundBufferFromFile(file string) *SoundBuffer {
 // ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
-// data: Slice of file data
+// 	data: Slice of file data
 func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
 	if len(data) > 0 {
 		buffer := &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
@@ -88,7 +88,7 @@ func (this *SoundBuffer) Destroy() {
 // ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
-// file: Path of the sound file to write
+// 	file: Path of the sound file to write
 func (this *SoundBuffer) SaveToFile(file string) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))

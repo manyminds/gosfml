@@ -62,8 +62,8 @@ func JoystickGetButtonCount(joystick uint) uint {
 //
 // If the joystick is not connected, this function returns false.
 //
-// joystick: Index of the joystick
-// axis:     Axis to check
+// 	joystick: Index of the joystick
+// 	axis:     Axis to check
 func JoystickHasAxis(joystick uint, axis JoystickAxis) bool {
 	return sfBool2Go(C.sfJoystick_hasAxis(C.uint(joystick), C.sfJoystickAxis(axis)))
 }
@@ -72,8 +72,8 @@ func JoystickHasAxis(joystick uint, axis JoystickAxis) bool {
 //
 // If the joystick is not connected, this function returns false.
 //
-// joystick: Index of the joystick
-// button:   Button to check
+// 	joystick: Index of the joystick
+// 	button:   Button to check
 func JoystickIsButtonPressed(joystick uint, button uint) bool {
 	return sfBool2Go(C.sfJoystick_isButtonPressed(C.uint(joystick), C.uint(button)))
 }
@@ -82,8 +82,8 @@ func JoystickIsButtonPressed(joystick uint, button uint) bool {
 //
 // If the joystick is not connected, this function returns 0.
 //
-// joystick Index of the joystick
-// axis     Axis to check
+// 	joystick: Index of the joystick
+// 	axis:     Axis to check
 //
 // return Current position of the axis, in range [-100 .. 100]
 func JoystickGetAxisPosition(joystick uint, axis JoystickAxis) float32 {
