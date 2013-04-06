@@ -167,11 +167,18 @@ func (this *RenderWindow) SetVSyncEnabled(enabled bool) {
 
 // Show or hide the mouse cursor on a render window
 //
-// show: true to show, false to hide
+// visible: true to show, false to hide
 func (this *RenderWindow) SetMouseCursorVisible(visible bool) {
 	C.sfRenderWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
 }
 
+// Enable or disable automatic key-repeat
+//
+// If key repeat is enabled, you will receive repeated
+// KeyPress events while keeping a key pressed. If it is disabled,
+// you will only get a single event when the key is pressed.
+//
+// Key repeat is enabled by default.
 func (this *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
 	C.sfRenderWindow_setKeyRepeatEnabled(this.cptr, goBool2C(enabled))
 }

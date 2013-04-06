@@ -40,6 +40,11 @@ type SoundBuffer struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Create a new sound buffer and load it from a file
+//
+// Here is a complete list of all the supported audio formats:
+// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 func NewSoundBufferFromFile(file string) *SoundBuffer {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
@@ -48,6 +53,13 @@ func NewSoundBufferFromFile(file string) *SoundBuffer {
 	return buffer
 }
 
+// Create a new sound buffer and load it from a file in memory
+//
+// Here is a complete list of all the supported audio formats:
+// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+//
+// data: Slice of file data
 func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
 	if len(data) > 0 {
 		buffer := &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
@@ -57,17 +69,26 @@ func NewSoundBufferFromMemory(data []byte) (*SoundBuffer, error) {
 	return nil, errors.New("NewSoundBufferFromMemory: no data")
 }
 
+// Create a new sound buffer by copying an existing one
 func (this *SoundBuffer) Copy() *SoundBuffer {
 	buffer := &SoundBuffer{C.sfSoundBuffer_copy(this.cptr)}
 	runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
 	return buffer
 }
 
+// Destroy a sound buffer
 func (this *SoundBuffer) Destroy() {
 	C.sfSoundBuffer_destroy(this.cptr)
 	this.cptr = nil
 }
 
+// Save a sound buffer to an audio file
+//
+// Here is a complete list of all the supported audio formats:
+// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+//
+// file: Path of the sound file to write
 func (this *SoundBuffer) SaveToFile(file string) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
@@ -75,18 +96,32 @@ func (this *SoundBuffer) SaveToFile(file string) {
 	C.sfSoundBuffer_saveToFile(this.cptr, cFile)
 }
 
+// Get the number of samples stored in a sound buffer
+//
+// The array of samples can be accessed with the
+// SoundBuffer.GetSamples function.
 func (this *SoundBuffer) GetSampleCount() uint {
 	return uint(C.sfSoundBuffer_getSampleCount(this.cptr))
 }
 
+// Get the sample rate of a sound buffer
+//
+// The sample rate is the number of samples played per second.
+// The higher, the better the quality (for example, 44100
+// samples/s is CD quality).
 func (this *SoundBuffer) GetSampleRate() uint {
 	return uint(C.sfSoundBuffer_getSampleRate(this.cptr))
 }
 
+// Get the number of channels used by a sound buffer
+//
+// If the sound is mono then the number of channels will
+// be 1, 2 for stereo, etc.
 func (this *SoundBuffer) GetChannelCount() uint {
 	return uint(C.sfSoundBuffer_getChannelCount(this.cptr))
 }
 
+// Get the total duration of a sound buffer
 func (this *SoundBuffer) GetDuration() time.Duration {
 	return time.Duration(C.sfSoundBuffer_getDuration(this.cptr).microseconds) * time.Microsecond
 }
