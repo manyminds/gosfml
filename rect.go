@@ -40,19 +40,35 @@ type IntRect struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Check if a point is inside a rectangle's area
+//
+// 	x: X coordinate of the point to test
+// 	y: Y coordinate of the point to test
 func (this FloatRect) Contains(x, y float32) bool {
 	return C.sfFloatRect_contains(this.toCPtr(), C.float(x), C.float(y)) == 1
 }
 
+// Check if a point is inside a rectangle's area
+//
+// 	x: X coordinate of the point to test
+// 	y: Y coordinate of the point to test
 func (this IntRect) Contains(x, y int) bool {
 	return C.sfIntRect_contains(this.toCPtr(), C.int(x), C.int(y)) == 1
 }
 
+// Check intersection between two rectangles
+//
+// 	other: Rectangle to test against
+// 	intersection: Rectangle to be filled with overlapping rect (can be nil)
 func (this FloatRect) Intersects(other FloatRect) (test bool, intersection *FloatRect) {
 	test = C.sfFloatRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return
 }
 
+// Check intersection between two rectangles
+//
+// 	other: Rectangle to test against
+// 	intersection: Rectangle to be filled with overlapping rect (can be nil)
 func (this IntRect) Intersects(other IntRect) (test bool, intersection *IntRect) {
 	test = C.sfIntRect_intersects(this.toCPtr(), other.toCPtr(), intersection.toCPtr()) == 1
 	return

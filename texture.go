@@ -34,6 +34,9 @@ type Texture struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Create a new texture from an image
+//
+// 	image: Image to upload to the texture
 func NewTextureFromFile(file string) (texture *Texture, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
@@ -47,6 +50,10 @@ func NewTextureFromFile(file string) (texture *Texture, err error) {
 	return
 }
 
+// Create a new texture from a file in memory
+//
+// 	data: Slice containing the file data
+// 	area: Area of the source image to load (NULL to load the entire image)
 func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err error) {
 	if len(data) > 0 {
 		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
@@ -56,6 +63,10 @@ func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err err
 	return
 }
 
+// Create a new texture from an image
+//
+// 	image: Image to upload to the texture
+// 	area:  Area of the source image to load (NULL to load the entire image)
 func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err error) {
 	texture = &Texture{C.sfTexture_createFromImage(image.toCPtr(), area.toCPtr())}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
@@ -67,50 +78,87 @@ func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err err
 	return
 }
 
+// Copy an existing texture
 func (this *Texture) Copy() *Texture {
 	texture := &Texture{C.sfTexture_copy(this.cptr)}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 	return texture
 }
 
+// Destroy an existing texture
 func (this *Texture) Destroy() {
 	C.sfTexture_destroy(this.cptr)
 	this.cptr = nil
 }
 
+// Return the size of the texture
 func (this *Texture) GetSize() (size Vector2u) {
 	size.fromC(C.sfTexture_getSize(this.cptr))
 	return
 }
 
+// Update a texture from the contents of a window
+//
+// 	window:  Window to copy to the texture
+// 	x:       X offset in the texture where to copy the source pixels
+// 	y:       Y offset in the texture where to copy the source pixels
 func (this *Texture) UpdateFromWindow(window *Window, x, y uint) {
 	C.sfTexture_updateFromWindow(this.cptr, window.cptr, C.uint(x), C.uint(y))
 }
 
+// Update a texture from the contents of a render-window
+//
+// 	renderWindow: Render-window to copy to the texture
+// 	x:            X offset in the texture where to copy the source pixels
+// 	y:            Y offset in the texture where to copy the source pixels
 func (this *Texture) UpdateFromRenderWindow(window *RenderWindow, x, y uint) {
 	C.sfTexture_updateFromRenderWindow(this.cptr, window.cptr, C.uint(x), C.uint(y))
 }
 
+// Update a texture from an image
+//
+// 	image:   Image to copy to the texture
+// 	x:       X offset in the texture where to copy the source pixels
+// 	y:       Y offset in the texture where to copy the source pixels
 func (this *Texture) UpdateFromImage(image *Image, x, y uint) {
 	C.sfTexture_updateFromImage(this.cptr, image.toCPtr(), C.uint(x), C.uint(y))
 }
 
+// Enable or disable the smooth filter on a texture
 func (this *Texture) SetSmooth(smooth bool) {
 	C.sfTexture_setSmooth(this.cptr, goBool2C(smooth))
 }
 
+// Tell whether the smooth filter is enabled or not for a texture
 func (this *Texture) IsSmooth() bool {
 	return sfBool2Go(C.sfTexture_isSmooth(this.cptr))
 }
 
+// Enable or disable repeating for a texture
+//
+// Repeating is involved when using texture coordinates
+// outside the texture rectangle [0, 0, width, height].
+// In this case, if repeat mode is enabled, the whole texture
+// will be repeated as many times as needed to reach the
+// coordinate (for example, if the X texture coordinate is
+// 3 * width, the texture will be repeated 3 times).
+// If repeat mode is disabled, the "extra space" will instead
+// be filled with border pixels.
+// Warning: on very old graphics cards, white pixels may appear
+// when the texture is repeated. With such cards, repeat mode
+// can be used reliably only if the texture has power-of-two
+// dimensions (such as 256x128).
+// Repeating is disabled by default.
 func (this *Texture) SetRepeated(repeated bool) {
 	C.sfTexture_setRepeated(this.cptr, goBool2C(repeated))
 }
 
+// Tell whether a texture is repeated or not
 func (this *Texture) IsRepeated() bool {
 	return sfBool2Go(C.sfTexture_isRepeated(this.cptr))
 }
 
+// Get the maximum texture size allowed
 func TextureGetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
