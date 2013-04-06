@@ -27,7 +27,7 @@ type Transformable struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewTransformable(tex *Texture) *Transformable {
+func NewTransformable() *Transformable {
 	transformable := &Transformable{C.sfTransformable_create()}
 	runtime.SetFinalizer(transformable, (*Transformable).Destroy)
 
