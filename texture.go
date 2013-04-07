@@ -35,10 +35,10 @@ type Texture struct {
 // Create a new texture from an image
 //
 // 	image: Image to upload to the texture
-func NewTextureFromFile(file string) (texture *Texture, err error) {
+func NewTextureFromFile(file string, area *IntRect) (texture *Texture, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	texture = &Texture{C.sfTexture_createFromFile(cFile, nil)}
+	texture = &Texture{C.sfTexture_createFromFile(cFile, area.toCPtr())}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 
 	if texture.cptr == nil {
@@ -51,7 +51,7 @@ func NewTextureFromFile(file string) (texture *Texture, err error) {
 // Create a new texture from a file in memory
 //
 // 	data: Slice containing the file data
-// 	area: Area of the source image to load (NULL to load the entire image)
+// 	area: Area of the source image to load (nil to load the entire image)
 func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err error) {
 	if len(data) > 0 {
 		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
