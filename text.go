@@ -26,10 +26,10 @@ import (
 /////////////////////////////////////
 
 const (
-	TextRegular    = 0      ///< Regular characters, no style
-	TextBold       = 1 << 0 ///< Characters are bold
-	TextItalic     = 1 << 1 ///< Characters are in italic
-	TextUnderlined = 1 << 2 ///< Characters are underlined
+	TextRegular    = C.sfTextRegular    ///< Regular characters, no style
+	TextBold       = C.sfTextBold       ///< Characters are bold
+	TextItalic     = C.sfTextItalic     ///< Characters are in italic
+	TextUnderlined = C.sfTextUnderlined ///< Characters are underlined
 )
 
 type TextStyle uint32

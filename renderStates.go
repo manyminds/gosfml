@@ -19,10 +19,10 @@ import "unsafe"
 /////////////////////////////////////
 
 const (
-	Blend_Alpha    = iota ///< Pixel = Src * a + Dest * (1 - a)
-	Blend_Add             ///< Pixel = Src + Dest
-	Blend_Multiply        ///< Pixel = Src * Dest
-	Blend_None            ///< No blending
+	BlendAlpha    = iota ///< Pixel = Src * a + Dest * (1 - a)
+	BlendAdd             ///< Pixel = Src + Dest
+	BlendMultiply        ///< Pixel = Src * Dest
+	BlendNone            ///< No blending
 )
 
 /////////////////////////////////////
@@ -40,7 +40,7 @@ type RenderStates struct {
 /////////////////////////////////////
 
 func RenderStatesDefault() RenderStates {
-	return MakeRenderStates(Blend_Alpha, TransformIdentity(), nil, nil)
+	return MakeRenderStates(BlendAlpha, TransformIdentity(), nil, nil)
 }
 
 /////////////////////////////////////

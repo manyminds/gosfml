@@ -87,7 +87,7 @@ func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 // 	sampleRate:   Sample rate (number of samples to play per second)
 func NewSoundBufferFromSamples(samples []int16, sampleCount, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
 	if len(samples) > 0 {
-		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])),C.size_t(sampleCount),C.uint(channelCount),C.uint(sampleRate))}
+		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(sampleCount), C.uint(channelCount), C.uint(sampleRate))}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
 
 		if buffer.cptr == nil {

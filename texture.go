@@ -37,7 +37,7 @@ type Texture struct {
 // 	width:  Texture width
 // 	height: Texture height
 func NewTexture(width, height uint) (texture *Texture, err error) {
-	texture = &Texture{C.sfTexture_create(C.uint(width),C.uint(height))}
+	texture = &Texture{C.sfTexture_create(C.uint(width), C.uint(height))}
 	runtime.SetFinalizer(texture, (*Texture).Destroy)
 
 	if texture.cptr == nil {
