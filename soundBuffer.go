@@ -67,7 +67,7 @@ func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 	if len(data) > 0 {
 		buffer = &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
-		
+
 		if buffer.cptr == nil {
 			err = errors.New("NewSoundBufferFromMemory: Cannot create SoundBuffer")
 		}

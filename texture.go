@@ -161,6 +161,17 @@ func TextureGetMaximumSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
 
+// Bind a texture for rendering
+//
+// This function is not part of the graphics API, it mustn't be
+// used when drawing SFML entities. It must be used only if you
+// mix sfTexture with OpenGL code.
+//
+// 	texture: Pointer to the texture to bind, can be nil to use no texture
+func BindTexture(texture *Texture) {
+	C.sfTexture_bind(texture.toCPtr())
+}
+
 /////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////

@@ -212,8 +212,8 @@ func (this *Shader) SetFloatParameter(name string, data ...float32) {
 // mix sfShader with OpenGL code.
 //
 // 	shader: Shader to bind, can be nil to use no shader
-func (this *Shader) Bind() {
-	C.sfShader_bind(this.toCPtr())
+func BindShader(shader *Shader) {
+	C.sfShader_bind(shader.toCPtr())
 }
 
 // Tell whether or not the system supports shaders
