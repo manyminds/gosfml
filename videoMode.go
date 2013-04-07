@@ -30,8 +30,9 @@ type VideoMode struct {
 /////////////////////////////////////
 
 // Get the current desktop video mode
-func (this *VideoMode) SetAsDesktopVideoMode() {
-	this.fromC(C.sfVideoMode_getDesktopMode())
+func GetDesktopVideoMode() (videoMode VideoMode) {
+	videoMode.fromC(C.sfVideoMode_getDesktopMode())
+	return
 }
 
 // Tell whether or not a video mode is valid
@@ -42,7 +43,7 @@ func (this *VideoMode) SetAsDesktopVideoMode() {
 //
 // return true if the video mode is valid for fullscreen mode
 func (this *VideoMode) IsValid() bool {
-	return C.sfVideoMode_isValid(this.toC()) == 1
+	return sfBool2Go(C.sfVideoMode_isValid(this.toC()))
 }
 
 // Retrieve all the video modes supported in fullscreen mode
@@ -56,13 +57,13 @@ func (this *VideoMode) IsValid() bool {
 // width, height and bits-per-pixel).
 //
 // Slice containing all the supported fullscreen modes
-func (this *VideoMode) GetFullscreenModes() []VideoMode {
+func GetFullscreenModes() []VideoMode {
 	c := C.size_t(0)
-	cVideoModes := C.sfVideoMode_getFullscreenModes(&c)
+	cVideoModesPtr := C.sfVideoMode_getFullscreenModes(&c)
 
 	modes := make([]VideoMode, c)
 	for i := uint(0); i < uint(c); i++ {
-		modes[i].fromC(C.videoModeAt(C.size_t(i), cVideoModes))
+		modes[i].fromC(C.videoModeAt(C.size_t(i), cVideoModesPtr))
 	}
 	return modes
 }
