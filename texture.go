@@ -138,6 +138,19 @@ func (this *Texture) UpdateFromImage(image *Image, x, y uint) {
 	C.sfTexture_updateFromImage(this.cptr, image.toCPtr(), C.uint(x), C.uint(y))
 }
 
+// Update a texture from an array of pixels
+//
+// 	pixels:  Array of pixels to copy to the texture
+// 	width:   Width of the pixel region contained in pixels
+// 	height:  Height of the pixel region contained in pixels
+// 	x:       X offset in the texture where to copy the source pixels
+// 	y:       Y offset in the texture where to copy the source pixels
+func (this *Texture) UpdateFromPixels(pixels []byte, width, height, x, y uint) {
+	if len(pixels) != 0 {
+		C.sfTexture_updateFromPixels(this.cptr, (*C.sfUint8)(unsafe.Pointer(&pixels[0])), C.uint(width), C.uint(height), C.uint(x), C.uint(y))
+	}
+}
+
 // Enable or disable the smooth filter on a texture
 func (this *Texture) SetSmooth(smooth bool) {
 	C.sfTexture_setSmooth(this.cptr, goBool2C(smooth))
