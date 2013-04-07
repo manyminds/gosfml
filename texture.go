@@ -32,9 +32,25 @@ type Texture struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Create a new texture
+//
+// 	width:  Texture width
+// 	height: Texture height
+func NewTexture(width, height uint) (texture *Texture, err error) {
+	texture = &Texture{C.sfTexture_create(C.uint(width),C.uint(height))}
+	runtime.SetFinalizer(texture, (*Texture).Destroy)
+
+	if texture.cptr == nil {
+		err = errors.New("NewTexture: Cannot create texture")
+	}
+
+	return
+}
+
 // Create a new texture from an image
 //
-// 	image: Image to upload to the texture
+// 	file: Path of the image file to load
+// 	area: Area of the source image to load (nil to load the entire image)
 func NewTextureFromFile(file string, area *IntRect) (texture *Texture, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
