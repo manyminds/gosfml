@@ -186,7 +186,7 @@ func (this *Shader) SetCurrentTextureParameter(name string) {
 // Change a n-components vector parameter of a shader
 //
 // name is the name of the variable to change in the shader.
-// The corresponding parameter in the shader must be a nx1 vector.
+// The corresponding parameter in the shader must be a n x 1 vector with n = 1 ... 4.
 func (this *Shader) SetFloatParameter(name string, data ...float32) {
 	cname := C.CString(name)
 	defer C.free(unsafe.Pointer(cname))
@@ -221,7 +221,7 @@ func BindShader(shader *Shader) {
 // This function should always be called before using
 // the shader features. If it returns false, then
 // any attempt to use shaders will fail.
-func ShaderAvailable() bool {
+func ShadersAvailable() bool {
 	return sfBool2Go(C.sfShader_isAvailable())
 }
 
