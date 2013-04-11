@@ -51,6 +51,7 @@ func TransformIdentity() Transform { return Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
 /////////////////////////////////////
 
 type Transform [9]float32
+type Matrix [16]float32 // 4x4 matrix
 
 /////////////////////////////////////
 ///		FUNCS
@@ -61,7 +62,7 @@ type Transform [9]float32
 // This function fills an array of 16 floats with the transform
 // converted as a 4x4 matrix, which is directly compatible with
 // OpenGL functions.
-func (this *Transform) GetMatrix() (matrix [14]float32) {
+func (this *Transform) GetMatrix() (matrix Matrix) {
 	C.sfTransform_getMatrix(this.toCPtr(), (*C.float)(unsafe.Pointer(&matrix)))
 	return
 }
@@ -70,10 +71,8 @@ func (this *Transform) GetMatrix() (matrix [14]float32) {
 //
 // If the inverse cannot be computed, a new identity transform
 // is returned.
-func (this *Transform) GetInverse() (inverse Transform, exists bool) {
-	inv := C.sfTransform_getInverse(this.toCPtr())
-	inverse.fromC(inv)
-	exists = (inverse != TransformIdentity())
+func (this *Transform) GetInverse() (inverse Transform) {
+	inverse.fromC(C.sfTransform_getInverse(this.toCPtr()))
 	return
 }
 
@@ -104,29 +103,26 @@ func (this *Transform) TransformRect(rect FloatRect) (tansRect FloatRect) {
 // Combine two transforms
 //
 // Mathematically, it is equivalent to a matrix multiplication.
-func (this *Transform) Combine(other *Transform) (newTrans *Transform) {
+func (this *Transform) Combine(other *Transform) *Transform {
 	C.sfTransform_combine(this.toCPtr(), other.toCPtr())
-	newTrans = this
-	return
+	return this
 }
 
 // Combine a transform with a translation
 //
 // 	x: Offset to apply on X axis
 // 	y: Offset to apply on Y axis
-func (this *Transform) Translate(x, y float32) (newTrans *Transform) {
+func (this *Transform) Translate(x, y float32) *Transform {
 	C.sfTransform_translate(this.toCPtr(), C.float(x), C.float(y))
-	newTrans = this
-	return
+	return this
 }
 
 // Combine the current transform with a rotation
 //
 // 	angle: Rotation angle, in degrees
-func (this *Transform) Rotate(angle float32) (newTrans *Transform) {
+func (this *Transform) Rotate(angle float32) *Transform {
 	C.sfTransform_rotate(this.toCPtr(), C.float(angle))
-	newTrans = this
-	return
+	return this
 }
 
 // Combine the current transform with a rotation
@@ -139,20 +135,34 @@ func (this *Transform) Rotate(angle float32) (newTrans *Transform) {
 // 	angle:     Rotation angle, in degrees
 // 	centerX:   X coordinate of the center of rotation
 // 	centerY:   Y coordinate of the center of rotation
-func (this *Transform) RotateWithCenter(angle, centerX, centerY float32) (newTrans *Transform) {
+func (this *Transform) RotateWithCenter(angle, centerX, centerY float32) *Transform {
 	C.sfTransform_rotateWithCenter(this.toCPtr(), C.float(angle), C.float(centerX), C.float(centerY))
-	newTrans = this
-	return
+	return this
 }
 
 // Combine the current transform with a scaling
 //
 // 	scaleX: Scaling factor on the X axis
 // 	scaleY: Scaling factor on the Y axis
-func (this *Transform) Scale(scaleX, scaleY float32) (newTrans *Transform) {
+func (this *Transform) Scale(scaleX, scaleY float32) *Transform {
 	C.sfTransform_scale(this.toCPtr(), C.float(scaleX), C.float(scaleY))
-	newTrans = this
-	return
+	return this
+}
+
+// Combine the current transform with a scaling
+//
+// The center of scaling is provided for convenience as a second
+// argument, so that you can build scaling around arbitrary points
+// more easily (and efficiently) than the usual
+// [translate(-center), scale(factors), translate(center)]
+//
+// 	scaleX:    Scaling factor on X axis
+// 	scaleY:    Scaling factor on Y axis
+// 	centerX:   X coordinate of the center of scaling
+// 	centerY:   Y coordinate of the center of scaling
+func (this *Transform) ScaleWithCenter(scaleX, scaleY, centerX, centerY float32) *Transform {
+	C.sfTransform_scaleWithCenter(this.toCPtr(), C.float(scaleX), C.float(scaleY), C.float(centerX), C.float(centerY))
+	return this
 }
 
 /////////////////////////////////////
