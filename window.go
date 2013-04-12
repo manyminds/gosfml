@@ -25,12 +25,12 @@ import (
 /////////////////////////////////////
 
 const (
-	StyleNone       = 0                                        ///< No border / title bar (this flag and all others are mutually exclusive)
-	StyleTitlebar   = 1 << 0                                   ///< Title bar + fixed border
-	StyleResize     = 1 << 1                                   ///< Titlebar + resizable border + maximize button
-	StyleClose      = 1 << 2                                   ///< Titlebar + close button
-	StyleFullscreen = 1 << 3                                   ///< Fullscreen mode (this flag and all others are mutually exclusive)
-	StyleDefault    = StyleTitlebar | StyleResize | StyleClose ///< Default window style
+	StyleNone       = C.sfNone         ///< No border / title bar (this flag and all others are mutually exclusive)
+	StyleTitlebar   = C.sfTitlebar     ///< Title bar + fixed border
+	StyleResize     = C.sfResize       ///< Titlebar + resizable border + maximize button
+	StyleClose      = C.sfClose        ///< Titlebar + close button
+	StyleFullscreen = C.sfFullscreen   ///< Fullscreen mode (this flag and all others are mutually exclusive)
+	StyleDefault    = C.sfDefaultStyle ///< Default window style
 )
 
 /////////////////////////////////////
