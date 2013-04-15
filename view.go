@@ -166,3 +166,9 @@ func (this *View) toCPtr() *C.sfView {
 	}
 	return nil
 }
+
+func newViewFromPtr(cptr *C.sfView) *View {
+	view := &View{C.sfView_copy(cptr)}
+	runtime.SetFinalizer(view, (*View).Destroy)
+	return view
+}

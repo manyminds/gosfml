@@ -26,6 +26,7 @@ import (
 
 type RenderWindow struct {
 	cptr *C.sfRenderWindow
+	view *View
 }
 
 /////////////////////////////////////
@@ -47,7 +48,11 @@ func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettin
 	defer C.free(unsafe.Pointer(cs))
 
 	//create the window
-	window = &RenderWindow{C.sfRenderWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
+	window = &RenderWindow{cptr: C.sfRenderWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
+
+	//create a copy of current view
+	view := newViewFromPtr(C.sfRenderWindow_getView(window.cptr))
+	window.SetView(view)
 
 	//GC cleanup
 	runtime.SetFinalizer(window, (*RenderWindow).Destroy)
@@ -224,18 +229,19 @@ func (this *RenderWindow) Clear(color Color) {
 
 // Get the current active view of a render window
 func (this *RenderWindow) GetView() *View {
-	return &View{C.sfRenderWindow_getView(this.cptr)}
+	return this.view
 }
 
 // Get the default view of a render window
 func (this *RenderWindow) GetDefaultView() *View {
-	return &View{C.sfRenderWindow_getDefaultView(this.cptr)}
+	return newViewFromPtr(C.sfRenderWindow_getDefaultView(this.cptr))
 }
 
 // Change the current active view of a render window
 //
 // 	view: Pointer to the new view
 func (this *RenderWindow) SetView(view *View) {
+	this.view = view
 	C.sfRenderWindow_setView(this.cptr, view.toCPtr())
 }
 
