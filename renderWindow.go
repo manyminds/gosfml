@@ -51,8 +51,7 @@ func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettin
 	window = &RenderWindow{cptr: C.sfRenderWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
 
 	//create a copy of current view
-	view := newViewFromPtr(C.sfRenderWindow_getView(window.cptr))
-	window.SetView(view)
+	window.SetView(newViewFromPtr(C.sfRenderWindow_getView(window.cptr)))
 
 	//GC cleanup
 	runtime.SetFinalizer(window, (*RenderWindow).Destroy)

@@ -24,6 +24,7 @@ import (
 
 type RenderTexture struct {
 	cptr *C.sfRenderTexture
+	view *View
 }
 
 /////////////////////////////////////
@@ -36,7 +37,13 @@ type RenderTexture struct {
 // 	height:      Height of the render texture
 // 	depthBuffer: Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
 func NewRenderTexture(width, height uint, depthbuffer bool) *RenderTexture {
-	renderTexture := &RenderTexture{C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer))}
+	//create the render texture
+	renderTexture := &RenderTexture{cptr: C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer))}
+
+	//view
+	renderTexture.SetView(newViewFromPtr(C.sfRenderTexture_getView(renderTexture.cptr)))
+
+	//GC
 	runtime.SetFinalizer(renderTexture, (*RenderTexture).Destroy)
 
 	return renderTexture
@@ -77,17 +84,18 @@ func (this *RenderTexture) Clear(color Color) {
 //
 // 	view: Pointer to the new view
 func (this *RenderTexture) SetView(view *View) {
+	this.view = view
 	C.sfRenderTexture_setView(this.cptr, view.toCPtr())
 }
 
 // Get the current active view of a render texture
 func (this *RenderTexture) GetView() *View {
-	return &View{C.sfRenderTexture_getView(this.cptr)}
+	return this.view
 }
 
 // Get the default view of a render texture
 func (this *RenderTexture) GetDefaultView() *View {
-	return &View{C.sfRenderTexture_getDefaultView(this.cptr)}
+	return newViewFromPtr(C.sfRenderTexture_getDefaultView(this.cptr))
 }
 
 // Get the viewport of a view applied to this target
