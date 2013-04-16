@@ -33,6 +33,8 @@ type BlendMode int
 
 type RenderStates struct {
 	cRenderStates C.sfRenderStates
+	shader        *Shader
+	texture       *Texture
 }
 
 /////////////////////////////////////
@@ -49,10 +51,10 @@ func RenderStatesDefault() RenderStates {
 
 // Initializes a RenderStates object.
 func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
-	rt.cRenderStates.blendMode = C.sfBlendMode(blendMode)
-	rt.cRenderStates.transform = transform.toC()
-	rt.cRenderStates.shader = shader.toCPtr()
-	rt.cRenderStates.texture = texture.toCPtr()
+	rt.SetBlendMode(blendMode)
+	rt.SetTramsform(transform)
+	rt.SetTexture(texture)
+	rt.SetShader(shader)
 	return
 }
 
@@ -61,6 +63,7 @@ func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture
 // 	shader: can be nil (no shader)
 func (this *RenderStates) SetShader(shader *Shader) {
 	this.cRenderStates.shader = shader.toCPtr()
+	this.shader = shader
 }
 
 // Sets the texture of the RenderStates.
@@ -68,6 +71,7 @@ func (this *RenderStates) SetShader(shader *Shader) {
 // 	texture: can be nil (no texture)
 func (this *RenderStates) SetTexture(texture *Texture) {
 	this.cRenderStates.texture = texture.toCPtr()
+	this.texture = texture
 }
 
 // Sets the transformation of the RenderStates.
