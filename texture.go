@@ -186,7 +186,7 @@ func (this *Texture) IsRepeated() bool {
 }
 
 // Get the maximum texture size allowed
-func TextureGetMaximumSize() uint {
+func GetMaximumTextureSize() uint {
 	return uint(C.sfTexture_getMaximumSize())
 }
 
