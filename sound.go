@@ -47,7 +47,7 @@ type Sound struct {
 func NewSound(buffer *SoundBuffer) *Sound {
 	sound := &Sound{C.sfSound_create(), nil}
 	sound.SetBuffer(buffer)
-	runtime.SetFinalizer(sound, (*Sound).Destroy)
+	runtime.SetFinalizer(sound, (*Sound).destroy)
 
 	return sound
 }
@@ -55,12 +55,12 @@ func NewSound(buffer *SoundBuffer) *Sound {
 // Create a new sound by copying an existing one
 func (this *Sound) Copy() *Sound {
 	sound := &Sound{C.sfSound_copy(this.cptr), this.buffer}
-	runtime.SetFinalizer(sound, (*Sound).Destroy)
+	runtime.SetFinalizer(sound, (*Sound).destroy)
 	return sound
 }
 
 // Destroy a sound
-func (this *Sound) Destroy() {
+func (this *Sound) destroy() {
 	C.sfSound_destroy(this.cptr)
 	this.cptr = nil
 }

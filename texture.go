@@ -38,7 +38,7 @@ type Texture struct {
 // 	height: Texture height
 func NewTexture(width, height uint) (texture *Texture, err error) {
 	texture = &Texture{C.sfTexture_create(C.uint(width), C.uint(height))}
-	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	runtime.SetFinalizer(texture, (*Texture).destroy)
 
 	if texture.cptr == nil {
 		err = errors.New("NewTexture: Cannot create texture")
@@ -55,7 +55,7 @@ func NewTextureFromFile(file string, area *IntRect) (texture *Texture, err error
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	texture = &Texture{C.sfTexture_createFromFile(cFile, area.toCPtr())}
-	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	runtime.SetFinalizer(texture, (*Texture).destroy)
 
 	if texture.cptr == nil {
 		err = errors.New("NewTextureFromFile: Cannot load texture " + file)
@@ -71,7 +71,7 @@ func NewTextureFromFile(file string, area *IntRect) (texture *Texture, err error
 func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err error) {
 	if len(data) > 0 {
 		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
-		runtime.SetFinalizer(texture, (*Texture).Destroy)
+		runtime.SetFinalizer(texture, (*Texture).destroy)
 	}
 	err = errors.New("NewTextureFromMemory: no data")
 	return
@@ -83,7 +83,7 @@ func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err err
 // 	area:  Area of the source image to load (NULL to load the entire image)
 func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err error) {
 	texture = &Texture{C.sfTexture_createFromImage(image.toCPtr(), area.toCPtr())}
-	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	runtime.SetFinalizer(texture, (*Texture).destroy)
 
 	if texture.cptr == nil {
 		err = errors.New("NewTextureFromFile: Cannot create texture from image")
@@ -95,12 +95,12 @@ func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err err
 // Copy an existing texture
 func (this *Texture) Copy() *Texture {
 	texture := &Texture{C.sfTexture_copy(this.cptr)}
-	runtime.SetFinalizer(texture, (*Texture).Destroy)
+	runtime.SetFinalizer(texture, (*Texture).destroy)
 	return texture
 }
 
 // Destroy an existing texture
-func (this *Texture) Destroy() {
+func (this *Texture) destroy() {
 	C.sfTexture_destroy(this.cptr)
 	this.cptr = nil
 }

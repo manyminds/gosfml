@@ -86,7 +86,7 @@ func NewWindow(videoMode VideoMode, title string, style int, contextSettings *Co
 	window = &Window{C.sfWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
 
 	//GC cleanup
-	runtime.SetFinalizer(window, (*Window).Destroy)
+	runtime.SetFinalizer(window, (*Window).destroy)
 
 	return window
 }
@@ -136,7 +136,7 @@ func (this *Window) Close() {
 }
 
 // Destroy an existing window
-func (this *Window) Destroy() {
+func (this *Window) destroy() {
 	C.sfWindow_destroy(this.cptr)
 	this.cptr = nil
 }

@@ -32,19 +32,19 @@ type RectangleShape struct {
 // Create a new rectangle shape
 func NewRectangleShape() *RectangleShape {
 	shape := &RectangleShape{C.sfRectangleShape_create(), nil}
-	runtime.SetFinalizer(shape, (*RectangleShape).Destroy)
+	runtime.SetFinalizer(shape, (*RectangleShape).destroy)
 	return shape
 }
 
 // Copy an existing rectangle shape
 func (this *RectangleShape) Copy() *RectangleShape {
 	shape := &RectangleShape{C.sfRectangleShape_copy(this.cptr), this.texture}
-	runtime.SetFinalizer(shape, (*RectangleShape).Destroy)
+	runtime.SetFinalizer(shape, (*RectangleShape).destroy)
 	return shape
 }
 
 // Destroy an existing rectangle shape
-func (this *RectangleShape) Destroy() {
+func (this *RectangleShape) destroy() {
 	C.sfRectangleShape_destroy(this.cptr)
 	this.cptr = nil
 }

@@ -34,7 +34,7 @@ type Image struct {
 
 func newImageFromPtr(cptr *C.sfImage) *Image {
 	image := &Image{cptr}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
@@ -49,7 +49,7 @@ func NewImageFromFile(file string) *Image {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	image := &Image{C.sfImage_createFromFile(cFile)}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
@@ -61,7 +61,7 @@ func NewImageFromFile(file string) *Image {
 // 	height: Height of the image
 func NewImage(width, height uint) *Image {
 	image := &Image{C.sfImage_create(C.uint(width), C.uint(height))}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
@@ -72,7 +72,7 @@ func NewImage(width, height uint) *Image {
 // 	color:  Fill color
 func NewImageFromColor(width, height uint, color Color) *Image {
 	image := &Image{C.sfImage_createFromColor(C.uint(width), C.uint(height), color.toC())}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
@@ -88,7 +88,7 @@ func NewImageFromColor(width, height uint, color Color) *Image {
 // 	pixels: Slice of pixels to copy to the image
 func NewImageFromPixels(width, height uint, data []byte) *Image {
 	image := &Image{C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
@@ -102,7 +102,7 @@ func NewImageFromPixels(width, height uint, data []byte) *Image {
 func NewImageFromMemory(data []byte) (*Image, error) {
 	if len(data) > 0 {
 		image := &Image{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
-		runtime.SetFinalizer(image, (*Image).Destroy)
+		runtime.SetFinalizer(image, (*Image).destroy)
 		return image, nil
 	}
 	return nil, errors.New("NewImageFromMemory: no data")
@@ -111,12 +111,12 @@ func NewImageFromMemory(data []byte) (*Image, error) {
 // Copy an existing image
 func (this *Image) Copy() *Image {
 	image := &Image{C.sfImage_copy(this.cptr)}
-	runtime.SetFinalizer(image, (*Image).Destroy)
+	runtime.SetFinalizer(image, (*Image).destroy)
 	return image
 }
 
 // Destroy an existing image
-func (this *Image) Destroy() {
+func (this *Image) destroy() {
 	C.sfImage_destroy(this.cptr)
 	this.cptr = nil
 }

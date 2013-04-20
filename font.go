@@ -45,7 +45,7 @@ func NewFontFromFile(filename string) (font *Font, err error) {
 	defer C.free(unsafe.Pointer(cFilename))
 
 	font = &Font{C.sfFont_createFromFile(cFilename)}
-	runtime.SetFinalizer(font, (*Font).Destroy)
+	runtime.SetFinalizer(font, (*Font).destroy)
 
 	if font.cptr == nil {
 		err = errors.New("NewFontFromFile: Cannot load font " + filename)
@@ -62,7 +62,7 @@ func NewFontFromFile(filename string) (font *Font, err error) {
 func NewFontFromMemory(data []byte) (*Font, error) {
 	if len(data) > 0 {
 		font := &Font{C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
-		runtime.SetFinalizer(font, (*Font).Destroy)
+		runtime.SetFinalizer(font, (*Font).destroy)
 		return font, nil
 	}
 	return nil, errors.New("NewFontFromMemory: no data")
@@ -70,11 +70,11 @@ func NewFontFromMemory(data []byte) (*Font, error) {
 
 func (this *Font) Copy() *Font {
 	font := &Font{C.sfFont_copy(this.cptr)}
-	runtime.SetFinalizer(font, (*Font).Destroy)
+	runtime.SetFinalizer(font, (*Font).destroy)
 	return font
 }
 
-func (this *Font) Destroy() {
+func (this *Font) destroy() {
 	C.sfFont_destroy(this.cptr)
 	this.cptr = nil
 }

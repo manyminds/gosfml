@@ -32,7 +32,7 @@ type Sprite struct {
 // Create a new sprite with a given texture (can be nil to use no texture)
 func NewSprite(tex *Texture) *Sprite {
 	shape := &Sprite{C.sfSprite_create(), nil}
-	runtime.SetFinalizer(shape, (*Sprite).Destroy)
+	runtime.SetFinalizer(shape, (*Sprite).destroy)
 
 	//set texture
 	shape.SetTexture(tex, true)
@@ -43,12 +43,12 @@ func NewSprite(tex *Texture) *Sprite {
 // Copy an existing sprite
 func (this *Sprite) Copy() *Sprite {
 	sprite := &Sprite{C.sfSprite_copy(this.cptr), this.texture}
-	runtime.SetFinalizer(sprite, (*Sprite).Destroy)
+	runtime.SetFinalizer(sprite, (*Sprite).destroy)
 	return sprite
 }
 
 // Destroy an existing sprite
-func (this *Sprite) Destroy() {
+func (this *Sprite) destroy() {
 	C.sfSprite_destroy(this.cptr)
 	this.cptr = nil
 }

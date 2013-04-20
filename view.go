@@ -34,7 +34,7 @@ type View struct {
 // This function creates a default view of (0, 0, 1000, 1000)
 func NewView() *View {
 	view := &View{C.sfView_create()}
-	runtime.SetFinalizer(view, (*View).Destroy)
+	runtime.SetFinalizer(view, (*View).destroy)
 	return view
 }
 
@@ -43,12 +43,12 @@ func NewView() *View {
 // 	rect: Rectangle defining the zone to display
 func NewViewFromRect(rect FloatRect) *View {
 	view := &View{C.sfView_createFromRect(rect.toC())}
-	runtime.SetFinalizer(view, (*View).Destroy)
+	runtime.SetFinalizer(view, (*View).destroy)
 	return view
 }
 
 // Destroy an existing view
-func (this *View) Destroy() {
+func (this *View) destroy() {
 	C.sfView_destroy(this.cptr)
 	this.cptr = nil
 }
@@ -56,7 +56,7 @@ func (this *View) Destroy() {
 // Copy an existing view
 func (this *View) Copy() *View {
 	view := &View{C.sfView_copy(this.cptr)}
-	runtime.SetFinalizer(view, (*View).Destroy)
+	runtime.SetFinalizer(view, (*View).destroy)
 	return view
 }
 
@@ -169,6 +169,6 @@ func (this *View) toCPtr() *C.sfView {
 
 func newViewFromPtr(cptr *C.sfView) *View {
 	view := &View{C.sfView_copy(cptr)}
-	runtime.SetFinalizer(view, (*View).Destroy)
+	runtime.SetFinalizer(view, (*View).destroy)
 	return view
 }

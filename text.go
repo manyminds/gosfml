@@ -50,14 +50,14 @@ type Text struct {
 // Create a new text with a given font (can be nil).
 func NewText(font *Font) *Text {
 	text := &Text{C.sfText_create(), nil}
-	runtime.SetFinalizer(text, (*Text).Destroy)
+	runtime.SetFinalizer(text, (*Text).destroy)
 	text.SetFont(font)
 
 	return text
 }
 
 // Destroy an existing text
-func (this *Text) Destroy() {
+func (this *Text) destroy() {
 	C.sfText_destroy(this.cptr)
 	this.cptr = nil
 }
@@ -65,7 +65,7 @@ func (this *Text) Destroy() {
 // Copy an existing text
 func (this *Text) Copy() *Text {
 	text := &Text{C.sfText_copy(this.cptr), this.font}
-	runtime.SetFinalizer(text, (*Text).Destroy)
+	runtime.SetFinalizer(text, (*Text).destroy)
 	return text
 }
 

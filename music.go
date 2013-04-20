@@ -46,7 +46,7 @@ func NewMusicFromFile(file string) (music *Music, err error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	music = &Music{C.sfMusic_createFromFile(cFile)}
-	runtime.SetFinalizer(music, (*Music).Destroy)
+	runtime.SetFinalizer(music, (*Music).destroy)
 
 	if music.cptr == nil {
 		err = errors.New("NewMusicFromFile: Cannot load music " + file)
@@ -67,7 +67,7 @@ func NewMusicFromFile(file string) (music *Music, err error) {
 func NewMusicFromMemory(data []byte) (music *Music, err error) {
 	if len(data) > 0 {
 		music = &Music{C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
-		runtime.SetFinalizer(music, (*Music).Destroy)
+		runtime.SetFinalizer(music, (*Music).destroy)
 
 		if music.cptr == nil {
 			err = errors.New("NewMusicFromMemory: Cannot load music")
@@ -78,7 +78,7 @@ func NewMusicFromMemory(data []byte) (music *Music, err error) {
 }
 
 // Destroy a music
-func (this *Music) Destroy() {
+func (this *Music) destroy() {
 	C.sfMusic_destroy(this.cptr)
 	this.cptr = nil
 }

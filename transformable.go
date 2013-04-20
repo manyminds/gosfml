@@ -29,13 +29,13 @@ type Transformable struct {
 // Create a new transformable
 func NewTransformable() *Transformable {
 	transformable := &Transformable{C.sfTransformable_create()}
-	runtime.SetFinalizer(transformable, (*Transformable).Destroy)
+	runtime.SetFinalizer(transformable, (*Transformable).destroy)
 
 	return transformable
 }
 
 // Destroy an existing transformable
-func (this *Transformable) Destroy() {
+func (this *Transformable) destroy() {
 	C.sfTransformable_destroy(this.cptr)
 	this.cptr = nil
 }
@@ -43,7 +43,7 @@ func (this *Transformable) Destroy() {
 // Copy an existing transformable
 func (this *Transformable) Copy() *Transformable {
 	transformable := &Transformable{C.sfTransformable_copy(this.cptr)}
-	runtime.SetFinalizer(transformable, (*Transformable).Destroy)
+	runtime.SetFinalizer(transformable, (*Transformable).destroy)
 	return transformable
 }
 

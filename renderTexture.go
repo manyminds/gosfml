@@ -44,13 +44,13 @@ func NewRenderTexture(width, height uint, depthbuffer bool) *RenderTexture {
 	renderTexture.SetView(newViewFromPtr(C.sfRenderTexture_getView(renderTexture.cptr)))
 
 	//GC
-	runtime.SetFinalizer(renderTexture, (*RenderTexture).Destroy)
+	runtime.SetFinalizer(renderTexture, (*RenderTexture).destroy)
 
 	return renderTexture
 }
 
 // Destroy an existing render texture
-func (this *RenderTexture) Destroy() {
+func (this *RenderTexture) destroy() {
 	C.sfRenderTexture_destroy(this.cptr)
 	this.cptr = nil
 }

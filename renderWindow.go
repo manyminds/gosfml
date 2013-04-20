@@ -54,7 +54,7 @@ func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettin
 	window.SetView(newViewFromPtr(C.sfRenderWindow_getView(window.cptr)))
 
 	//GC cleanup
-	runtime.SetFinalizer(window, (*RenderWindow).Destroy)
+	runtime.SetFinalizer(window, (*RenderWindow).destroy)
 
 	return window
 }
@@ -108,7 +108,7 @@ func (this *RenderWindow) Close() {
 }
 
 // Destroy an existing render window
-func (this *RenderWindow) Destroy() {
+func (this *RenderWindow) destroy() {
 	C.sfRenderWindow_destroy(this.cptr)
 	this.cptr = nil
 }

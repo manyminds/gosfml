@@ -53,19 +53,19 @@ type Vertex struct {
 // Create a new vertex array
 func NewVertexArray() *VertexArray {
 	vertexArray := &VertexArray{C.sfVertexArray_create()}
-	runtime.SetFinalizer(vertexArray, (*VertexArray).Destroy)
+	runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
 	return vertexArray
 }
 
 // Copy an existing vertex array
 func (this *VertexArray) Copy() *VertexArray {
 	vertexArray := &VertexArray{C.sfVertexArray_copy(this.cptr)}
-	runtime.SetFinalizer(vertexArray, (*VertexArray).Destroy)
+	runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
 	return vertexArray
 }
 
 // Destroy an existing vertex array
-func (this *VertexArray) Destroy() {
+func (this *VertexArray) destroy() {
 	C.sfVertexArray_destroy(this.cptr)
 	this.cptr = nil
 }

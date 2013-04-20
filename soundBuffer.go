@@ -47,7 +47,7 @@ func NewSoundBufferFromFile(file string) (*SoundBuffer, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 	buffer := &SoundBuffer{C.sfSoundBuffer_createFromFile(cFile)}
-	runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
+	runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
 	if buffer.cptr == nil {
 		return nil, errors.New("NewSoundBufferFromFile: Cannot create SoundBuffer")
@@ -66,7 +66,7 @@ func NewSoundBufferFromFile(file string) (*SoundBuffer, error) {
 func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 	if len(data) > 0 {
 		buffer = &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
-		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
+		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
 		if buffer.cptr == nil {
 			err = errors.New("NewSoundBufferFromMemory: Cannot create SoundBuffer")
@@ -88,7 +88,7 @@ func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 func NewSoundBufferFromSamples(samples []int16, sampleCount, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
 	if len(samples) > 0 {
 		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(sampleCount), C.uint(channelCount), C.uint(sampleRate))}
-		runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
+		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
 		if buffer.cptr == nil {
 			err = errors.New("NewSoundBufferFromSamples: Cannot create SoundBuffer")
@@ -101,12 +101,12 @@ func NewSoundBufferFromSamples(samples []int16, sampleCount, channelCount, sampl
 // Create a new sound buffer by copying an existing one
 func (this *SoundBuffer) Copy() *SoundBuffer {
 	buffer := &SoundBuffer{C.sfSoundBuffer_copy(this.cptr)}
-	runtime.SetFinalizer(buffer, (*SoundBuffer).Destroy)
+	runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 	return buffer
 }
 
 // Destroy a sound buffer
-func (this *SoundBuffer) Destroy() {
+func (this *SoundBuffer) destroy() {
 	C.sfSoundBuffer_destroy(this.cptr)
 	this.cptr = nil
 }

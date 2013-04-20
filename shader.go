@@ -61,7 +61,7 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 	}
 
 	shader = &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
-	runtime.SetFinalizer(shader, (*Shader).Destroy)
+	runtime.SetFinalizer(shader, (*Shader).destroy)
 
 	//error check
 	if shader.cptr == nil {
@@ -100,7 +100,7 @@ func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, e
 	}
 
 	shader = &Shader{C.sfShader_createFromMemory(cVShader, cFShader)}
-	runtime.SetFinalizer(shader, (*Shader).Destroy)
+	runtime.SetFinalizer(shader, (*Shader).destroy)
 
 	//error check
 	if shader.cptr == nil {
@@ -111,7 +111,7 @@ func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, e
 }
 
 // Destroy an existing shader
-func (this *Shader) Destroy() {
+func (this *Shader) destroy() {
 	C.sfShader_destroy(this.toCPtr())
 	this.cptr = nil
 }

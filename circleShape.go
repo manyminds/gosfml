@@ -33,19 +33,19 @@ type CircleShape struct {
 func NewCircleShape(radius float32) *CircleShape {
 	shape := &CircleShape{C.sfCircleShape_create(), nil}
 	shape.SetRadius(radius)
-	runtime.SetFinalizer(shape, (*CircleShape).Destroy)
+	runtime.SetFinalizer(shape, (*CircleShape).destroy)
 	return shape
 }
 
 // Copy an existing circle shape
 func (this *CircleShape) Copy() *CircleShape {
 	shape := &CircleShape{C.sfCircleShape_copy(this.cptr), this.texture}
-	runtime.SetFinalizer(shape, (*CircleShape).Destroy)
+	runtime.SetFinalizer(shape, (*CircleShape).destroy)
 	return shape
 }
 
 // Destroy an existing circle Shape
-func (this *CircleShape) Destroy() {
+func (this *CircleShape) destroy() {
 	C.sfCircleShape_destroy(this.cptr)
 	this.cptr = nil
 }
