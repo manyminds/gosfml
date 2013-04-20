@@ -63,7 +63,7 @@ func (this *RenderTexture) GetSize() (size Vector2u) {
 
 // Activate or deactivate a render texture as the current target for rendering
 //
-// 	active: sfTrue to activate, sfFalse to deactivate
+// 	active: true to activate, false to deactivate
 func (this *RenderTexture) SetActive(active bool) {
 	C.sfRenderTexture_setActive(this.cptr, goBool2C(active))
 }
