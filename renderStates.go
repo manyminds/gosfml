@@ -52,7 +52,7 @@ func RenderStatesDefault() RenderStates {
 // Initializes a RenderStates object.
 func MakeRenderStates(blendMode BlendMode, transform Transform, texture *Texture, shader *Shader) (rt RenderStates) {
 	rt.SetBlendMode(blendMode)
-	rt.SetTramsform(transform)
+	rt.SetTransform(transform)
 	rt.SetTexture(texture)
 	rt.SetShader(shader)
 	return
@@ -75,7 +75,7 @@ func (this *RenderStates) SetTexture(texture *Texture) {
 }
 
 // Sets the transformation of the RenderStates.
-func (this *RenderStates) SetTramsform(transform Transform) {
+func (this *RenderStates) SetTransform(transform Transform) {
 	this.cRenderStates.transform = transform.toC()
 }
 
