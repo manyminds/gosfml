@@ -215,3 +215,15 @@ func (this *RenderTexture) SetSmooth(smooth bool) {
 func (this *RenderTexture) IsSmooth() bool {
 	return sfBool2Go(C.sfRenderTexture_isSmooth(this.cptr))
 }
+
+// Enable or disable texture repeating
+//
+// 	repeated: true to enable repeating, false to disable it
+func (this *RenderTexture) SetRepeated(repeated bool) {
+	C.sfRenderTexture_setRepeated(this.cptr, goBool2C(repeated))
+}
+
+// Tell whether the texture is repeated or not
+func (this *RenderTexture) IsRepeated() bool {
+	return sfBool2Go(C.sfRenderTexture_isRepeated(this.cptr))
+}
