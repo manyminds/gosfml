@@ -31,14 +31,14 @@ type ConvexShape struct {
 
 func NewConvexShape() *ConvexShape {
 	shape := &ConvexShape{C.sfConvexShape_create(), nil}
-	runtime.SetFinalizer(shape, (*CircleShape).destroy)
+	runtime.SetFinalizer(shape, (*ConvexShape).destroy)
 	return shape
 }
 
 //Copy an existing convex shape
 func (this *ConvexShape) Copy() *ConvexShape {
 	shape := &ConvexShape{C.sfConvexShape_copy(this.cptr), this.texture}
-	runtime.SetFinalizer(shape, (*CircleShape).destroy)
+	runtime.SetFinalizer(shape, (*ConvexShape).destroy)
 	return shape
 }
 
