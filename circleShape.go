@@ -286,7 +286,7 @@ func (this *CircleShape) GetGlobalBounds() (rect FloatRect) {
 //Draws a CircleShape on a render target
 //
 //renderStates: can be nil to use the default render states
-func (this *CircleShape) Draw(target RenderTarget, renderStates *RenderStates) {
+func (this *CircleShape) Draw(target RenderTarget, renderStates RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawCircleShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())

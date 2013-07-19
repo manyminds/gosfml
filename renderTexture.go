@@ -156,7 +156,7 @@ func (this *RenderTexture) MapCoordsToPixel(pos Vector2f, view *View) (coords Ve
 //Draws a RectangleShape on a render target
 //
 //renderStates: can be nil
-func (this *RenderTexture) Draw(drawer Drawer, renderStates *RenderStates) {
+func (this *RenderTexture) Draw(drawer Drawer, renderStates RenderStates) {
 	drawer.Draw(this, renderStates)
 }
 

@@ -156,7 +156,7 @@ func (this *VertexArray) GetBounds() (rect FloatRect) {
 	return
 }
 
-func (this *VertexArray) Draw(target RenderTarget, renderStates *RenderStates) {
+func (this *VertexArray) Draw(target RenderTarget, renderStates RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawVertexArray(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())

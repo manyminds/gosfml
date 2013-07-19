@@ -296,7 +296,7 @@ func (this *Text) GetGlobalBounds() (rect FloatRect) {
 // Draws a Text on a render target
 //
 // 	renderStates: can be nil to use the default render states
-func (this *Text) Draw(target RenderTarget, renderStates *RenderStates) {
+func (this *Text) Draw(target RenderTarget, renderStates RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawText(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())

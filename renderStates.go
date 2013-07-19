@@ -12,7 +12,6 @@ package gosfml2
 
 // #include <SFML/Graphics/RenderStates.h>
 import "C"
-import "unsafe"
 
 /////////////////////////////////////
 ///		CONSTS
@@ -23,6 +22,14 @@ const (
 	BlendAdd             ///< Pixel = Src + Dest
 	BlendMultiply        ///< Pixel = Src * Dest
 	BlendNone            ///< No blending
+)
+
+/////////////////////////////////////
+///		VARS
+/////////////////////////////////////
+
+var (
+	defaultRenderStates = MakeRenderStates(BlendAlpha, TransformIdentity(), nil, nil)
 )
 
 /////////////////////////////////////
@@ -42,7 +49,7 @@ type RenderStates struct {
 /////////////////////////////////////
 
 func RenderStatesDefault() RenderStates {
-	return MakeRenderStates(BlendAlpha, TransformIdentity(), nil, nil)
+	return defaultRenderStates
 }
 
 /////////////////////////////////////
@@ -89,5 +96,5 @@ func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
 /////////////////////////////////////
 
 func (this *RenderStates) toCPtr() *C.sfRenderStates {
-	return (*C.sfRenderStates)(unsafe.Pointer(&this.cRenderStates))
+	return &this.cRenderStates
 }

@@ -253,7 +253,7 @@ func (this *RenderWindow) GetViewport(view *View) (viewport IntRect) {
 }
 
 // Draw a drawable object to the render-target
-func (this *RenderWindow) Draw(drawer Drawer, renderStates *RenderStates) {
+func (this *RenderWindow) Draw(drawer Drawer, renderStates RenderStates) {
 	drawer.Draw(this, renderStates)
 }
 

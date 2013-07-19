@@ -239,7 +239,7 @@ func (this *Sprite) GetGlobalBounds() (rect FloatRect) {
 // Draws a RectangleShape on a render target
 //
 // 	renderStates: can be nil to use the default render states
-func (this *Sprite) Draw(target RenderTarget, renderStates *RenderStates) {
+func (this *Sprite) Draw(target RenderTarget, renderStates RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawSprite(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
