@@ -27,35 +27,36 @@ import "C"
 ///		CONSTS
 /////////////////////////////////////
 
-const (
-	eventClosed = iota
-	eventResized
-	eventLostFocus
-	eventGainedFocus
-	eventTextEntered
-	eventKeyPressed
-	eventKeyReleased
-	eventMouseWheelMoved
-	eventMouseButtonPressed
-	eventMouseButtonReleased
-	eventMouseMoved
-	eventMouseEntered
-	eventMouseLeft
-	eventJoystickButtonPressed
-	eventJoystickButtonReleased
-	eventJoystickMoved
-	eventJoystickConnected
-	eventJoystickDisconnected
-	eventNone
-)
+type EventType int
 
-type eventType int
+const (
+	EventTypeClosed                 EventType = C.sfEvtClosed
+	EventTypeResized                EventType = C.sfEvtResized
+	EventTypeLostFocus              EventType = C.sfEvtLostFocus
+	EventTypeGainedFocus            EventType = C.sfEvtGainedFocus
+	EventTypeTextEntered            EventType = C.sfEvtTextEntered
+	EventTypeKeyPressed             EventType = C.sfEvtKeyPressed
+	EventTypeKeyReleased            EventType = C.sfEvtKeyReleased
+	EventTypeMouseWheelMoved        EventType = C.sfEvtMouseWheelMoved
+	EventTypeMouseButtonPressed     EventType = C.sfEvtMouseButtonPressed
+	EventTypeMouseButtonReleased    EventType = C.sfEvtMouseButtonReleased
+	EventTypeMouseMoved             EventType = C.sfEvtMouseMoved
+	EventTypeMouseEntered           EventType = C.sfEvtMouseEntered
+	EventTypeMouseLeft              EventType = C.sfEvtMouseLeft
+	EventTypeJoystickButtonPressed  EventType = C.sfEvtJoystickButtonPressed
+	EventTypeJoystickButtonReleased EventType = C.sfEvtJoystickButtonReleased
+	EventTypeJoystickMoved          EventType = C.sfEvtJoystickMoved
+	EventTypeJoystickConnected      EventType = C.sfEvtJoystickConnected
+	EventTypeJoystickDisconnected   EventType = C.sfEvtJoystickDisconnected
+)
 
 /////////////////////////////////////
 ///		INTERFACES
 /////////////////////////////////////
 
-type Event interface{}
+type Event interface {
+	Type() EventType
+}
 
 ///////////////////////////////////////////////////////////////
 //	EmptyEvents
@@ -63,17 +64,37 @@ type Event interface{}
 // The window lost the focus (no data)
 type EventLostFocus struct{}
 
+func (EventLostFocus) Type() EventType {
+	return EventTypeLostFocus
+}
+
 // The window gained the focus (no data)
 type EventGainedFocus struct{}
+
+func (EventGainedFocus) Type() EventType {
+	return EventTypeGainedFocus
+}
 
 // The mouse cursor entered the area of the window (no data)
 type EventMouseEntered struct{}
 
+func (EventMouseEntered) Type() EventType {
+	return EventTypeMouseEntered
+}
+
 // The mouse cursor left the area of the window (no data)
 type EventMouseLeft struct{}
 
+func (EventMouseLeft) Type() EventType {
+	return EventTypeMouseLeft
+}
+
 // The window requested to be closed (no data)
 type EventClosed struct{}
+
+func (EventClosed) Type() EventType {
+	return EventTypeClosed
+}
 
 ///////////////////////////////////////////////////////////////
 //	KeyEvent
@@ -93,6 +114,14 @@ func newKeyEventFromC(ev *C.sfKeyEvent) eventKey {
 	return eventKey{Code: KeyCode(ev.code), Alt: int(ev.alt), Control: int(ev.control), Shift: int(ev.shift), System: int(ev.system)}
 }
 
+func (EventKeyPressed) Type() EventType {
+	return EventTypeKeyPressed
+}
+
+func (EventKeyReleased) Type() EventType {
+	return EventTypeKeyReleased
+}
+
 ///////////////////////////////////////////////////////////////
 //	SizeEvent
 
@@ -105,6 +134,10 @@ func newSizeEventFromC(ev *C.sfSizeEvent) EventResized {
 	return EventResized{Width: uint(ev.width), Height: uint(ev.height)}
 }
 
+func (EventResized) Type() EventType {
+	return EventTypeResized
+}
+
 ///////////////////////////////////////////////////////////////
 //	TextEvent
 
@@ -113,7 +146,11 @@ type EventTextEntered struct {
 }
 
 func newTextEventFromC(ev *C.sfTextEvent) EventTextEntered {
-	return EventTextEntered{Char: rune(ev.unicode)}
+	return EventTextEntered{Char: rune(uint32(ev.unicode))}
+}
+
+func (EventTextEntered) Type() EventType {
+	return EventTypeTextEntered
 }
 
 ///////////////////////////////////////////////////////////////
@@ -126,6 +163,10 @@ type EventMouseMoved struct {
 
 func newMouseMoveEventFromC(ev *C.sfMouseMoveEvent) EventMouseMoved {
 	return EventMouseMoved{X: int(ev.x), Y: int(ev.y)}
+}
+
+func (EventMouseMoved) Type() EventType {
+	return EventTypeMouseMoved
 }
 
 ///////////////////////////////////////////////////////////////
@@ -144,6 +185,14 @@ func newMouseButtonEventFromC(ev *C.sfMouseButtonEvent) eventMouseButton {
 	return eventMouseButton{Button: MouseButton(ev.button), X: int(ev.x), Y: int(ev.y)}
 }
 
+func (EventMouseButtonPressed) Type() EventType {
+	return EventTypeMouseButtonPressed
+}
+
+func (EventMouseButtonReleased) Type() EventType {
+	return EventTypeMouseButtonReleased
+}
+
 ///////////////////////////////////////////////////////////////
 //	MouseWheelEvent
 
@@ -155,6 +204,10 @@ type EventMouseWheelMoved struct {
 
 func newMouseWheelEventFromC(ev *C.sfMouseWheelEvent) EventMouseWheelMoved {
 	return EventMouseWheelMoved{Delta: int(ev.delta), X: int(ev.x), Y: int(ev.y)}
+}
+
+func (EventMouseWheelMoved) Type() EventType {
+	return EventTypeMouseWheelMoved
 }
 
 ///////////////////////////////////////////////////////////////
@@ -170,6 +223,10 @@ func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) EventJoystickMoved {
 	return EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
 }
 
+func (EventJoystickMoved) Type() EventType {
+	return EventTypeJoystickMoved
+}
+
 ///////////////////////////////////////////////////////////////
 //	JoystickButtonEvent
 
@@ -178,11 +235,19 @@ type eventJoystickButton struct {
 	Button     uint //< Index of the button that has been pressed (in range [0 .. JoystickButtonCount - 1])
 }
 
+func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) eventJoystickButton {
+	return eventJoystickButton{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
+}
+
 type EventJoystickButtonPressed eventJoystickButton
 type EventJoystickButtonReleased eventJoystickButton
 
-func newJoystickButtonEventFromC(ev *C.sfJoystickButtonEvent) eventJoystickButton {
-	return eventJoystickButton{JoystickId: uint(ev.joystickId), Button: uint(ev.button)}
+func (EventJoystickButtonPressed) Type() EventType {
+	return EventTypeJoystickButtonPressed
+}
+
+func (EventJoystickButtonReleased) Type() EventType {
+	return EventTypeJoystickButtonReleased
 }
 
 ///////////////////////////////////////////////////////////////
@@ -199,47 +264,57 @@ func newJoystickConnectEventFromC(ev *C.sfJoystickConnectEvent) eventJoystickCon
 	return eventJoystickConnection{JoystickId: uint(ev.joystickId)}
 }
 
+func (EventJoystickConnected) Type() EventType {
+	return EventTypeJoystickConnected
+}
+
+func (EventJoystickDisconnected) Type() EventType {
+	return EventTypeJoystickDisconnected
+}
+
 ///////////////////////////////////////////////////////////////
 //standard event handling method used by Window & RenderWindow
 
 func handleEvent(cEvent *C.sfEvent) (ev Event) {
-	switch eventType(C.getEventType(cEvent)) {
-	case eventResized:
+	switch EventType(C.getEventType(cEvent)) {
+	case EventTypeResized:
 		ev = newSizeEventFromC(C.getSizeEvent(cEvent))
-	case eventClosed:
+	case EventTypeClosed:
 		ev = EventClosed{}
-	case eventLostFocus:
+	case EventTypeLostFocus:
 		ev = EventLostFocus{}
-	case eventGainedFocus:
+	case EventTypeGainedFocus:
 		ev = EventGainedFocus{}
-	case eventTextEntered:
+	case EventTypeTextEntered:
 		ev = newTextEventFromC(C.getTextEvent(cEvent))
-	case eventKeyReleased:
+	case EventTypeKeyReleased:
 		ev = (EventKeyReleased)(newKeyEventFromC(C.getKeyEvent(cEvent)))
-	case eventKeyPressed:
+	case EventTypeKeyPressed:
 		ev = (EventKeyPressed)(newKeyEventFromC(C.getKeyEvent(cEvent)))
-	case eventMouseWheelMoved:
+	case EventTypeMouseWheelMoved:
 		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
-	case eventMouseButtonReleased:
+	case EventTypeMouseButtonReleased:
 		ev = (EventMouseButtonReleased)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
-	case eventMouseButtonPressed:
+	case EventTypeMouseButtonPressed:
 		ev = (EventMouseButtonPressed)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
-	case eventMouseMoved:
+	case EventTypeMouseMoved:
 		ev = newMouseMoveEventFromC(C.getMouseMoveEvent(cEvent))
-	case eventMouseLeft:
+	case EventTypeMouseLeft:
 		ev = EventMouseLeft{}
-	case eventMouseEntered:
+	case EventTypeMouseEntered:
 		ev = EventMouseEntered{}
-	case eventJoystickButtonReleased:
+	case EventTypeJoystickButtonReleased:
 		ev = (EventJoystickButtonReleased)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
-	case eventJoystickButtonPressed:
+	case EventTypeJoystickButtonPressed:
 		ev = (EventJoystickButtonPressed)(newJoystickButtonEventFromC(C.getJoystickButtonEvent(cEvent)))
-	case eventJoystickMoved:
+	case EventTypeJoystickMoved:
 		ev = newJoystickMoveEventFromC(C.getJoystickMoveEvent(cEvent))
-	case eventJoystickDisconnected:
+	case EventTypeJoystickDisconnected:
 		ev = (EventJoystickDisconnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
-	case eventJoystickConnected:
+	case EventTypeJoystickConnected:
 		ev = (EventJoystickConnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
+	default:
+		panic("Unknown event")
 	}
 	return
 }
