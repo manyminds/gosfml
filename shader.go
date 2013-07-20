@@ -50,12 +50,12 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 		cFShader *C.char = nil
 	)
 
-	if vertexShaderFile != "" {
+	if len(vertexShaderFile) > 0 {
 		cVShader = C.CString(vertexShaderFile)
 		defer C.free(unsafe.Pointer(cVShader))
 	}
 
-	if fragmentShaderFile != "" {
+	if len(fragmentShaderFile) > 0 {
 		cFShader = C.CString(fragmentShaderFile)
 		defer C.free(unsafe.Pointer(cFShader))
 	}
@@ -89,12 +89,12 @@ func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, e
 		cFShader *C.char = nil
 	)
 
-	if vertexShader != "" {
+	if len(vertexShader) > 0 {
 		cVShader = C.CString(vertexShader)
 		defer C.free(unsafe.Pointer(cVShader))
 	}
 
-	if fragmentShader != "" {
+	if len(fragmentShader) > 0 {
 		cFShader = C.CString(fragmentShader)
 		defer C.free(unsafe.Pointer(cFShader))
 	}

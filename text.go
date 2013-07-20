@@ -183,16 +183,8 @@ func (this *Text) GetInverseTransform() (transform Transform) {
 	return
 }
 
-// Set the string of a text (from an ANSI string)
-func (this *Text) SetString(text string) {
-	cText := C.CString(text)
-	defer C.free(unsafe.Pointer(cText))
-
-	C.sfText_setString(this.cptr, cText)
-}
-
 // Set the string of a text (from a unicode string)
-func (this *Text) SetUnicodeString(text string) {
+func (this *Text) SetString(text string) {
 	runes := strToRunes(text)
 	C.sfText_setUnicodeString(this.cptr, (*C.sfUint32)(unsafe.Pointer(&runes[0])))
 }
@@ -226,14 +218,8 @@ func (this *Text) SetColor(color Color) {
 	C.sfText_setColor(this.cptr, color.toC())
 }
 
-// Get the string of a text (returns an ANSI string)
-func (this *Text) GetString() string {
-	cstr := C.sfText_getString(this.cptr)
-	return C.GoString(cstr)
-}
-
 // Get the string of a text (returns a unicode string)
-func (this *Text) GetUnicodeString() string {
+func (this *Text) GetString() string {
 	cstr := C.sfText_getUnicodeString(this.cptr)
 	return utf32CString2Go(cstr)
 }
