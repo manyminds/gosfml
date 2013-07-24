@@ -91,6 +91,27 @@ func (this *RenderStates) SetBlendMode(blendMode BlendMode) {
 	this.cRenderStates.blendMode = C.sfBlendMode(blendMode)
 }
 
+// Gets the blend mode of the RenderStates.
+func (this *RenderStates) GetBlendMode() BlendMode {
+	return BlendMode(this.cRenderStates.blendMode)
+}
+
+// Gets the shader of the RenderStates
+func (this *RenderStates) GetShader() *Shader {
+	return this.shader
+}
+
+// Gets the texture of the RenderStates
+func (this *RenderStates) GetTexture() *Texture {
+	return this.texture
+}
+
+// Gets the transform of the RenderStates
+func (this *RenderStates) GetTransform() (trans Transform) {
+	trans.fromC(this.cRenderStates.transform)
+	return
+}
+
 /////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////
