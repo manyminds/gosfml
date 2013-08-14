@@ -12,6 +12,7 @@ package gosfml2
 
 // #include <SFML/Graphics/Image.h>
 // #include <stdlib.h>
+// sfUint8 sfImage_getPixelsPtrValue(const sfImage* image, int index) { return sfImage_getPixelsPtr(image)[index]; }
 import "C"
 
 import (
@@ -199,6 +200,17 @@ func (this *Image) SetPixel(x, y uint, color Color) {
 func (this *Image) GetPixel(x, y uint) (color Color) {
 	color.fromC(C.sfImage_getPixel(this.cptr, C.uint(x), C.uint(y)))
 	return
+}
+
+// Get a slice of pixels of an image
+//
+// The length of the slice is width * height * 4 (RGBA).
+func (this *Image) GetPixelData() []byte {
+	data := make([]byte, this.GetSize().X*this.GetSize().Y*4)
+	for i := 0; i < len(data); i++ {
+		data[i] = byte(C.sfImage_getPixelsPtrValue(this.cptr, C.int(i)))
+	}
+	return data
 }
 
 // Flip an image horizontally (left <-> right)
