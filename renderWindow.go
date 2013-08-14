@@ -39,16 +39,15 @@ type RenderWindow struct {
 // 	title:           Title of the window
 // 	style:           Window style
 // 	contextSettings: Creation settings (pass nil to use default values)
-func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings *ContextSettings) (window *RenderWindow) {
+func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings ContextSettings) (window *RenderWindow) {
 	//string conversion
 	utf32 := strToRunes(title)
 
 	//convert contextSettings to C
-	cs := contextSettings.toCPtr()
-	defer C.free(unsafe.Pointer(cs))
+	cs := contextSettings.toC()
 
 	//create the window
-	window = &RenderWindow{cptr: C.sfRenderWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), cs)}
+	window = &RenderWindow{cptr: C.sfRenderWindow_createUnicode(videoMode.toC(), (*C.sfUint32)(unsafe.Pointer(&utf32[0])), C.sfUint32(style), &cs)}
 
 	//create a copy of current view
 	window.SetView(newViewFromPtr(C.sfRenderWindow_getView(window.cptr)))
@@ -128,11 +127,11 @@ func (this *RenderWindow) SetTitle(title string) {
 // 	height: Icon's height, in pixels
 // 	pixels: Slice of pixels, format must be RGBA 32 bits
 func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
-	if len(data) > 0 {
+	if len(data) >= int(width*height*4) {
 		C.sfRenderWindow_setIcon(this.cptr, C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
 		return nil
 	}
-	return errors.New("SetIcon: no data")
+	return errors.New("SetIcon: Slice length does not match specified dimensions")
 }
 
 // Get the event on top of event queue of a render window, if any, and pop it

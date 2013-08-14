@@ -28,6 +28,14 @@ type ContextSettings struct {
 }
 
 /////////////////////////////////////
+///		FUNCS
+/////////////////////////////////////
+
+func ContextSettingsDefault() ContextSettings {
+	return ContextSettings{DepthBits:0,StencilBits:0,AntialiasingLevel:0,MajorVersion:2,MinorVersion:0}
+}
+
+/////////////////////////////////////
 ///		GO <-> C
 /////////////////////////////////////
 
@@ -40,12 +48,8 @@ func (this *ContextSettings) fromC(csettings C.sfContextSettings) {
 }
 
 //allocates memory!
-func (this *ContextSettings) toCPtr() *C.sfContextSettings {
-	if this == nil {
-		return nil
-	}
-
-	cs := (*C.sfContextSettings)(C.malloc(C.getSizeContextSettings()))
+func (this *ContextSettings) toC() C.sfContextSettings {
+	cs := C.sfContextSettings{}
 	cs.depthBits = C.uint(this.DepthBits)
 	cs.stencilBits = C.uint(this.StencilBits)
 	cs.antialiasingLevel = C.uint(this.AntialiasingLevel)
