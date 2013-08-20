@@ -12,6 +12,8 @@ package gosfml2
 
 // #include <SFML/Audio/SoundBuffer.h>
 // #include <stdlib.h>
+// extern void copyData(void*, void*, size_t);
+// extern size_t sizeofInt16();
 import "C"
 
 import (
@@ -21,10 +23,8 @@ import (
 	"unsafe"
 )
 
-//MISSING: 	sfSoundBuffer_createFromMemory
+//MISSING:
 //			sfSoundBuffer_createFromStream
-//			sfSoundBuffer_createFromSamples
-//			sfSoundBuffer_getSamples
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -90,12 +90,11 @@ func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 // (int16).
 //
 // 	samples:      Slice of samples
-// 	sampleCount:  Number of samples in the array
 // 	channelCount: Number of channels (1 = mono, 2 = stereo, ...)
 // 	sampleRate:   Sample rate (number of samples to play per second)
-func NewSoundBufferFromSamples(samples []int16, sampleCount, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
+func NewSoundBufferFromSamples(samples []int16, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
 	if len(samples) > 0 {
-		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(sampleCount), C.uint(channelCount), C.uint(sampleRate))}
+		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(len(samples)), C.uint(channelCount), C.uint(sampleRate))}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
 		if buffer.cptr == nil {
@@ -139,6 +138,18 @@ func (this *SoundBuffer) SaveToFile(file string) {
 // SoundBuffer.GetSamples function.
 func (this *SoundBuffer) GetSampleCount() uint {
 	return uint(C.sfSoundBuffer_getSampleCount(this.cptr))
+}
+
+// Get the slice of audio samples stored in a sound buffer
+//
+// The format of the returned samples is 16 bits signed integer
+// (int16).
+func (this *SoundBuffer) GetSamples() []int16 {
+	data := make([]int16, this.GetSampleCount())
+	if len(data) > 0 {
+		C.copyData(unsafe.Pointer(C.sfSoundBuffer_getSamples(this.cptr)), unsafe.Pointer(&data[0]), C.size_t(len(data))*C.sizeofInt16())
+	}
+	return data
 }
 
 // Get the sample rate of a sound buffer

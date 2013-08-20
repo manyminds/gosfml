@@ -13,7 +13,8 @@ package gosfml2
 /*
 #include <SFML/Audio/SoundRecorder.h>
 extern sfSoundRecorder* sfSoundRecorder_createEx(void*);
-extern sfInt16 accessSampleData(sfInt16*,size_t);
+extern void copyData(void*, void*, size_t);
+extern size_t sizeofInt16();
 */
 import "C"
 
@@ -44,9 +45,9 @@ type SoundRecorderCallbackProgress func([]int16) bool
 
 // Construct a new sound recorder from callback functions
 //
-// 	onStart   Callback function which will be called when a new capture starts
+// 	onStart   Callback function which will be called when a new capture starts (can be nil)
 // 	onProcess Callback function which will be called each time there's audio data to process
-// 	onStop    Callback function which will be called when the current capture stops
+// 	onStop    Callback function which will be called when the current capture stops (can be nil)
 func NewSoundRecorder(onStart SoundRecorderCallbackStart, onProgress SoundRecorderCallbackProgress, onStop SoundRecorderCallbackStop) *SoundRecorder {
 	soundRecorder := &SoundRecorder{}
 	soundRecorder.startCallback = onStart
@@ -101,15 +102,23 @@ func (this *SoundRecorder) GetSampleRate() uint {
 
 // private proxy functions
 func (this *SoundRecorder) callCallackStart() bool {
-	return this.startCallback()
+	if this.startCallback != nil {
+		return this.startCallback()
+	}
+	return true
 }
 
 func (this *SoundRecorder) callCallackStop() {
-	this.stopCallback()
+	if this.stopCallback != nil {
+		this.stopCallback()
+	}
 }
 
 func (this *SoundRecorder) callCallackProgress(data []int16) bool {
-	return this.progressCallback(data)
+	if this.progressCallback != nil {
+		return this.progressCallback(data)
+	}
+	return false
 }
 
 func SoundRecorderIsAvailable() bool {
@@ -129,9 +138,8 @@ func go_callbackStop(ptr unsafe.Pointer) {
 //export go_callbackProgress
 func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.sfBool {
 	buffer := make([]int16, count)
-	for i := 0; i < int(count); i++ {
-		buffer[i] = int16(C.accessSampleData(data, C.size_t(i)))
+	if count > 0 {
+		C.copyData(unsafe.Pointer(data), unsafe.Pointer(&buffer[0]), count*C.sizeofInt16())
 	}
-
 	return goBool2C((*(*SoundRecorder)(ptr)).callCallackProgress(buffer))
 }

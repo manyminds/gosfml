@@ -10,8 +10,14 @@
 
 package gosfml2
 
-// #include <SFML/System.h>
-// void incPtr(sfUint32** ptr)  { ++(*ptr); }
+/*
+#include <SFML/System.h>
+#include <string.h>
+
+void incPtr(sfUint32** ptr)  { ++(*ptr); }
+void copyData(void* source, void* dest, size_t size) { memcpy(dest,source,size); }
+size_t sizeofInt16() { return sizeof(sfInt16); }
+*/
 import "C"
 
 /////////////////////////////////////

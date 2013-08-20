@@ -17,8 +17,6 @@ extern sfBool go_callbackStart(void* ptr);
 extern void go_callbackStop(void* ptr);
 extern sfBool go_callbackProgress(const sfInt16* data, size_t count, void* ptr);
 
-sfInt16 accessSampleData(sfInt16* data,size_t index) { return data[index]; }
-
 sfBool callGo_soundRecorderStart(void* ptr) { return go_callbackStart(ptr); }
 void callGo_soundRecorderStop(void* ptr) { go_callbackStop(ptr); }
 sfBool callGo_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr) { return go_callbackProgress(data,count,ptr); }
