@@ -32,7 +32,7 @@ type ContextSettings struct {
 /////////////////////////////////////
 
 func ContextSettingsDefault() ContextSettings {
-	return ContextSettings{DepthBits:0,StencilBits:0,AntialiasingLevel:0,MajorVersion:2,MinorVersion:0}
+	return ContextSettings{DepthBits: 0, StencilBits: 0, AntialiasingLevel: 0, MajorVersion: 2, MinorVersion: 0}
 }
 
 /////////////////////////////////////

@@ -38,6 +38,14 @@ type SoundBuffer struct {
 ///		FUNCS
 /////////////////////////////////////
 
+// Copy a C soundBuffer into a Go SoundBuffer
+func newSoundBufferFromPtr(cbuffer *C.sfSoundBuffer) *SoundBuffer {
+	buffer := &SoundBuffer{C.sfSoundBuffer_copy(cbuffer)}
+	runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
+
+	return buffer
+}
+
 // Create a new sound buffer and load it from a file
 //
 // Here is a complete list of all the supported audio formats:
