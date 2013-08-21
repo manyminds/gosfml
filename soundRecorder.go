@@ -96,43 +96,32 @@ func (this *SoundRecorder) GetSampleRate() uint {
 	return uint(C.sfSoundRecorder_getSampleRate(this.cptr))
 }
 
-/////////////////////////////////////
-///		GO <-> C
-/////////////////////////////////////
-
-// private proxy functions
-func (this *SoundRecorder) callCallackStart() bool {
-	if this.startCallback != nil {
-		return this.startCallback()
-	}
-	return true
-}
-
-func (this *SoundRecorder) callCallackStop() {
-	if this.stopCallback != nil {
-		this.stopCallback()
-	}
-}
-
-func (this *SoundRecorder) callCallackProgress(data []int16) bool {
-	if this.progressCallback != nil {
-		return this.progressCallback(data)
-	}
-	return false
-}
-
+// Check if the system supports audio capture
+//
+// This function should always be called before using
+// the audio capture features. If it returns false, then
+// any attempt to use SoundRecorder will fail.
 func SoundRecorderIsAvailable() bool {
 	return sfBool2Go(C.sfSoundRecorder_isAvailable())
 }
 
+/////////////////////////////////////
+///		GO <-> C
+/////////////////////////////////////
+
 //export go_callbackStart
 func go_callbackStart(ptr unsafe.Pointer) C.sfBool {
-	return goBool2C((*(*SoundRecorder)(ptr)).callCallackStart())
+	if (*(*SoundRecorder)(ptr)).startCallback != nil {
+		return goBool2C((*(*SoundRecorder)(ptr)).startCallback())
+	}
+	return C.sfTrue
 }
 
 //export go_callbackStop
 func go_callbackStop(ptr unsafe.Pointer) {
-	(*(*SoundRecorder)(ptr)).callCallackStop()
+	if (*(*SoundRecorder)(ptr)).stopCallback != nil {
+		(*(*SoundRecorder)(ptr)).stopCallback()
+	}
 }
 
 //export go_callbackProgress
@@ -141,5 +130,5 @@ func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.
 	if count > 0 {
 		C.copyData(unsafe.Pointer(data), unsafe.Pointer(&buffer[0]), count*C.sizeofInt16())
 	}
-	return goBool2C((*(*SoundRecorder)(ptr)).callCallackProgress(buffer))
+	return goBool2C((*(*SoundRecorder)(ptr)).progressCallback(buffer))
 }
