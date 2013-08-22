@@ -1,17 +1,13 @@
-// Copyright (c) 2012 krepa098 (krepa098 at gmail dot com)
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-// Permission is granted to anyone to use this software for any purpose, including commercial applications,
-// and to alter it and redistribute it freely, subject to the following restrictions:
-// 	1.	The origin of this software must not be misrepresented; you must not claim that you wrote the original software.
-//			If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-// 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-// 	3. This notice may not be removed or altered from any source distribution.
+// Copyright (C) 2012 by krepa098. All rights reserved.
+// Use of this source code is governed by a zlib-style
+// license that can be found in the license.txt file.
 
 package gosfml2
 
 // #include <SFML/Audio/SoundBuffer.h>
 // #include <stdlib.h>
+// extern void copyData(void*, void*, size_t);
+// extern size_t sizeofInt16();
 import "C"
 
 import (
@@ -21,10 +17,8 @@ import (
 	"unsafe"
 )
 
-//MISSING: 	sfSoundBuffer_createFromMemory
+//MISSING:
 //			sfSoundBuffer_createFromStream
-//			sfSoundBuffer_createFromSamples
-//			sfSoundBuffer_getSamples
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -37,6 +31,14 @@ type SoundBuffer struct {
 /////////////////////////////////////
 ///		FUNCS
 /////////////////////////////////////
+
+// Copy a C soundBuffer into a Go SoundBuffer
+func newSoundBufferFromPtr(cbuffer *C.sfSoundBuffer) *SoundBuffer {
+	buffer := &SoundBuffer{C.sfSoundBuffer_copy(cbuffer)}
+	runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
+
+	return buffer
+}
 
 // Create a new sound buffer and load it from a file
 //
@@ -82,12 +84,11 @@ func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
 // (int16).
 //
 // 	samples:      Slice of samples
-// 	sampleCount:  Number of samples in the array
 // 	channelCount: Number of channels (1 = mono, 2 = stereo, ...)
 // 	sampleRate:   Sample rate (number of samples to play per second)
-func NewSoundBufferFromSamples(samples []int16, sampleCount, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
+func NewSoundBufferFromSamples(samples []int16, channelCount, sampleRate uint) (buffer *SoundBuffer, err error) {
 	if len(samples) > 0 {
-		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(sampleCount), C.uint(channelCount), C.uint(sampleRate))}
+		buffer = &SoundBuffer{C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(len(samples)), C.uint(channelCount), C.uint(sampleRate))}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
 		if buffer.cptr == nil {
@@ -131,6 +132,18 @@ func (this *SoundBuffer) SaveToFile(file string) {
 // SoundBuffer.GetSamples function.
 func (this *SoundBuffer) GetSampleCount() uint {
 	return uint(C.sfSoundBuffer_getSampleCount(this.cptr))
+}
+
+// Get the slice of audio samples stored in a sound buffer
+//
+// The format of the returned samples is 16 bits signed integer
+// (int16).
+func (this *SoundBuffer) GetSamples() []int16 {
+	data := make([]int16, this.GetSampleCount())
+	if len(data) > 0 {
+		C.copyData(unsafe.Pointer(C.sfSoundBuffer_getSamples(this.cptr)), unsafe.Pointer(&data[0]), C.size_t(len(data))*C.sizeofInt16())
+	}
+	return data
 }
 
 // Get the sample rate of a sound buffer

@@ -1,12 +1,6 @@
-// Copyright (c) 2012 krepa098 (krepa098 at gmail dot com)
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-// Permission is granted to anyone to use this software for any purpose, including commercial applications,
-// and to alter it and redistribute it freely, subject to the following restrictions:
-// 	1.	The origin of this software must not be misrepresented; you must not claim that you wrote the original software.
-//			If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-// 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-// 	3. This notice may not be removed or altered from any source distribution.
+// Copyright (C) 2012 by krepa098. All rights reserved.
+// Use of this source code is governed by a zlib-style
+// license that can be found in the license.txt file.
 
 package gosfml2
 
@@ -183,16 +177,8 @@ func (this *Text) GetInverseTransform() (transform Transform) {
 	return
 }
 
-// Set the string of a text (from an ANSI string)
-func (this *Text) SetString(text string) {
-	cText := C.CString(text)
-	defer C.free(unsafe.Pointer(cText))
-
-	C.sfText_setString(this.cptr, cText)
-}
-
 // Set the string of a text (from a unicode string)
-func (this *Text) SetUnicodeString(text string) {
+func (this *Text) SetString(text string) {
 	runes := strToRunes(text)
 	C.sfText_setUnicodeString(this.cptr, (*C.sfUint32)(unsafe.Pointer(&runes[0])))
 }
@@ -226,14 +212,8 @@ func (this *Text) SetColor(color Color) {
 	C.sfText_setColor(this.cptr, color.toC())
 }
 
-// Get the string of a text (returns an ANSI string)
-func (this *Text) GetString() string {
-	cstr := C.sfText_getString(this.cptr)
-	return C.GoString(cstr)
-}
-
 // Get the string of a text (returns a unicode string)
-func (this *Text) GetUnicodeString() string {
+func (this *Text) GetString() string {
 	cstr := C.sfText_getUnicodeString(this.cptr)
 	return utf32CString2Go(cstr)
 }
@@ -301,7 +281,7 @@ func (this *Text) GetGlobalBounds() (rect FloatRect) {
 // Draws a Text on a render target
 //
 // 	renderStates: can be nil to use the default render states
-func (this *Text) Draw(target RenderTarget, renderStates *RenderStates) {
+func (this *Text) Draw(target RenderTarget, renderStates RenderStates) {
 	switch target.(type) {
 	case *RenderWindow:
 		C.sfRenderWindow_drawText(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
