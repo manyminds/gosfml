@@ -5,8 +5,6 @@
 package gosfml2
 
 // #include <SFML/Window/Window.h>
-// #include <stdlib.h>
-// size_t getSizeContextSettings() { return sizeof(sfContextSettings); }
 import "C"
 
 /////////////////////////////////////
@@ -51,12 +49,4 @@ func (this *ContextSettings) toC() C.sfContextSettings {
 	cs.minorVersion = C.uint(this.MinorVersion)
 
 	return cs
-}
-
-/////////////////////////////////////
-///		Testing
-/////////////////////////////////////
-
-func sizeofContextSettings() int {
-	return int(C.getSizeContextSettings())
 }

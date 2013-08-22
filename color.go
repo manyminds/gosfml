@@ -5,7 +5,6 @@
 package gosfml2
 
 // #include <SFML/Graphics/Color.h>
-// int getSizeColor() { return sizeof(sfColor); }
 import "C"
 
 /////////////////////////////////////
@@ -62,12 +61,4 @@ func (this *Color) fromC(color C.sfColor) {
 
 func (this Color) toC() C.sfColor {
 	return C.sfColor{r: C.sfUint8(this.R), g: C.sfUint8(this.G), b: C.sfUint8(this.B), a: C.sfUint8(this.A)}
-}
-
-/////////////////////////////////////
-///		Testing
-/////////////////////////////////////
-
-func sizeofColor() int {
-	return int(C.getSizeColor())
 }

@@ -5,8 +5,6 @@
 package gosfml2
 
 // #include <SFML/Graphics/Rect.h>
-// int getSizeIntRect() { return sizeof(sfIntRect); }
-// int getSizeFloatRect() { return sizeof(sfFloatRect); }
 import "C"
 import "unsafe"
 
@@ -98,16 +96,4 @@ func (this *IntRect) toCPtr() *C.sfIntRect {
 
 func (this *FloatRect) toCPtr() *C.sfFloatRect {
 	return (*C.sfFloatRect)(unsafe.Pointer(this))
-}
-
-/////////////////////////////////////
-///		Testing
-/////////////////////////////////////
-
-func sizeofIntRect() int {
-	return int(C.getSizeIntRect())
-}
-
-func sizeofFloatRect() int {
-	return int(C.getSizeFloatRect())
 }

@@ -5,10 +5,6 @@
 package gosfml2
 
 // #include <SFML/System.h>
-// int getSizeVector2i() { return sizeof(sfVector2i); }
-// int getSizeVector2u() { return sizeof(sfVector2u); }
-// int getSizeVector2f() { return sizeof(sfVector2f); }
-// int getSizeVector3f() { return sizeof(sfVector3f); }
 import "C"
 
 /////////////////////////////////////
@@ -113,24 +109,4 @@ func (this *Vector2f) toC() C.sfVector2f {
 
 func (this *Vector3f) toC() C.sfVector3f {
 	return C.sfVector3f{x: C.float(this.X), y: C.float(this.Y), z: C.float(this.Z)}
-}
-
-/////////////////////////////////////
-///		Testing
-/////////////////////////////////////
-
-func sizeofVector2i() int {
-	return int(C.getSizeVector2i())
-}
-
-func sizeofVector2u() int {
-	return int(C.getSizeVector2u())
-}
-
-func sizeofVector2f() int {
-	return int(C.getSizeVector2f())
-}
-
-func sizeofVector3f() int {
-	return int(C.getSizeVector3f())
 }
