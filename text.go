@@ -249,7 +249,7 @@ func (this *Text) GetColor() (color Color) {
 // origin are applied).
 // If index is out of range, the position of the end of
 // the string is returned.
-func (this *Text) FintCharacterPos(index uint) (pos Vector2f) {
+func (this *Text) FindCharacterPos(index uint) (pos Vector2f) {
 	pos.fromC(C.sfText_findCharacterPos(this.cptr, C.size_t(index)))
 	return
 }
