@@ -234,10 +234,11 @@ func (this *Sprite) GetGlobalBounds() (rect FloatRect) {
 //
 // 	renderStates: can be nil to use the default render states
 func (this *Sprite) Draw(target RenderTarget, renderStates RenderStates) {
+	rs := renderStates.toC()
 	switch target.(type) {
 	case *RenderWindow:
-		C.sfRenderWindow_drawSprite(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).cptr, this.cptr, &rs)
 	case *RenderTexture:
-		C.sfRenderTexture_drawSprite(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).cptr, this.cptr, &rs)
 	}
 }

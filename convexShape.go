@@ -280,10 +280,11 @@ func (this *ConvexShape) GetGlobalBounds() (rect FloatRect) {
 //
 // renderStates: can be nil to use the default render states
 func (this *ConvexShape) Draw(target RenderTarget, renderStates RenderStates) {
+	rs := renderStates.toC()
 	switch target.(type) {
 	case *RenderWindow:
-		C.sfRenderWindow_drawConvexShape(target.(*RenderWindow).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderWindow_drawConvexShape(target.(*RenderWindow).cptr, this.cptr, &rs)
 	case *RenderTexture:
-		C.sfRenderTexture_drawConvexShape(target.(*RenderTexture).cptr, this.cptr, renderStates.toCPtr())
+		C.sfRenderTexture_drawConvexShape(target.(*RenderTexture).cptr, this.cptr, &rs)
 	}
 }
