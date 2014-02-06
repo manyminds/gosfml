@@ -20,7 +20,7 @@ const (
 	PrimitiveLinesStrip            ///< List of connected lines, a point uses the previous point to form a line
 	PrimitiveTriangles             ///< List of individual triangles
 	PrimitiveTrianglesStrip        ///< List of connected triangles, a point uses the two previous points to form a triangle
-	PrimitiveTrianglesFran         ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
+	PrimitiveTrianglesFan          ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
 	PrimitiveQuads                 ///< List of individual quads
 )
 
