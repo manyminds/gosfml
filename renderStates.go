@@ -12,18 +12,10 @@ import "C"
 /////////////////////////////////////
 
 const (
-	BlendAlpha    = iota ///< Pixel = Src * a + Dest * (1 - a)
-	BlendAdd             ///< Pixel = Src + Dest
-	BlendMultiply        ///< Pixel = Src * Dest
-	BlendNone            ///< No blending
-)
-
-/////////////////////////////////////
-///		VARS
-/////////////////////////////////////
-
-var (
-	defaultRenderStates = RenderStates{Shader: nil, Texture: nil, BlendMode: BlendAlpha, Transform: TransformIdentity()}
+	BlendAlpha    BlendMode = iota ///< Pixel = Src * a + Dest * (1 - a)
+	BlendAdd                       ///< Pixel = Src + Dest
+	BlendMultiply                  ///< Pixel = Src * Dest
+	BlendNone                      ///< No blending
 )
 
 /////////////////////////////////////
@@ -43,8 +35,8 @@ type RenderStates struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func RenderStatesDefault() RenderStates {
-	return defaultRenderStates
+func DefaultRenderStates() RenderStates {
+	return RenderStates{Shader: nil, Texture: nil, BlendMode: BlendAlpha, Transform: TransformIdentity()}
 }
 
 /////////////////////////////////////

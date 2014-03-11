@@ -23,7 +23,7 @@ type ContextSettings struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func ContextSettingsDefault() ContextSettings {
+func DefaultContextSettings() ContextSettings {
 	return ContextSettings{DepthBits: 0, StencilBits: 0, AntialiasingLevel: 0, MajorVersion: 2, MinorVersion: 0}
 }
 
