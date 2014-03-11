@@ -13,7 +13,6 @@ extern size_t sizeofInt16();
 import "C"
 
 import (
-	"errors"
 	"runtime"
 	"unsafe"
 )
@@ -44,19 +43,19 @@ type SoundRecorderCallbackProgress func([]int16) bool
 // 	onProcess Callback function which will be called each time there's audio data to process (cannot be nil)
 // 	onStop    Callback function which will be called when the current capture stops (can be nil)
 func NewSoundRecorder(onStart SoundRecorderCallbackStart, onProgress SoundRecorderCallbackProgress, onStop SoundRecorderCallbackStop) (*SoundRecorder, error) {
-	soundRecorder := &SoundRecorder{}
-	soundRecorder.startCallback = onStart
-	soundRecorder.stopCallback = onStop
-	soundRecorder.progressCallback = onProgress
-	soundRecorder.cptr = C.sfSoundRecorder_createEx(unsafe.Pointer(soundRecorder))
-
-	runtime.SetFinalizer(soundRecorder, (*SoundRecorder).destroy)
-
-	if soundRecorder.cptr == nil || onProgress == nil {
-		return nil, errors.New("NewSoundRecorder: Cannot create SoundRecorder")
+	soundRecorder := &SoundRecorder{
+		startCallback:    onStart,
+		stopCallback:     onStop,
+		progressCallback: onProgress,
 	}
 
-	return soundRecorder, nil
+	if cptr := C.sfSoundRecorder_createEx(unsafe.Pointer(soundRecorder)); cptr != nil {
+		soundRecorder.cptr = cptr
+		runtime.SetFinalizer(soundRecorder, (*SoundRecorder).destroy)
+		return soundRecorder, nil
+	}
+
+	return nil, genericError
 }
 
 // Destroy an existing SoundRecorder

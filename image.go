@@ -40,12 +40,17 @@ func newImageFromPtr(cptr *C.sfImage) *Image {
 // like progressive jpeg.
 //
 // file: Path of the image file to load
-func NewImageFromFile(file string) *Image {
+func NewImageFromFile(file string) (*Image, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	image := &Image{C.sfImage_createFromFile(cFile)}
-	runtime.SetFinalizer(image, (*Image).destroy)
-	return image
+
+	if cptr := C.sfImage_createFromFile(cFile); cptr != nil {
+		image := &Image{cptr}
+		runtime.SetFinalizer(image, (*Image).destroy)
+		return image, nil
+	}
+
+	return nil, genericError
 }
 
 // Create an image
@@ -54,10 +59,14 @@ func NewImageFromFile(file string) *Image {
 //
 // 	width:  Width of the image
 // 	height: Height of the image
-func NewImage(width, height uint) *Image {
-	image := &Image{C.sfImage_create(C.uint(width), C.uint(height))}
-	runtime.SetFinalizer(image, (*Image).destroy)
-	return image
+func NewImage(width, height uint) (*Image, error) {
+	if cptr := C.sfImage_create(C.uint(width), C.uint(height)); cptr != nil {
+		image := &Image{}
+		runtime.SetFinalizer(image, (*Image).destroy)
+		return image, nil
+	}
+
+	return nil, genericError
 }
 
 // Create an image and fill it with a unique color
@@ -65,10 +74,14 @@ func NewImage(width, height uint) *Image {
 // 	width:  Width of the image
 // 	height: Height of the image
 // 	color:  Fill color
-func NewImageFromColor(width, height uint, color Color) *Image {
-	image := &Image{C.sfImage_createFromColor(C.uint(width), C.uint(height), color.toC())}
-	runtime.SetFinalizer(image, (*Image).destroy)
-	return image
+func NewImageFromColor(width, height uint, color Color) (*Image, error) {
+	if cptr := C.sfImage_createFromColor(C.uint(width), C.uint(height), color.toC()); cptr != nil {
+		image := &Image{cptr}
+		runtime.SetFinalizer(image, (*Image).destroy)
+		return image, nil
+	}
+
+	return nil, genericError
 }
 
 // Create an image from an array of pixels

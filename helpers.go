@@ -14,6 +14,11 @@ size_t sizeofInt16() { return sizeof(sfInt16); }
 */
 import "C"
 
+import "errors"
+
+//As SFML does not provide useful errors we just return a generic error message
+var genericError = errors.New("Error: See std::out for more details")
+
 /////////////////////////////////////
 ///		WRAPPING HELPERS
 /////////////////////////////////////

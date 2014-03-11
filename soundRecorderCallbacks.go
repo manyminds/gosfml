@@ -15,6 +15,8 @@ sfBool callGo_soundRecorderStart(void* ptr) { return go_callbackStart(ptr); }
 void callGo_soundRecorderStop(void* ptr) { go_callbackStop(ptr); }
 sfBool callGo_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr) { return go_callbackProgress(data,count,ptr); }
 
-sfSoundRecorder* sfSoundRecorder_createEx(void* obj) { return sfSoundRecorder_create(callGo_soundRecorderStart,callGo_soundRecorderProgress,callGo_soundRecorderStop,obj); }
+sfSoundRecorder* sfSoundRecorder_createEx(void* obj) {
+	return sfSoundRecorder_create(callGo_soundRecorderStart,callGo_soundRecorderProgress,callGo_soundRecorderStop,obj);
+}
 */
 import "C"

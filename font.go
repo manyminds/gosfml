@@ -34,18 +34,17 @@ type Font struct {
 // Note that this function know nothing about the standard
 // fonts installed on the user's system, thus you can't
 // load them directly.
-func NewFontFromFile(filename string) (font *Font, err error) {
+func NewFontFromFile(filename string) (*Font, error) {
 	cFilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cFilename))
 
-	font = &Font{C.sfFont_createFromFile(cFilename)}
-	runtime.SetFinalizer(font, (*Font).destroy)
-
-	if font.cptr == nil {
-		err = errors.New("NewFontFromFile: Cannot load font " + filename)
+	if cptr := C.sfFont_createFromFile(cFilename); cptr != nil {
+		font := &Font{cptr}
+		runtime.SetFinalizer(font, (*Font).destroy)
+		return font, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Font constructor
@@ -54,12 +53,16 @@ func NewFontFromFile(filename string) (font *Font, err error) {
 // The supported font formats are: TrueType, Type 1, CFF,
 // OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42.
 func NewFontFromMemory(data []byte) (*Font, error) {
-	if len(data) > 0 {
-		font := &Font{C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+	if len(data) == 0 {
+		return nil, errors.New("NewFontFromMemory: len(data)==0")
+	}
+
+	if cptr := C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data))); cptr != nil {
+		font := &Font{cptr}
 		runtime.SetFinalizer(font, (*Font).destroy)
 		return font, nil
 	}
-	return nil, errors.New("NewFontFromMemory: no data")
+	return nil, genericError
 }
 
 func (this *Font) Copy() *Font {

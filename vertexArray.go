@@ -45,10 +45,15 @@ type Vertex struct {
 /////////////////////////////////////
 
 // Create a new vertex array
-func NewVertexArray() *VertexArray {
-	vertexArray := &VertexArray{C.sfVertexArray_create()}
-	runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
-	return vertexArray
+func NewVertexArray() (*VertexArray, error) {
+	if cptr := C.sfVertexArray_create(); cptr != nil {
+		vertexArray := &VertexArray{cptr}
+		runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
+
+		return vertexArray, nil
+	}
+
+	return nil, genericError
 }
 
 // Copy an existing vertex array

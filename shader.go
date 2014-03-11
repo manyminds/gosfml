@@ -9,7 +9,6 @@ package gosfml2
 import "C"
 
 import (
-	"errors"
 	"runtime"
 	"unsafe"
 )
@@ -38,7 +37,7 @@ type Shader struct {
 //
 // 	vertexShaderFile:   Path of the vertex shader file to load, or "" to skip this shader
 // 	fragmentShaderFile: Path of the fragment shader file to load, or "" to skip this shader
-func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Shader, err error) {
+func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (*Shader, error) {
 	var (
 		cVShader *C.char = nil
 		cFShader *C.char = nil
@@ -54,15 +53,14 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 		defer C.free(unsafe.Pointer(cFShader))
 	}
 
-	shader = &Shader{C.sfShader_createFromFile(cVShader, cFShader)}
-	runtime.SetFinalizer(shader, (*Shader).destroy)
+	if cptr := C.sfShader_createFromFile(cVShader, cFShader); cptr != nil {
+		shader := &Shader{cptr}
+		runtime.SetFinalizer(shader, (*Shader).destroy)
 
-	//error check
-	if shader.cptr == nil {
-		err = errors.New("NewShaderFromFile: Cannot create Shader " + vertexShaderFile + " " + fragmentShaderFile)
+		return shader, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Load both the vertex and fragment shaders from source codes in memory
@@ -77,7 +75,7 @@ func NewShaderFromFile(vertexShaderFile, fragmentShaderFile string) (shader *Sha
 //
 // 	vertexShader:   String containing the source code of the vertex shader, or "" to skip this shader
 // 	fragmentShader: String containing the source code of the fragment shader, or "" to skip this shader
-func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, err error) {
+func NewShaderFromMemory(vertexShader, fragmentShader string) (*Shader, error) {
 	var (
 		cVShader *C.char = nil
 		cFShader *C.char = nil
@@ -93,15 +91,13 @@ func NewShaderFromMemory(vertexShader, fragmentShader string) (shader *Shader, e
 		defer C.free(unsafe.Pointer(cFShader))
 	}
 
-	shader = &Shader{C.sfShader_createFromMemory(cVShader, cFShader)}
-	runtime.SetFinalizer(shader, (*Shader).destroy)
-
-	//error check
-	if shader.cptr == nil {
-		err = errors.New("NewShaderFromFile: Cannot create Shader")
+	if cptr := C.sfShader_createFromMemory(cVShader, cFShader); cptr != nil {
+		shader := &Shader{cptr}
+		runtime.SetFinalizer(shader, (*Shader).destroy)
+		return shader, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Destroy an existing shader

@@ -36,17 +36,17 @@ type Music struct {
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
 // 	file: Path of the music file to open
-func NewMusicFromFile(file string) (music *Music, err error) {
+func NewMusicFromFile(file string) (*Music, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	music = &Music{C.sfMusic_createFromFile(cFile)}
-	runtime.SetFinalizer(music, (*Music).destroy)
 
-	if music.cptr == nil {
-		err = errors.New("NewMusicFromFile: Cannot load music " + file)
+	if cptr := C.sfMusic_createFromFile(cFile); cptr != nil {
+		music := &Music{cptr}
+		runtime.SetFinalizer(music, (*Music).destroy)
+		return music, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Create a new music and load it from a file in memory
@@ -57,18 +57,20 @@ func NewMusicFromFile(file string) (music *Music, err error) {
 // ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
-// 	data: Slice of file data
-func NewMusicFromMemory(data []byte) (music *Music, err error) {
-	if len(data) > 0 {
-		music = &Music{C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+// 	data: Slice of files data
+func NewMusicFromMemory(data []byte) (*Music, error) {
+	if len(data) == 0 {
+		return nil, errors.New("NewMusicFromMemory: len(data)==0")
+	}
+
+	if cptr := C.sfMusic_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data))); cptr != nil {
+		music := &Music{cptr}
 		runtime.SetFinalizer(music, (*Music).destroy)
 
-		if music.cptr == nil {
-			err = errors.New("NewMusicFromMemory: Cannot load music")
-		}
-		return
+		return music, nil
 	}
-	return
+
+	return nil, genericError
 }
 
 // Destroy a music

@@ -24,11 +24,13 @@ type CircleShape struct {
 /////////////////////////////////////
 
 // Create a new circle shape with a given radius
-func NewCircleShape(radius float32) *CircleShape {
-	shape := &CircleShape{C.sfCircleShape_create(), nil}
-	shape.SetRadius(radius)
-	runtime.SetFinalizer(shape, (*CircleShape).destroy)
-	return shape
+func NewCircleShape() (*CircleShape, error) {
+	if cptr := C.sfCircleShape_create(); cptr != nil {
+		shape := &CircleShape{cptr, nil}
+		runtime.SetFinalizer(shape, (*CircleShape).destroy)
+		return shape, nil
+	}
+	return nil, genericError
 }
 
 // Copy an existing circle shape

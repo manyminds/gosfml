@@ -24,14 +24,16 @@ type Sprite struct {
 /////////////////////////////////////
 
 // Create a new sprite with a given texture (can be nil to use no texture)
-func NewSprite(tex *Texture) *Sprite {
-	shape := &Sprite{C.sfSprite_create(), nil}
-	runtime.SetFinalizer(shape, (*Sprite).destroy)
+func NewSprite(tex *Texture) (*Sprite, error) {
+	if cptr := C.sfSprite_create(); cptr != nil {
+		shape := &Sprite{cptr: cptr}
+		runtime.SetFinalizer(shape, (*Sprite).destroy)
+		shape.SetTexture(tex, true)
 
-	//set texture
-	shape.SetTexture(tex, true)
+		return shape, nil
+	}
 
-	return shape
+	return nil, genericError
 }
 
 // Copy an existing sprite

@@ -48,14 +48,15 @@ func newSoundBufferFromPtr(cbuffer *C.sfSoundBuffer) *SoundBuffer {
 func NewSoundBufferFromFile(file string) (*SoundBuffer, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	buffer := &SoundBuffer{C.sfSoundBuffer_createFromFile(cFile)}
-	runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
-	if buffer.cptr == nil {
-		return nil, errors.New("NewSoundBufferFromFile: Cannot create SoundBuffer")
+	if cptr := C.sfSoundBuffer_createFromFile(cFile); cptr != nil {
+		buffer := &SoundBuffer{cptr}
+		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
+
+		return buffer, nil
 	}
 
-	return buffer, nil
+	return nil, genericError
 }
 
 // Create a new sound buffer and load it from a file in memory
@@ -66,16 +67,18 @@ func NewSoundBufferFromFile(file string) (*SoundBuffer, error) {
 //
 // 	data: Slice of file data
 func NewSoundBufferFromMemory(data []byte) (buffer *SoundBuffer, err error) {
-	if len(data) > 0 {
-		buffer = &SoundBuffer{C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+	if len(data) == 0 {
+		return nil, errors.New("NewSoundBufferFromMemory: len(data)==0")
+	}
+
+	if cptr := C.sfSoundBuffer_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data))); cptr != nil {
+		buffer = &SoundBuffer{cptr}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 
-		if buffer.cptr == nil {
-			err = errors.New("NewSoundBufferFromMemory: Cannot create SoundBuffer")
-		}
-		return
+		return buffer, nil
 	}
-	return nil, errors.New("NewSoundBufferFromMemory: NewSoundBufferFromMemory: no data")
+
+	return nil, genericError
 }
 
 // Create a new sound buffer and load it from an array of samples in memory

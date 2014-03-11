@@ -8,7 +8,6 @@ package gosfml2
 import "C"
 
 import (
-	"errors"
 	"runtime"
 )
 
@@ -26,14 +25,14 @@ type SoundBufferRecorder struct {
 
 /// Create a new sound buffer recorder
 func NewSoundBufferRecorder() (*SoundBufferRecorder, error) {
-	soundBufferRecorder := &SoundBufferRecorder{cptr: C.sfSoundBufferRecorder_create()}
-	runtime.SetFinalizer(soundBufferRecorder, (*SoundBufferRecorder).destroy)
+	if cptr := C.sfSoundBufferRecorder_create(); cptr != nil {
+		soundBufferRecorder := &SoundBufferRecorder{cptr}
+		runtime.SetFinalizer(soundBufferRecorder, (*SoundBufferRecorder).destroy)
 
-	if soundBufferRecorder.cptr == nil {
-		return nil, errors.New("NewSoundBufferRecorder: Cannot create SoundBufferRecorder")
+		return soundBufferRecorder, nil
 	}
 
-	return soundBufferRecorder, nil
+	return nil, genericError
 }
 
 // Destroy an existing SoundBufferRecorder

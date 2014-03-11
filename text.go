@@ -42,12 +42,16 @@ type Text struct {
 /////////////////////////////////////
 
 // Create a new text with a given font (can be nil).
-func NewText(font *Font) *Text {
-	text := &Text{C.sfText_create(), nil}
-	runtime.SetFinalizer(text, (*Text).destroy)
-	text.SetFont(font)
+func NewText(font *Font) (*Text, error) {
+	if cptr := C.sfText_create(); cptr != nil {
+		text := &Text{cptr: cptr}
+		runtime.SetFinalizer(text, (*Text).destroy)
+		text.SetFont(font)
 
-	return text
+		return text, nil
+	}
+
+	return nil, genericError
 }
 
 // Destroy an existing text

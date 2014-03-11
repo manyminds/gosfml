@@ -30,60 +30,67 @@ type Texture struct {
 //
 // 	width:  Texture width
 // 	height: Texture height
-func NewTexture(width, height uint) (texture *Texture, err error) {
-	texture = &Texture{C.sfTexture_create(C.uint(width), C.uint(height))}
-	runtime.SetFinalizer(texture, (*Texture).destroy)
+func NewTexture(width, height uint) (*Texture, error) {
+	if cptr := C.sfTexture_create(C.uint(width), C.uint(height)); cptr != nil {
+		texture := &Texture{cptr}
+		runtime.SetFinalizer(texture, (*Texture).destroy)
 
-	if texture.cptr == nil {
-		err = errors.New("NewTexture: Cannot create texture")
+		return texture, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Create a new texture from an image
 //
 // 	file: Path of the image file to load
 // 	area: Area of the source image to load (nil to load the entire image)
-func NewTextureFromFile(file string, area *IntRect) (texture *Texture, err error) {
+func NewTextureFromFile(file string, area *IntRect) (*Texture, error) {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
-	texture = &Texture{C.sfTexture_createFromFile(cFile, area.toCPtr())}
-	runtime.SetFinalizer(texture, (*Texture).destroy)
 
-	if texture.cptr == nil {
-		err = errors.New("NewTextureFromFile: Cannot load texture " + file)
+	if cptr := C.sfTexture_createFromFile(cFile, area.toCPtr()); cptr != nil {
+		texture := &Texture{cptr}
+		runtime.SetFinalizer(texture, (*Texture).destroy)
+
+		return texture, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Create a new texture from a file in memory
 //
 // 	data: Slice containing the file data
 // 	area: Area of the source image to load (nil to load the entire image)
-func NewTextureFromMemory(data []byte, area *IntRect) (texture *Texture, err error) {
-	if len(data) > 0 {
-		texture = &Texture{C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr())}
-		runtime.SetFinalizer(texture, (*Texture).destroy)
+func NewTextureFromMemory(data []byte, area *IntRect) (*Texture, error) {
+	if len(data) == 0 {
+		return nil, errors.New("NewTextureFromMemory: len(data)==0")
 	}
-	err = errors.New("NewTextureFromMemory: no data")
-	return
+
+	if cptr := C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), area.toCPtr()); cptr != nil {
+		texture := &Texture{cptr}
+		runtime.SetFinalizer(texture, (*Texture).destroy)
+
+		return texture, nil
+	}
+
+	return nil, genericError
 }
 
 // Create a new texture from an image
 //
 // 	image: Image to upload to the texture
-// 	area:  Area of the source image to load (NULL to load the entire image)
-func NewTextureFromImage(image *Image, area *IntRect) (texture *Texture, err error) {
-	texture = &Texture{C.sfTexture_createFromImage(image.toCPtr(), area.toCPtr())}
-	runtime.SetFinalizer(texture, (*Texture).destroy)
+// 	area:  Area of the source image to load (nil to load the entire image)
+func NewTextureFromImage(image *Image, area *IntRect) (*Texture, error) {
+	if cptr := C.sfTexture_createFromImage(image.toCPtr(), area.toCPtr()); cptr != nil {
+		texture := &Texture{cptr}
+		runtime.SetFinalizer(texture, (*Texture).destroy)
 
-	if texture.cptr == nil {
-		err = errors.New("NewTextureFromFile: Cannot create texture from image")
+		return texture, nil
 	}
 
-	return
+	return nil, genericError
 }
 
 // Copy an existing texture

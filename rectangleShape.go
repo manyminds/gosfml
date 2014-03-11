@@ -24,10 +24,14 @@ type RectangleShape struct {
 /////////////////////////////////////
 
 // Create a new rectangle shape
-func NewRectangleShape() *RectangleShape {
-	shape := &RectangleShape{C.sfRectangleShape_create(), nil}
-	runtime.SetFinalizer(shape, (*RectangleShape).destroy)
-	return shape
+func NewRectangleShape() (*RectangleShape, error) {
+	if cptr := C.sfRectangleShape_create(); cptr != nil {
+		shape := &RectangleShape{cptr, nil}
+		runtime.SetFinalizer(shape, (*RectangleShape).destroy)
+		return shape, nil
+	}
+
+	return nil, genericError
 }
 
 // Copy an existing rectangle shape

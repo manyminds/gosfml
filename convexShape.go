@@ -23,10 +23,13 @@ type ConvexShape struct {
 ///		FUNCS
 /////////////////////////////////////
 
-func NewConvexShape() *ConvexShape {
-	shape := &ConvexShape{C.sfConvexShape_create(), nil}
-	runtime.SetFinalizer(shape, (*ConvexShape).destroy)
-	return shape
+func NewConvexShape() (*ConvexShape, error) {
+	if cptr := C.sfConvexShape_create(); cptr != nil {
+		shape := &ConvexShape{cptr, nil}
+		runtime.SetFinalizer(shape, (*ConvexShape).destroy)
+		return shape, nil
+	}
+	return nil, genericError
 }
 
 //Copy an existing convex shape

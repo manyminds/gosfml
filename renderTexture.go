@@ -30,17 +30,21 @@ type RenderTexture struct {
 // 	width:       Width of the render texture
 // 	height:      Height of the render texture
 // 	depthBuffer: Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
-func NewRenderTexture(width, height uint, depthbuffer bool) *RenderTexture {
+func NewRenderTexture(width, height uint, depthbuffer bool) (*RenderTexture, error) {
 	//create the render texture
-	renderTexture := &RenderTexture{cptr: C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer))}
+	if cptr := C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer)); cptr != nil {
+		renderTexture := &RenderTexture{cptr: cptr}
 
-	//view
-	renderTexture.SetView(newViewFromPtr(C.sfRenderTexture_getView(renderTexture.cptr)))
+		//view
+		renderTexture.SetView(newViewFromPtr(C.sfRenderTexture_getView(renderTexture.cptr)))
 
-	//GC
-	runtime.SetFinalizer(renderTexture, (*RenderTexture).destroy)
+		//GC
+		runtime.SetFinalizer(renderTexture, (*RenderTexture).destroy)
 
-	return renderTexture
+		return renderTexture, nil
+	}
+
+	return nil, genericError
 }
 
 // Destroy an existing render texture

@@ -32,7 +32,7 @@ type RenderWindow struct {
 // 	mode:            Video mode to use
 // 	title:           Title of the window
 // 	style:           Window style
-// 	contextSettings: Creation settings (pass nil to use default values)
+// 	contextSettings: Creation settings
 func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings ContextSettings) (window *RenderWindow) {
 	//string conversion
 	utf32 := strToRunes(title)
