@@ -17,7 +17,7 @@ import "C"
 import "errors"
 
 //As SFML does not provide useful errors we just return a generic error message
-var genericError = errors.New("Error: See std::out for more details")
+var genericError = errors.New("Error: See stderr for more details")
 
 /////////////////////////////////////
 ///		WRAPPING HELPERS

@@ -94,10 +94,18 @@ func NewImageFromColor(width, height uint, color Color) (*Image, error) {
 // 	width:  Width of the image
 // 	height: Height of the image
 // 	pixels: Slice of pixels to copy to the image
-func NewImageFromPixels(width, height uint, data []byte) *Image {
-	image := &Image{C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))}
-	runtime.SetFinalizer(image, (*Image).destroy)
-	return image
+func NewImageFromPixels(width, height uint, data []byte) (*Image, error) {
+	if len(data) == 0 {
+		return nil, errors.New("NewImageFromPixels: len(data)==0")
+	}
+
+	if cptr := C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0])); cptr != nil {
+		image := &Image{cptr}
+		runtime.SetFinalizer(image, (*Image).destroy)
+		return image, nil
+	}
+
+	return nil, genericError
 }
 
 // Create an image from a file in memory
@@ -108,12 +116,16 @@ func NewImageFromPixels(width, height uint, data []byte) *Image {
 //
 // 	data: Slice containing the file data
 func NewImageFromMemory(data []byte) (*Image, error) {
-	if len(data) > 0 {
-		image := &Image{C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))}
+	if len(data) == 0 {
+		return nil, errors.New("NewImageFromMemory: len(data)==0")
+	}
+
+	if cptr := C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data))); cptr != nil {
+		image := &Image{cptr}
 		runtime.SetFinalizer(image, (*Image).destroy)
 		return image, nil
 	}
-	return nil, errors.New("NewImageFromMemory: no data")
+	return nil, genericError
 }
 
 // Copy an existing image
@@ -137,11 +149,15 @@ func (this *Image) destroy() {
 // if it already exists. This function fails if the image is empty.
 //
 // 	filename: Path of the file to save
-func (this *Image) SaveToFile(file string) {
+func (this *Image) SaveToFile(file string) error {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 
-	C.sfImage_saveToFile(this.cptr, cFile)
+	if !sfBool2Go(C.sfImage_saveToFile(this.cptr, cFile)) {
+		return genericError
+	}
+
+	return nil
 }
 
 // Return the size of an image
