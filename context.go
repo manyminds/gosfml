@@ -9,6 +9,12 @@ import "C"
 import "runtime"
 
 /////////////////////////////////////
+///		VARS
+/////////////////////////////////////
+
+var globalCtx = NewContext()
+
+/////////////////////////////////////
 ///		STRUCTS
 /////////////////////////////////////
 
@@ -40,5 +46,4 @@ func (this *Context) destroy() {
 // 	active: true to activate, false to deactivate
 func (this *Context) SetActive(active bool) {
 	C.sfContext_setActive(this.cptr, goBool2C(active))
-
 }

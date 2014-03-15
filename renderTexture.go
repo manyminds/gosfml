@@ -17,8 +17,10 @@ import (
 /////////////////////////////////////
 
 type RenderTexture struct {
-	cptr *C.sfRenderTexture
-	view *View
+	cptr    *C.sfRenderTexture
+	view    *View
+	texture *Texture
+	defView *View
 }
 
 /////////////////////////////////////
@@ -34,6 +36,8 @@ func NewRenderTexture(width, height uint, depthbuffer bool) (*RenderTexture, err
 	//create the render texture
 	if cptr := C.sfRenderTexture_create(C.uint(width), C.uint(height), goBool2C(depthbuffer)); cptr != nil {
 		renderTexture := &RenderTexture{cptr: cptr}
+		renderTexture.texture = &Texture{C.sfRenderTexture_getTexture(cptr)}
+		renderTexture.defView = &View{C.sfRenderTexture_getDefaultView(cptr)}
 
 		//view
 		renderTexture.SetView(newViewFromPtr(C.sfRenderTexture_getView(renderTexture.cptr)))
@@ -49,8 +53,10 @@ func NewRenderTexture(width, height uint, depthbuffer bool) (*RenderTexture, err
 
 // Destroy an existing render texture
 func (this *RenderTexture) destroy() {
+	globalCtx.SetActive(true)
 	C.sfRenderTexture_destroy(this.cptr)
 	this.cptr = nil
+	globalCtx.SetActive(false)
 }
 
 // Get the size of the rendering region of a render texture
@@ -93,7 +99,7 @@ func (this *RenderTexture) GetView() *View {
 
 // Get the default view of a render texture
 func (this *RenderTexture) GetDefaultView() *View {
-	return newViewFromPtr(C.sfRenderTexture_getDefaultView(this.cptr))
+	return this.defView
 }
 
 // Get the viewport of a view applied to this target
@@ -199,7 +205,7 @@ func (this *RenderTexture) ResetGLStates() {
 
 // Get the target texture of a render texture
 func (this *RenderTexture) GetTexture() *Texture {
-	return &Texture{C.sfRenderTexture_getTexture(this.cptr)}
+	return this.texture
 }
 
 // Enable or disable the smooth filter on a render texture
