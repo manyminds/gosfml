@@ -104,7 +104,6 @@ func (this *Texture) Copy() *Texture {
 func (this *Texture) destroy() {
 	globalCtx.SetActive(true)
 	C.sfTexture_destroy(this.cptr)
-	this.cptr = nil
 	globalCtx.SetActive(false)
 }
 

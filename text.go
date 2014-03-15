@@ -57,7 +57,6 @@ func NewText(font *Font) (*Text, error) {
 // Destroy an existing text
 func (this *Text) destroy() {
 	C.sfText_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Copy an existing text

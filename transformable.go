@@ -31,7 +31,6 @@ func NewTransformable() *Transformable {
 // Destroy an existing transformable
 func (this *Transformable) destroy() {
 	C.sfTransformable_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Copy an existing transformable

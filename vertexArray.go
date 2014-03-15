@@ -66,7 +66,6 @@ func (this *VertexArray) Copy() *VertexArray {
 // Destroy an existing vertex array
 func (this *VertexArray) destroy() {
 	C.sfVertexArray_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Return the vertex count of a vertex array

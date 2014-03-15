@@ -131,7 +131,6 @@ func (this *Window) Close() {
 // Destroy an existing window
 func (this *Window) destroy() {
 	C.sfWindow_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Get the event on top of event queue of a window, if any, and pop it

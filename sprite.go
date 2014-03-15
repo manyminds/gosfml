@@ -46,7 +46,6 @@ func (this *Sprite) Copy() *Sprite {
 // Destroy an existing sprite
 func (this *Sprite) destroy() {
 	C.sfSprite_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Set the position of a sprite

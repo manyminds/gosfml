@@ -41,7 +41,6 @@ func (this *ConvexShape) Copy() *ConvexShape {
 
 func (this *ConvexShape) destroy() {
 	C.sfConvexShape_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Set the position of a convex shape

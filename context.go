@@ -38,7 +38,6 @@ func NewContext() *Context {
 // Destroy a context
 func (this *Context) destroy() {
 	C.sfContext_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Activate or deactivate explicitely a context

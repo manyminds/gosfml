@@ -61,10 +61,6 @@ func NewSoundRecorder(onStart SoundRecorderCallbackStart, onProgress SoundRecord
 // Destroy an existing SoundRecorder
 func (this *SoundRecorder) destroy() {
 	C.sfSoundRecorder_destroy(this.cptr)
-	this.cptr = nil
-	this.startCallback = nil
-	this.stopCallback = nil
-	this.progressCallback = nil
 }
 
 // The sampleRate parameter defines the number of audio samples

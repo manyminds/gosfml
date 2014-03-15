@@ -76,7 +76,6 @@ func NewMusicFromMemory(data []byte) (*Music, error) {
 // Destroy a music
 func (this *Music) destroy() {
 	C.sfMusic_destroy(this.cptr)
-	this.cptr = nil
 }
 
 // Start or resume playing a music

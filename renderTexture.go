@@ -55,7 +55,6 @@ func NewRenderTexture(width, height uint, depthbuffer bool) (*RenderTexture, err
 func (this *RenderTexture) destroy() {
 	globalCtx.SetActive(true)
 	C.sfRenderTexture_destroy(this.cptr)
-	this.cptr = nil
 	globalCtx.SetActive(false)
 }
 
