@@ -105,7 +105,7 @@ const (
 	KeyF6               ///< The F6 key
 	KeyF7               ///< The F7 key
 	KeyF8               ///< The F8 key
-	KeyF9               ///< The F8 key
+	KeyF9               ///< The F9 key
 	KeyF10              ///< The F10 key
 	KeyF11              ///< The F11 key
 	KeyF12              ///< The F12 key
