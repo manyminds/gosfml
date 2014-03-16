@@ -72,9 +72,9 @@ func (this *Font) Copy() *Font {
 }
 
 func (this *Font) destroy() {
-	globalCtx.SetActive(true)
+	globalCtxSetActive(true)
 	C.sfFont_destroy(this.cptr)
-	globalCtx.SetActive(false)
+	globalCtxSetActive(false)
 }
 
 // Retrieve a glyph of the font

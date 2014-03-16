@@ -102,9 +102,9 @@ func (this *Texture) Copy() *Texture {
 
 // Destroy an existing texture
 func (this *Texture) destroy() {
-	globalCtx.SetActive(true)
+	globalCtxSetActive(true)
 	C.sfTexture_destroy(this.cptr)
-	globalCtx.SetActive(false)
+	globalCtxSetActive(false)
 }
 
 // Return the size of the texture

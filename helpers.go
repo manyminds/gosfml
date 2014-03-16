@@ -14,10 +14,18 @@ size_t sizeofInt16() { return sizeof(sfInt16); }
 */
 import "C"
 
-import "errors"
+import (
+	"errors"
+	"sync"
+)
 
-//As SFML does not provide useful errors we just return a generic error message
-var genericError = errors.New("Error: See stderr for more details")
+var (
+	globalCtx = NewContext()
+	globalMutex sync.Mutex
+	
+	//As SFML does not provide useful errors we just return a generic error message
+	genericError = errors.New("Error: See stderr for more details")
+)
 
 /////////////////////////////////////
 ///		WRAPPING HELPERS
@@ -46,4 +54,16 @@ func utf32CString2Go(cstr *C.sfUint32) string {
 
 func strToRunes(str string) []rune {
 	return append([]rune(str), rune(0))
+}
+
+func globalCtxSetActive(active bool) {
+	if active {
+		globalMutex.Lock()
+	}
+	
+	globalCtx.SetActive(active)
+	
+	if !active {
+		globalMutex.Unlock()
+	}
 }

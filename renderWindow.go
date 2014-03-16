@@ -102,7 +102,9 @@ func (this *RenderWindow) Close() {
 
 // Destroy an existing render window
 func (this *RenderWindow) destroy() {
+	globalMutex.Lock()
 	C.sfRenderWindow_destroy(this.cptr)
+	globalMutex.Unlock()
 }
 
 // Change the title of a render window
@@ -132,7 +134,10 @@ func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
 // returns nil if there are no events left.
 func (this *RenderWindow) PollEvent() Event {
 	cEvent := C.sfEvent{}
+	
+	globalMutex.Lock()
 	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, &cEvent)
+	globalMutex.Unlock()
 
 	if hasEvent != 0 {
 		return handleEvent(&cEvent)
@@ -143,7 +148,10 @@ func (this *RenderWindow) PollEvent() Event {
 // Wait for an event and return it
 func (this *RenderWindow) WaitEvent() Event {
 	cEvent := C.sfEvent{}
+	
+	globalMutex.Lock()
 	hasError := C.sfRenderWindow_waitEvent(this.cptr, &cEvent)
+	globalMutex.Unlock()
 
 	if hasError != 0 {
 		return handleEvent(&cEvent)
@@ -155,7 +163,9 @@ func (this *RenderWindow) WaitEvent() Event {
 //
 // 	enabled: true to enable v-sync, false to deactivate
 func (this *RenderWindow) SetVSyncEnabled(enabled bool) {
+	globalMutex.Lock()
 	C.sfRenderWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
+	globalMutex.Unlock()
 }
 
 // Show or hide the mouse cursor on a render window
@@ -189,7 +199,10 @@ func (this *RenderWindow) SetVisible(visible bool) {
 //
 // return True if operation was successful, false otherwise
 func (this *RenderWindow) SetActive(active bool) bool {
-	return sfBool2Go(C.sfRenderWindow_setActive(this.cptr, goBool2C(active)))
+	globalMutex.Lock()
+	success := sfBool2Go(C.sfRenderWindow_setActive(this.cptr, goBool2C(active)))
+	globalMutex.Unlock()
+	return success
 }
 
 // Limit the framerate to a maximum fixed frequency for a render window
@@ -208,7 +221,9 @@ func (this *RenderWindow) SetJoystickThreshold(threshold float32) {
 
 // Display a render window on screen
 func (this *RenderWindow) Display() {
+	globalMutex.Lock()
 	C.sfRenderWindow_display(this.cptr)
+	globalMutex.Unlock()
 }
 
 // Clear a render window with the given color

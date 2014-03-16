@@ -130,7 +130,9 @@ func (this *Window) Close() {
 
 // Destroy an existing window
 func (this *Window) destroy() {
+	globalMutex.Lock()
 	C.sfWindow_destroy(this.cptr)
+	globalMutex.Unlock()
 }
 
 // Get the event on top of event queue of a window, if any, and pop it
@@ -138,7 +140,10 @@ func (this *Window) destroy() {
 // returns nil if there are no events left.
 func (this *Window) PollEvent() Event {
 	cEvent := C.sfEvent{}
+	
+	globalMutex.Lock()
 	hasEvent := C.sfWindow_pollEvent(this.cptr, &cEvent)
+	globalMutex.Unlock()
 
 	if hasEvent != 0 {
 		return handleEvent(&cEvent)
@@ -149,7 +154,10 @@ func (this *Window) PollEvent() Event {
 // Wait for an event and return it
 func (this *Window) WaitEvent() Event {
 	cEvent := C.sfEvent{}
+	
+	globalMutex.Lock()
 	hasError := C.sfWindow_waitEvent(this.cptr, &cEvent)
+	globalMutex.Unlock()
 
 	if hasError != 0 {
 		return handleEvent(&cEvent)
@@ -206,14 +214,18 @@ func (this *Window) SetKeyRepeatEnabled(enabled bool) {
 
 // Display a window on screen
 func (this *Window) Display() {
+	globalMutex.Lock()
 	C.sfWindow_display(this.cptr)
+	globalMutex.Unlock()
 }
 
 // Enable / disable vertical synchronization on a window
 //
 // 	enabled: true to enable v-sync, false to deactivate
 func (this *Window) SetVSyncEnabled(enabled bool) {
+	globalMutex.Lock()
 	C.sfWindow_setVerticalSyncEnabled(this.cptr, goBool2C(enabled))
+	globalMutex.Unlock()
 }
 
 // Activate or deactivate a window as the current target for rendering
@@ -222,7 +234,10 @@ func (this *Window) SetVSyncEnabled(enabled bool) {
 //
 // return True if operation was successful, false otherwise
 func (this *Window) SetActive(active bool) bool {
-	return sfBool2Go(C.sfWindow_setActive(this.cptr, goBool2C(active)))
+	globalMutex.Lock()
+	success := sfBool2Go(C.sfWindow_setActive(this.cptr, goBool2C(active)))
+	globalMutex.Unlock()
+	return success
 }
 
 // Show or hide the mouse cursor on a render window

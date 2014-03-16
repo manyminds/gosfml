@@ -53,9 +53,9 @@ func NewRenderTexture(width, height uint, depthbuffer bool) (*RenderTexture, err
 
 // Destroy an existing render texture
 func (this *RenderTexture) destroy() {
-	globalCtx.SetActive(true)
+	globalCtxSetActive(true)
 	C.sfRenderTexture_destroy(this.cptr)
-	globalCtx.SetActive(false)
+	globalCtxSetActive(false)
 }
 
 // Get the size of the rendering region of a render texture
@@ -73,7 +73,9 @@ func (this *RenderTexture) SetActive(active bool) {
 
 // Update the contents of the target texture
 func (this *RenderTexture) Display() {
+	globalMutex.Lock()
 	C.sfRenderTexture_display(this.cptr)
+	globalMutex.Unlock()
 }
 
 // Clear the rendertexture with the given color
