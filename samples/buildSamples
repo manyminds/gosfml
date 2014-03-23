@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for directory in $(ls -p | grep "/")
+do
+	echo "Building $directory"
+	cd $directory
+	go build
+	cd ..
+done
+
+exit 0
