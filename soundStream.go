@@ -42,6 +42,7 @@ type SoundStreamSeekCallback func(time time.Duration, userData interface{})
 // onSeek       Function called when the stream seeks (can't be nil)
 // channelCount Number of channels to use (1 = mono, 2 = stereo)
 // sampleRate   Sample rate of the sound (44100 = CD quality)
+// userData     Data to pass to the callback function (can be nil)
 func NewSoundStream(onGetData SoundStreamDataCallback, onSeek SoundStreamSeekCallback, channelCount, sampleRate uint, userData interface{}) (*SoundStream, error) {
 	if onGetData == nil || onSeek == nil {
 		return nil, errors.New("NewSoundStream: Callbacks cannot be nil")

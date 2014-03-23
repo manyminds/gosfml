@@ -11,12 +11,12 @@ extern sfBool go_callbackStart(void* ptr);
 extern void go_callbackStop(void* ptr);
 extern sfBool go_callbackProgress(const sfInt16* data, size_t count, void* ptr);
 
-sfBool callGo_soundRecorderStart(void* ptr) { return go_callbackStart(ptr); }
-void callGo_soundRecorderStop(void* ptr) { go_callbackStop(ptr); }
-sfBool callGo_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr) { return go_callbackProgress(data,count,ptr); }
+sfBool c_soundRecorderStart(void* ptr) { return go_callbackStart(ptr); }
+void c_soundRecorderStop(void* ptr) { go_callbackStop(ptr); }
+sfBool c_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr) { return go_callbackProgress(data, count, ptr); }
 
 sfSoundRecorder* sfSoundRecorder_createEx(void* obj) {
-	return sfSoundRecorder_create(callGo_soundRecorderStart,callGo_soundRecorderProgress,callGo_soundRecorderStop,obj);
+	return sfSoundRecorder_create(c_soundRecorderStart, c_soundRecorderProgress, c_soundRecorderStop,obj);
 }
 */
 import "C"

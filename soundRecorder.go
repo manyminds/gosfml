@@ -22,16 +22,16 @@ import (
 /////////////////////////////////////
 
 type SoundRecorder struct {
-	cptr *C.sfSoundRecorder
-
+	cptr             *C.sfSoundRecorder
 	startCallback    SoundRecorderCallbackStart
 	stopCallback     SoundRecorderCallbackStop
 	progressCallback SoundRecorderCallbackProgress
+	userData         interface{}
 }
 
-type SoundRecorderCallbackStart func() bool
-type SoundRecorderCallbackStop func()
-type SoundRecorderCallbackProgress func([]int16) bool
+type SoundRecorderCallbackStart func(userData interface{}) bool
+type SoundRecorderCallbackStop func(userData interface{})
+type SoundRecorderCallbackProgress func(samples []int16, userData interface{}) bool
 
 /////////////////////////////////////
 ///		FUNCS
@@ -42,11 +42,13 @@ type SoundRecorderCallbackProgress func([]int16) bool
 // 	onStart   Callback function which will be called when a new capture starts (can be nil)
 // 	onProcess Callback function which will be called each time there's audio data to process (cannot be nil)
 // 	onStop    Callback function which will be called when the current capture stops (can be nil)
-func NewSoundRecorder(onStart SoundRecorderCallbackStart, onProgress SoundRecorderCallbackProgress, onStop SoundRecorderCallbackStop) (*SoundRecorder, error) {
+// userData  Data to pass to the callback function (can be nil)
+func NewSoundRecorder(onStart SoundRecorderCallbackStart, onProgress SoundRecorderCallbackProgress, onStop SoundRecorderCallbackStop, userData interface{}) (*SoundRecorder, error) {
 	soundRecorder := &SoundRecorder{
 		startCallback:    onStart,
 		stopCallback:     onStop,
 		progressCallback: onProgress,
+		userData:         userData,
 	}
 
 	if cptr := C.sfSoundRecorder_createEx(unsafe.Pointer(soundRecorder)); cptr != nil {
@@ -105,15 +107,15 @@ func SoundRecorderIsAvailable() bool {
 //export go_callbackStart
 func go_callbackStart(ptr unsafe.Pointer) C.sfBool {
 	if (*(*SoundRecorder)(ptr)).startCallback != nil {
-		return goBool2C((*(*SoundRecorder)(ptr)).startCallback())
+		return goBool2C((*(*SoundRecorder)(ptr)).startCallback((*(*SoundRecorder)(ptr)).userData))
 	}
-	return C.sfTrue
+	return C.sfFalse //stop recording
 }
 
 //export go_callbackStop
 func go_callbackStop(ptr unsafe.Pointer) {
 	if (*(*SoundRecorder)(ptr)).stopCallback != nil {
-		(*(*SoundRecorder)(ptr)).stopCallback()
+		(*(*SoundRecorder)(ptr)).stopCallback((*(*SoundRecorder)(ptr)).userData)
 	}
 }
 
@@ -123,5 +125,5 @@ func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.
 	if count > 0 {
 		C.copyData(unsafe.Pointer(data), unsafe.Pointer(&buffer[0]), count*C.sizeofInt16())
 	}
-	return goBool2C((*(*SoundRecorder)(ptr)).progressCallback(buffer))
+	return goBool2C((*(*SoundRecorder)(ptr)).progressCallback(buffer, (*(*SoundRecorder)(ptr)).userData))
 }
