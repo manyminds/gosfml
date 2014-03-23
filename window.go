@@ -140,7 +140,7 @@ func (this *Window) destroy() {
 // returns nil if there are no events left.
 func (this *Window) PollEvent() Event {
 	cEvent := C.sfEvent{}
-	
+
 	globalMutex.Lock()
 	hasEvent := C.sfWindow_pollEvent(this.cptr, &cEvent)
 	globalMutex.Unlock()
@@ -154,7 +154,7 @@ func (this *Window) PollEvent() Event {
 // Wait for an event and return it
 func (this *Window) WaitEvent() Event {
 	cEvent := C.sfEvent{}
-	
+
 	globalMutex.Lock()
 	hasError := C.sfWindow_waitEvent(this.cptr, &cEvent)
 	globalMutex.Unlock()

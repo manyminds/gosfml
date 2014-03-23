@@ -11,6 +11,8 @@ import "C"
 ///		STRUCTS
 /////////////////////////////////////
 
+//Note:
+//Color{} represents Color{0,0,0,0} (rgba) i.e. transparent
 type Color struct {
 	R byte //<< Red component
 	G byte //<< Green component

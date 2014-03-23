@@ -134,7 +134,7 @@ func (this *RenderWindow) SetIcon(width, height uint, data []byte) error {
 // returns nil if there are no events left.
 func (this *RenderWindow) PollEvent() Event {
 	cEvent := C.sfEvent{}
-	
+
 	globalMutex.Lock()
 	hasEvent := C.sfRenderWindow_pollEvent(this.cptr, &cEvent)
 	globalMutex.Unlock()
@@ -148,7 +148,7 @@ func (this *RenderWindow) PollEvent() Event {
 // Wait for an event and return it
 func (this *RenderWindow) WaitEvent() Event {
 	cEvent := C.sfEvent{}
-	
+
 	globalMutex.Lock()
 	hasError := C.sfRenderWindow_waitEvent(this.cptr, &cEvent)
 	globalMutex.Unlock()

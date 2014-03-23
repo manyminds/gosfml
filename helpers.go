@@ -20,9 +20,9 @@ import (
 )
 
 var (
-	globalCtx = NewContext()
+	globalCtx   = NewContext()
 	globalMutex sync.Mutex
-	
+
 	//As SFML does not provide useful errors we just return a generic error message
 	genericError = errors.New("Error: See stderr for more details")
 )
@@ -60,9 +60,9 @@ func globalCtxSetActive(active bool) {
 	if active {
 		globalMutex.Lock()
 	}
-	
+
 	globalCtx.SetActive(active)
-	
+
 	if !active {
 		globalMutex.Unlock()
 	}

@@ -121,6 +121,9 @@ func (this *VertexArray) Resize(vertexCount uint) {
 // Add a vertex to a vertex array array
 //
 // 	vertex: Vertex to add
+//
+// Note: Do not forget to specify the vertex color (default color is transparent)
+// e.g. va.Append(Vertex{Position: Vector2f{}, Color: ColorWhite})
 func (this *VertexArray) Append(vertex Vertex) {
 	C.sfVertexArray_append(this.cptr, vertex.toC())
 }
