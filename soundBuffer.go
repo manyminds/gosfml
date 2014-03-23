@@ -122,11 +122,14 @@ func (this *SoundBuffer) destroy() {
 // w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
 //
 // 	file: Path of the sound file to write
-func (this *SoundBuffer) SaveToFile(file string) {
+func (this *SoundBuffer) SaveToFile(file string) error {
 	cFile := C.CString(file)
 	defer C.free(unsafe.Pointer(cFile))
 
-	C.sfSoundBuffer_saveToFile(this.cptr, cFile)
+	if !sfBool2Go(C.sfSoundBuffer_saveToFile(this.cptr, cFile)) {
+		return genericError
+	}
+	return nil
 }
 
 // Get the number of samples stored in a sound buffer
