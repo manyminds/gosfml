@@ -3,6 +3,6 @@
 // license that can be found in the license.txt file.
 
 /*
-Package gosfml2 provides access to the SFML2 API ( http://www.sfml-dev.org )
+Package gosfml2 provides access to the SFML2 library ( http://www.sfml-dev.org )
 */
 package gosfml2
