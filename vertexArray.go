@@ -4,7 +4,7 @@
 
 package gosfml2
 
-// #include <SFML/Graphics/VertexArray.h>
+// #include <SFML/Graphics/Vertex.h>
 // #include <SFML/Graphics/RenderWindow.h>
 // #include <SFML/Graphics/RenderTexture.h>
 import "C"
@@ -107,7 +107,7 @@ func (this *VertexArray) Resize(vertexCount int) {
 //
 // 	vertex: Vertex to add
 //
-// Note: Do not forget to specify the vertex color else the newly added vertex will be transparent
+// Note: You may want to specify the vertex color - otherwise the newly added vertex is invisible
 //
 //	example: vertexArray.Append(Vertex{Position: Vector2f{}, Color: ColorWhite})
 func (this *VertexArray) Append(vertex Vertex) {
@@ -147,6 +147,9 @@ func (this *VertexArray) GetBounds() FloatRect {
 	return FloatRect{}
 }
 
+// Draws a VertexArray on a render target
+//
+// Note: Use RenderTarget.DrawPrimitives to draw only a subset of the vertices
 func (this *VertexArray) Draw(target RenderTarget, renderStates RenderStates) {
 	if len(this.Vertices) > 0 {
 		rs := renderStates.toC()
