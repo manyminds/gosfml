@@ -54,7 +54,7 @@ func NewVertexArray() (*VertexArray, error) {
 
 // Copy an existing vertex array
 func (this *VertexArray) Copy() *VertexArray {
-	vertexArray := &VertexArray{PrimitiveType: this.PrimitiveType}
+	vertexArray := &VertexArray{Vertices: make([]Vertex,len(this.Vertices)), PrimitiveType: this.PrimitiveType}
 	copy(vertexArray.Vertices, this.Vertices)
 
 	return vertexArray
@@ -63,24 +63,6 @@ func (this *VertexArray) Copy() *VertexArray {
 // Return the vertex count of a vertex array
 func (this *VertexArray) GetVertexCount() uint {
 	return uint(len(this.Vertices))
-}
-
-// Get access to a vertex by its index
-//
-// This function doesn't check index, it must be in range
-// [0, vertex count - 1]. The behaviour is undefined
-// otherwise.
-func (this *VertexArray) GetVertex(index uint) Vertex {
-	return this.Vertices[index]
-}
-
-// Sets a vertex by its index
-//
-// This function doesn't check index, it must be in range
-// [0, vertex count - 1]. The behaviour is undefined
-// otherwise.
-func (this *VertexArray) SetVertex(vertex Vertex, index uint) {
-	this.Vertices[index] = vertex
 }
 
 // Clear a vertex array
@@ -116,31 +98,11 @@ func (this *VertexArray) Resize(vertexCount int) {
 //
 // 	vertex: Vertex to add
 //
-// Note: Do not forget to specify the vertex color (default color is transparent)
+// Note: Do not forget to specify the vertex color else the newly added vertex will be transparent
 //
 //	example: vertexArray.Append(Vertex{Position: Vector2f{}, Color: ColorWhite})
 func (this *VertexArray) Append(vertex Vertex) {
 	this.Vertices = append(this.Vertices, vertex)
-}
-
-// Set the type of primitives of a vertex array
-//
-// This function defines how the vertices must be interpreted
-// when it's time to draw them:
-// As points
-// As lines
-// As triangles
-// As quads
-// The default primitive type is Points.
-//
-// 	type: Type of primitive
-func (this *VertexArray) SetPrimitiveType(ptype PrimitiveType) {
-	this.PrimitiveType = ptype
-}
-
-// Get the type of primitives drawn by a vertex array
-func (this *VertexArray) GetPrimitiveType() PrimitiveType {
-	return this.PrimitiveType
 }
 
 // Compute the bounding rectangle of a vertex array
