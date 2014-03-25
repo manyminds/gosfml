@@ -16,13 +16,13 @@ import "unsafe"
 /////////////////////////////////////
 
 const (
-	PrimitivePoints         = iota ///< List of individual points
-	PrimitiveLines                 ///< List of individual lines
-	PrimitiveLinesStrip            ///< List of connected lines, a point uses the previous point to form a line
-	PrimitiveTriangles             ///< List of individual triangles
-	PrimitiveTrianglesStrip        ///< List of connected triangles, a point uses the two previous points to form a triangle
-	PrimitiveTrianglesFan          ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
-	PrimitiveQuads                 ///< List of individual quads
+	PrimitivePoints         PrimitiveType = C.sfPoints         ///< List of individual points
+	PrimitiveLines          PrimitiveType = C.sfLines          ///< List of individual lines
+	PrimitiveLinesStrip     PrimitiveType = C.sfLinesStrip     ///< List of connected lines, a point uses the previous point to form a line
+	PrimitiveTriangles      PrimitiveType = C.sfTriangles      ///< List of individual triangles
+	PrimitiveTrianglesStrip PrimitiveType = C.sfTrianglesStrip ///< List of connected triangles, a point uses the two previous points to form a triangle
+	PrimitiveTrianglesFan   PrimitiveType = C.sfTrianglesFan   ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
+	PrimitiveQuads          PrimitiveType = C.sfQuads          ///< List of individual quads
 )
 
 type PrimitiveType int
