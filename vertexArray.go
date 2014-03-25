@@ -54,15 +54,15 @@ func NewVertexArray() (*VertexArray, error) {
 
 // Copy an existing vertex array
 func (this *VertexArray) Copy() *VertexArray {
-	vertexArray := &VertexArray{Vertices: make([]Vertex,len(this.Vertices)), PrimitiveType: this.PrimitiveType}
+	vertexArray := &VertexArray{Vertices: make([]Vertex, len(this.Vertices)), PrimitiveType: this.PrimitiveType}
 	copy(vertexArray.Vertices, this.Vertices)
 
 	return vertexArray
 }
 
 // Return the vertex count of a vertex array
-func (this *VertexArray) GetVertexCount() uint {
-	return uint(len(this.Vertices))
+func (this *VertexArray) GetVertexCount() int {
+	return len(this.Vertices)
 }
 
 // Clear a vertex array
@@ -78,18 +78,27 @@ func (this *VertexArray) Clear() {
 // Resize the vertex array
 //
 // If vertexCount is greater than the current size, the previous
-// vertices are kept and new (default-constructed) vertices are
-// added.
+// vertices are kept and new (default-constructed i.e. Vertex.Color=ColorWhite)
+// vertices are added.
 // If vertexCount is less than the current size, existing vertices
 // are removed from the array.
 //
 // 	vertexCount: New size of the array (number of vertices)
 func (this *VertexArray) Resize(vertexCount int) {
 	if vertexCount > len(this.Vertices) {
+		i := len(this.Vertices)
+
+		//copy current vertices
 		vertices := make([]Vertex, vertexCount)
 		copy(vertices, this.Vertices)
 		this.Vertices = vertices
+
+		//newly added vertices are white (matches SFML behaviour)
+		for ; i < len(this.Vertices); i++ {
+			this.Vertices[i].Color = ColorWhite()
+		}
 	} else {
+		//resize
 		this.Vertices = this.Vertices[:vertexCount]
 	}
 }
