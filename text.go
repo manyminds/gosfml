@@ -282,8 +282,6 @@ func (this *Text) GetGlobalBounds() (rect FloatRect) {
 }
 
 // Draws a Text on a render target
-//
-// 	renderStates: can be nil to use the default render states
 func (this *Text) Draw(target RenderTarget, renderStates RenderStates) {
 	rs := renderStates.toC()
 	switch target.(type) {

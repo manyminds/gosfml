@@ -279,8 +279,6 @@ func (this *CircleShape) GetGlobalBounds() (rect FloatRect) {
 }
 
 //Draws a CircleShape on a render target
-//
-//renderStates: can be nil to use the default render states
 func (this *CircleShape) Draw(target RenderTarget, renderStates RenderStates) {
 	rs := renderStates.toC()
 	switch target.(type) {

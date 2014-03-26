@@ -232,8 +232,6 @@ func (this *Sprite) GetGlobalBounds() (rect FloatRect) {
 }
 
 // Draws a RectangleShape on a render target
-//
-// 	renderStates: can be nil to use the default render states
 func (this *Sprite) Draw(target RenderTarget, renderStates RenderStates) {
 	rs := renderStates.toC()
 	switch target.(type) {

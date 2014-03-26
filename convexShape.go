@@ -279,8 +279,6 @@ func (this *ConvexShape) GetGlobalBounds() (rect FloatRect) {
 }
 
 // Draws a convex Shape on a render target
-//
-// renderStates: can be nil to use the default render states
 func (this *ConvexShape) Draw(target RenderTarget, renderStates RenderStates) {
 	rs := renderStates.toC()
 	switch target.(type) {
