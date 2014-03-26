@@ -12,10 +12,10 @@ import "C"
 /////////////////////////////////////
 
 const (
-	BlendAlpha    BlendMode = iota ///< Pixel = Src * a + Dest * (1 - a)
-	BlendAdd                       ///< Pixel = Src + Dest
-	BlendMultiply                  ///< Pixel = Src * Dest
-	BlendNone                      ///< No blending
+	BlendAlpha    BlendMode = C.sfBlendAlpha    ///< Pixel = Src * a + Dest * (1 - a)
+	BlendAdd      BlendMode = C.sfBlendAdd      ///< Pixel = Src + Dest
+	BlendMultiply BlendMode = C.sfBlendMultiply ///< Pixel = Src * Dest
+	BlendNone     BlendMode = C.sfBlendNone     ///< No blending
 )
 
 /////////////////////////////////////
