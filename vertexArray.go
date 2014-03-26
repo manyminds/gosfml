@@ -78,7 +78,7 @@ func (this *VertexArray) Clear() {
 // Resize the vertex array
 //
 // If vertexCount is greater than the current size, the previous
-// vertices are kept and new (default-constructed i.e. Vertex.Color=ColorWhite)
+// vertices are kept and new (default-constructed i.e. Vertex.Color is set to white)
 // vertices are added.
 // If vertexCount is less than the current size, existing vertices
 // are removed from the array.
@@ -107,7 +107,7 @@ func (this *VertexArray) Resize(vertexCount int) {
 //
 // 	vertex: Vertex to add
 //
-// Note: You may want to specify the vertex color - otherwise the newly added vertex is invisible
+// Note: You may want to specify the vertex color - otherwise the newly added vertex will be invisible
 //
 //	example: vertexArray.Append(Vertex{Position: Vector2f{}, Color: ColorWhite})
 func (this *VertexArray) Append(vertex Vertex) {
