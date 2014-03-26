@@ -33,7 +33,7 @@ type RenderWindow struct {
 // 	title:           Title of the window
 // 	style:           Window style
 // 	contextSettings: Creation settings
-func NewRenderWindow(videoMode VideoMode, title string, style int, contextSettings ContextSettings) (window *RenderWindow) {
+func NewRenderWindow(videoMode VideoMode, title string, style WindowStyle, contextSettings ContextSettings) (window *RenderWindow) {
 	//string conversion
 	utf32 := strToRunes(title)
 

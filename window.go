@@ -19,13 +19,15 @@ import (
 /////////////////////////////////////
 
 const (
-	StyleNone       = C.sfNone         ///< No border / title bar (this flag and all others are mutually exclusive)
-	StyleTitlebar   = C.sfTitlebar     ///< Title bar + fixed border
-	StyleResize     = C.sfResize       ///< Titlebar + resizable border + maximize button
-	StyleClose      = C.sfClose        ///< Titlebar + close button
-	StyleFullscreen = C.sfFullscreen   ///< Fullscreen mode (this flag and all others are mutually exclusive)
-	StyleDefault    = C.sfDefaultStyle ///< Default window style
+	StyleNone       WindowStyle = C.sfNone         ///< No border / title bar (this flag and all others are mutually exclusive)
+	StyleTitlebar   WindowStyle = C.sfTitlebar     ///< Title bar + fixed border
+	StyleResize     WindowStyle = C.sfResize       ///< Titlebar + resizable border + maximize button
+	StyleClose      WindowStyle = C.sfClose        ///< Titlebar + close button
+	StyleFullscreen WindowStyle = C.sfFullscreen   ///< Fullscreen mode (this flag and all others are mutually exclusive)
+	StyleDefault    WindowStyle = C.sfDefaultStyle ///< Default window style
 )
+
+type WindowStyle int
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -68,7 +70,7 @@ var _ SystemWindow = &Window{}
 // 	title:           Title of the window
 // 	style:           Window style
 // 	contextSettings: Creation settings (pass nil to use default values)
-func NewWindow(videoMode VideoMode, title string, style int, contextSettings ContextSettings) (window *Window) {
+func NewWindow(videoMode VideoMode, title string, style WindowStyle, contextSettings ContextSettings) (window *Window) {
 	//string conversion
 	utf32 := strToRunes(title)
 
