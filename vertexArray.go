@@ -4,24 +4,23 @@
 
 package gosfml2
 
-// #include <SFML/Graphics/VertexArray.h>
+// #include <SFML/Graphics/Vertex.h>
 // #include <SFML/Graphics/RenderWindow.h>
 // #include <SFML/Graphics/RenderTexture.h>
 import "C"
-import "runtime"
 
 /////////////////////////////////////
 ///		CONSTS
 /////////////////////////////////////
 
 const (
-	PrimitivePoints         = iota ///< List of individual points
-	PrimitiveLines                 ///< List of individual lines
-	PrimitiveLinesStrip            ///< List of connected lines, a point uses the previous point to form a line
-	PrimitiveTriangles             ///< List of individual triangles
-	PrimitiveTrianglesStrip        ///< List of connected triangles, a point uses the two previous points to form a triangle
-	PrimitiveTrianglesFan          ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
-	PrimitiveQuads                 ///< List of individual quads
+	PrimitivePoints         PrimitiveType = C.sfPoints         ///< List of individual points
+	PrimitiveLines          PrimitiveType = C.sfLines          ///< List of individual lines
+	PrimitiveLinesStrip     PrimitiveType = C.sfLinesStrip     ///< List of connected lines, a point uses the previous point to form a line
+	PrimitiveTriangles      PrimitiveType = C.sfTriangles      ///< List of individual triangles
+	PrimitiveTrianglesStrip PrimitiveType = C.sfTrianglesStrip ///< List of connected triangles, a point uses the two previous points to form a triangle
+	PrimitiveTrianglesFan   PrimitiveType = C.sfTrianglesFan   ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
+	PrimitiveQuads          PrimitiveType = C.sfQuads          ///< List of individual quads
 )
 
 type PrimitiveType int
@@ -31,7 +30,8 @@ type PrimitiveType int
 /////////////////////////////////////
 
 type VertexArray struct {
-	cptr *C.sfVertexArray
+	Vertices      []Vertex
+	PrimitiveType PrimitiveType
 }
 
 type Vertex struct {
@@ -46,53 +46,21 @@ type Vertex struct {
 
 // Create a new vertex array
 func NewVertexArray() (*VertexArray, error) {
-	if cptr := C.sfVertexArray_create(); cptr != nil {
-		vertexArray := &VertexArray{cptr}
-		runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
-
-		return vertexArray, nil
-	}
-
-	return nil, genericError
+	vertexArray := &VertexArray{}
+	return vertexArray, nil
 }
 
 // Copy an existing vertex array
 func (this *VertexArray) Copy() *VertexArray {
-	vertexArray := &VertexArray{C.sfVertexArray_copy(this.cptr)}
-	runtime.SetFinalizer(vertexArray, (*VertexArray).destroy)
+	vertexArray := &VertexArray{Vertices: make([]Vertex, len(this.Vertices)), PrimitiveType: this.PrimitiveType}
+	copy(vertexArray.Vertices, this.Vertices)
+
 	return vertexArray
 }
 
-// Destroy an existing vertex array
-func (this *VertexArray) destroy() {
-	C.sfVertexArray_destroy(this.cptr)
-}
-
 // Return the vertex count of a vertex array
-func (this *VertexArray) GetVertexCount() uint {
-	return uint(C.sfVertexArray_getVertexCount(this.cptr))
-}
-
-// Get access to a vertex by its index
-//
-// This function doesn't check index, it must be in range
-// [0, vertex count - 1]. The behaviour is undefined
-// otherwise.
-func (this *VertexArray) GetVertex(index uint) (vert Vertex) {
-	vert.fromC(*C.sfVertexArray_getVertex(this.cptr, C.uint(index)))
-	return
-}
-
-// Sets a vertex by its index
-//
-// This function doesn't check index, it must be in range
-// [0, vertex count - 1]. The behaviour is undefined
-// otherwise.
-func (this *VertexArray) SetVertex(vertex Vertex, index uint) {
-	cVert := C.sfVertexArray_getVertex(this.cptr, C.uint(index))
-	cVert.position = vertex.Position.toC()
-	cVert.color = vertex.Color.toC()
-	cVert.texCoords = vertex.TexCoords.toC()
+func (this *VertexArray) GetVertexCount() int {
+	return len(this.Vertices)
 }
 
 // Clear a vertex array
@@ -102,82 +70,86 @@ func (this *VertexArray) SetVertex(vertex Vertex, index uint) {
 // adding new vertices after clearing doesn't involve
 // reallocating all the memory.
 func (this *VertexArray) Clear() {
-	C.sfVertexArray_clear(this.cptr)
+	this.Vertices = this.Vertices[:0]
 }
 
 // Resize the vertex array
 //
 // If vertexCount is greater than the current size, the previous
-// vertices are kept and new (default-constructed) vertices are
-// added.
+// vertices are kept and new (default-constructed i.e. Vertex.Color is set to white)
+// vertices are added.
 // If vertexCount is less than the current size, existing vertices
 // are removed from the array.
 //
 // 	vertexCount: New size of the array (number of vertices)
-func (this *VertexArray) Resize(vertexCount uint) {
-	C.sfVertexArray_resize(this.cptr, C.uint(vertexCount))
+func (this *VertexArray) Resize(vertexCount int) {
+	if vertexCount > len(this.Vertices) {
+		i := len(this.Vertices)
+
+		//copy current vertices
+		vertices := make([]Vertex, vertexCount)
+		copy(vertices, this.Vertices)
+		this.Vertices = vertices
+
+		//newly added vertices are white (matches SFML behaviour)
+		for ; i < len(this.Vertices); i++ {
+			this.Vertices[i].Color = ColorWhite()
+		}
+	} else {
+		//resize
+		this.Vertices = this.Vertices[:vertexCount]
+	}
 }
 
 // Add a vertex to a vertex array array
 //
 // 	vertex: Vertex to add
 //
-// Note: Do not forget to specify the vertex color (default color is transparent)
+// Note: You may want to specify the vertex color - otherwise the newly added vertex will be invisible
 //
 //	example: vertexArray.Append(Vertex{Position: Vector2f{}, Color: ColorWhite})
 func (this *VertexArray) Append(vertex Vertex) {
-	C.sfVertexArray_append(this.cptr, vertex.toC())
-}
-
-// Set the type of primitives of a vertex array
-//
-// This function defines how the vertices must be interpreted
-// when it's time to draw them:
-// As points
-// As lines
-// As triangles
-// As quads
-// The default primitive type is Points.
-//
-// 	type: Type of primitive
-func (this *VertexArray) SetPrimitiveType(ptype PrimitiveType) {
-	C.sfVertexArray_setPrimitiveType(this.cptr, C.sfPrimitiveType(ptype))
-}
-
-// Get the type of primitives drawn by a vertex array
-func (this *VertexArray) GetPrimitiveType() PrimitiveType {
-	return PrimitiveType(C.sfVertexArray_getPrimitiveType(this.cptr))
+	this.Vertices = append(this.Vertices, vertex)
 }
 
 // Compute the bounding rectangle of a vertex array
 //
 // This function returns the axis-aligned rectangle that
 // contains all the vertices of the array
-func (this *VertexArray) GetBounds() (rect FloatRect) {
-	rect.fromC(C.sfVertexArray_getBounds(this.cptr))
-	return
-}
+func (this *VertexArray) GetBounds() FloatRect {
+	if len(this.Vertices) > 0 {
+		left := this.Vertices[0].Position.X
+		top := this.Vertices[0].Position.Y
+		right := this.Vertices[0].Position.X
+		bottom := this.Vertices[0].Position.Y
 
-func (this *VertexArray) Draw(target RenderTarget, renderStates RenderStates) {
-	rs := renderStates.toC()
-	switch target.(type) {
-	case *RenderWindow:
-		C.sfRenderWindow_drawVertexArray(target.(*RenderWindow).cptr, this.cptr, &rs)
-	case *RenderTexture:
-		C.sfRenderTexture_drawVertexArray(target.(*RenderTexture).cptr, this.cptr, &rs)
+		for i := 1; i < len(this.Vertices); i++ {
+			pos := this.Vertices[i].Position
+
+			if pos.X < left {
+				left = pos.X
+			} else if pos.X > right {
+				right = pos.X
+			}
+
+			if pos.Y < top {
+				top = pos.Y
+			} else if pos.Y > bottom {
+				bottom = pos.Y
+			}
+		}
+
+		return FloatRect{left, top, right - left, bottom - top}
 	}
+
+	return FloatRect{}
 }
 
-/////////////////////////////////////
-///		GO <-> C
-/////////////////////////////////////
-
-func (this *Vertex) fromC(vertex C.sfVertex) {
-	this.Position.fromC(vertex.position)
-	this.Color.fromC(vertex.color)
-	this.TexCoords.fromC(vertex.texCoords)
-}
-
-func (this *Vertex) toC() C.sfVertex {
-	return C.sfVertex{position: this.Position.toC(), color: this.Color.toC(), texCoords: this.TexCoords.toC()}
+// Draws a VertexArray on a render target
+//
+// Note: Use RenderTarget.DrawPrimitives to draw only a subset of its vertices
+func (this *VertexArray) Draw(target RenderTarget, renderStates RenderStates) {
+	if target != nil {
+		target.DrawPrimitives(this.Vertices, this.PrimitiveType, renderStates)
+	}
 }

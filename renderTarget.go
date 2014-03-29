@@ -22,7 +22,8 @@ type RenderTarget interface {
 	PopGLStates()
 	ResetGLStates()
 	GetSize() Vector2u
-	Draw(Drawer, RenderStates) //Renderstates can be nil (Default RenderStates)
+	Draw(Drawer, RenderStates)
+	DrawPrimitives([]Vertex, PrimitiveType, RenderStates)
 }
 
 /////////////////////////////////////

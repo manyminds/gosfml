@@ -264,6 +264,14 @@ func (this *RenderWindow) Draw(drawer Drawer, renderStates RenderStates) {
 	drawer.Draw(this, renderStates)
 }
 
+// Draw primitives defined by a slice of vertices
+func (this *RenderWindow) DrawPrimitives(vertices []Vertex, primType PrimitiveType, renderStates RenderStates) {
+	if len(vertices) > 0 {
+		rs := renderStates.toC()
+		C.sfRenderWindow_drawPrimitives(this.cptr, (*C.sfVertex)(unsafe.Pointer(&vertices[0])), C.uint(len(vertices)), C.sfPrimitiveType(primType), &rs)
+	}
+}
+
 // Convert a point from window coordinates to world coordinates
 //
 // This function finds the 2D position that matches the
