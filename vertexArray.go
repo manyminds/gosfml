@@ -9,8 +9,6 @@ package gosfml2
 // #include <SFML/Graphics/RenderTexture.h>
 import "C"
 
-import "unsafe"
-
 /////////////////////////////////////
 ///		CONSTS
 /////////////////////////////////////
@@ -149,15 +147,9 @@ func (this *VertexArray) GetBounds() FloatRect {
 
 // Draws a VertexArray on a render target
 //
-// Note: Use RenderTarget.DrawPrimitives to draw only a subset of the vertices
+// Note: Use RenderTarget.DrawPrimitives to draw only a subset of its vertices
 func (this *VertexArray) Draw(target RenderTarget, renderStates RenderStates) {
-	if len(this.Vertices) > 0 {
-		rs := renderStates.toC()
-		switch target.(type) {
-		case *RenderWindow:
-			C.sfRenderWindow_drawPrimitives(target.(*RenderWindow).cptr, (*C.sfVertex)(unsafe.Pointer(&this.Vertices[0])), C.uint(len(this.Vertices)), C.sfPrimitiveType(this.PrimitiveType), &rs)
-		case *RenderTexture:
-			C.sfRenderTexture_drawPrimitives(target.(*RenderWindow).cptr, (*C.sfVertex)(unsafe.Pointer(&this.Vertices[0])), C.uint(len(this.Vertices)), C.sfPrimitiveType(this.PrimitiveType), &rs)
-		}
+	if target != nil {
+		target.DrawPrimitives(this.Vertices, this.PrimitiveType, renderStates)
 	}
 }
