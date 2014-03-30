@@ -33,7 +33,7 @@ type TextStyle uint32
 /////////////////////////////////////
 
 type Text struct {
-	cptr *C.sfFont
+	cptr *C.sfText
 	font *Font
 }
 
