@@ -6,8 +6,6 @@ package gosfml2
 
 // #include <SFML/Audio/SoundBuffer.h>
 // #include <stdlib.h>
-// extern void copyData(void*, void*, size_t);
-// extern size_t sizeofInt16();
 import "C"
 
 import (
@@ -16,9 +14,6 @@ import (
 	"time"
 	"unsafe"
 )
-
-//MISSING:
-//			sfSoundBuffer_createFromStream
 
 /////////////////////////////////////
 ///		STRUCTS
@@ -147,7 +142,7 @@ func (this *SoundBuffer) GetSampleCount() uint {
 func (this *SoundBuffer) GetSamples() []int16 {
 	data := make([]int16, this.GetSampleCount())
 	if len(data) > 0 {
-		C.copyData(unsafe.Pointer(C.sfSoundBuffer_getSamples(this.cptr)), unsafe.Pointer(&data[0]), C.size_t(len(data))*C.sizeofInt16())
+		memcopy(unsafe.Pointer(&data[0]), unsafe.Pointer(C.sfSoundBuffer_getSamples(this.cptr)), len(data)*int(unsafe.Sizeof(int16(0))))
 	}
 	return data
 }

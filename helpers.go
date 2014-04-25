@@ -6,24 +6,26 @@ package gosfml2
 
 /*
 #include <SFML/System.h>
-#include <string.h>
+#include <string.h> //memcpy
 
-void incPtr(sfUint32** ptr)  { ++(*ptr); }
-void copyData(void* source, void* dest, size_t size) { memcpy(dest,source,size); }
-size_t sizeofInt16() { return sizeof(sfInt16); }
+void nextChar(sfUint32** ptr)
+{
+	++(*ptr);
+}
 */
 import "C"
 
 import (
 	"errors"
 	"sync"
+	"unsafe"
 )
 
 var (
 	globalCtx   = NewContext()
 	globalMutex sync.Mutex
 
-	//As SFML does not provide useful errors we just return a generic error message
+	//As SFML does not provide useful error codes, we just return a generic error message
 	genericError = errors.New("Error: See stderr for more details")
 )
 
@@ -42,16 +44,18 @@ func goBool2C(b bool) C.sfBool {
 	return C.sfBool(0)
 }
 
+// Convert a utf32 C string to a go string
 func utf32CString2Go(cstr *C.sfUint32) string {
 	var str string
 
-	for ptr := cstr; *ptr != 0; C.incPtr(&ptr) {
+	for ptr := cstr; *ptr != 0; C.nextChar(&ptr) {
 		str += string(rune(uint32(*ptr)))
 	}
 
 	return str
 }
 
+// Returns a null terminated UTF32 representation of str.
 func strToRunes(str string) []rune {
 	return append([]rune(str), rune(0))
 }
@@ -66,4 +70,8 @@ func globalCtxSetActive(active bool) {
 	if !active {
 		globalMutex.Unlock()
 	}
+}
+
+func memcopy(dest, src unsafe.Pointer, size int) {
+	C.memcpy(dest, src, C.size_t(size))
 }

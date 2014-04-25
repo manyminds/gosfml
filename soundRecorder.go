@@ -6,9 +6,8 @@ package gosfml2
 
 /*
 #include <SFML/Audio/SoundRecorder.h>
+
 extern sfSoundRecorder* sfSoundRecorder_createEx(void*);
-extern void copyData(void*, void*, size_t);
-extern size_t sizeofInt16();
 */
 import "C"
 
@@ -122,8 +121,8 @@ func go_callbackStop(ptr unsafe.Pointer) {
 //export go_callbackProgress
 func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.sfBool {
 	buffer := make([]int16, count)
-	if count > 0 {
-		C.copyData(unsafe.Pointer(data), unsafe.Pointer(&buffer[0]), count*C.sizeofInt16())
+	if len(buffer) > 0 {
+		memcopy(unsafe.Pointer(&buffer[0]), unsafe.Pointer(data), len(buffer)*int(unsafe.Sizeof(int16(0))))
 	}
 	return goBool2C((*(*SoundRecorder)(ptr)).progressCallback(buffer, (*(*SoundRecorder)(ptr)).userData))
 }

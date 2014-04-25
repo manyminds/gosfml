@@ -11,13 +11,15 @@ import "C"
 ///		STRUCTS
 /////////////////////////////////////
 
-//Note:
-//Color{} represents Color{0,0,0,0} (rgba) i.e. transparent
+// RGBA Color
+//
+// Color{} represents Color{0,0,0,0} i.e. transparent
 type Color struct {
-	R byte //<< Red component
-	G byte //<< Green component
-	B byte //<< Blue component
-	A byte //<< Alpha component (0 = transparent)
+	//Created by cgo -godefs - DO NOT EDIT
+	R uint8 //<< Red component
+	G uint8 //<< Green component
+	B uint8 //<< Blue component
+	A uint8 //<< Alpha component (0 = transparent)
 }
 
 /////////////////////////////////////
@@ -38,13 +40,13 @@ func ColorTransparent() Color { return Color{0, 0, 0, 0} }
 ///		FUNCS
 /////////////////////////////////////
 
-//Component-wise saturated addition of the two colors
+// Component-wise saturated addition of the two colors
 func (this Color) Add(other Color) (newColor Color) {
 	newColor.fromC(C.sfColor_add(this.toC(), other.toC()))
 	return
 }
 
-//Component-wise multiplication of the two colors
+// Component-wise multiplication of the two colors
 func (this Color) Modulate(other Color) (newColor Color) {
 	newColor.fromC(C.sfColor_modulate(this.toC(), other.toC()))
 	return

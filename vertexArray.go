@@ -35,6 +35,7 @@ type VertexArray struct {
 }
 
 type Vertex struct {
+	//Created by cgo -godefs - DO NOT EDIT
 	Position  Vector2f
 	Color     Color
 	TexCoords Vector2f
