@@ -210,11 +210,11 @@ func (EventMouseWheelMoved) Type() EventType {
 type EventJoystickMoved struct {
 	JoystickId uint         //< Index of the joystick (in range [0 .. JoystickCount - 1])
 	Axis       JoystickAxis //< Axis on which the joystick moved
-	position   float32      //< New position on the axis (in range [-100 .. 100])
+	Position   float32      //< New position on the axis (in range [-100 .. 100])
 }
 
 func newJoystickMoveEventFromC(ev *C.sfJoystickMoveEvent) EventJoystickMoved {
-	return EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), position: float32(ev.position)}
+	return EventJoystickMoved{JoystickId: uint(ev.joystickId), Axis: JoystickAxis(ev.axis), Position: float32(ev.position)}
 }
 
 func (EventJoystickMoved) Type() EventType {
