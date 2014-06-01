@@ -61,7 +61,7 @@ func NewImageFromFile(file string) (*Image, error) {
 // 	height: Height of the image
 func NewImage(width, height uint) (*Image, error) {
 	if cptr := C.sfImage_create(C.uint(width), C.uint(height)); cptr != nil {
-		image := &Image{}
+		image := &Image{cptr}
 		runtime.SetFinalizer(image, (*Image).destroy)
 		return image, nil
 	}
