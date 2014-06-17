@@ -12,14 +12,14 @@ sfBool go_callbackGetData(sfSoundStreamChunk* chunk, void* ptr);
 void go_callbackSeek(sfTime t, void* ptr);
 
 // C callbacks
-sfBool bridge_soundStreamGetData(sfSoundStreamChunk* chunk, void* ptr) 
+sfBool bridge_soundStreamGetData(sfSoundStreamChunk* chunk, void* ptr)
 {
-	return go_callbackGetData((void*)chunk, ptr); 
+	return go_callbackGetData((void*)chunk, ptr);
 }
 
-void bridge_soundStreamSeek(sfTime time, void* ptr) 
+void bridge_soundStreamSeek(sfTime time, void* ptr)
 {
-	go_callbackSeek(time, ptr); 
+	go_callbackSeek(time, ptr);
 }
 
 // create a sfSoundStream using the callbacks above.
@@ -29,4 +29,3 @@ sfSoundStream* sfSoundStream_createEx(unsigned int channelCount, unsigned int sa
 }
 */
 import "C"
-

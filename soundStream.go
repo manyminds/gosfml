@@ -186,7 +186,7 @@ func (this *SoundStream) SetAttenuation(attenuation float32) {
 // The playing position can be changed when the stream is
 // either paused or playing.
 func (this *SoundStream) SetPlayingOffset(offset time.Duration) {
-	C.sfSoundStream_setPlayingOffset(this.cptr, C.sfTime{microseconds: (C.sfInt64(offset / time.Microsecond))})
+	C.sfSoundStream_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
 }
 
 // Set whether or not a sound stream should loop after reaching the end
@@ -238,7 +238,7 @@ func (this *SoundStream) GetLoop() bool {
 
 // Get the current playing position of a sound stream
 func (this *SoundStream) GetPlayingOffset() time.Duration {
-	return time.Duration(C.sfSoundStream_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
+	return time.Duration(C.sfTime_asMicroseconds(C.sfSoundStream_getPlayingOffset(this.cptr))) * time.Microsecond
 }
 
 /////////////////////////////////////
@@ -263,8 +263,8 @@ func go_callbackGetData(chunk *C.sfSoundStreamChunk, ptr unsafe.Pointer) C.sfBoo
 //export go_callbackSeek
 func go_callbackSeek(t C.sfTime, ptr unsafe.Pointer) {
 	soundStream := (*SoundStream)(ptr)
-	
+
 	if soundStream.seekCallback != nil {
-		soundStream.seekCallback(time.Duration(t.microseconds)*time.Microsecond, soundStream.userData)
+		soundStream.seekCallback(time.Duration(C.sfTime_asMicroseconds(t))*time.Microsecond, soundStream.userData)
 	}
 }

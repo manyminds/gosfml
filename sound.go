@@ -182,7 +182,7 @@ func (this *Sound) SetAttenuation(attenuation float32) {
 // The playing position can be changed when the sound is
 // either paused or playing.
 func (this *Sound) SetPlayingOffset(offset time.Duration) {
-	C.sfSound_setPlayingOffset(this.cptr, C.sfTime{microseconds: (C.sfInt64(offset / time.Microsecond))})
+	C.sfSound_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
 }
 
 // Tell whether or not a sound is in loop mode
@@ -224,5 +224,5 @@ func (this *Sound) GetAttenuation() float32 {
 
 // Get the current playing position of a sound
 func (this *Sound) GetPlayingOffset() time.Duration {
-	return time.Duration(C.sfSound_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
+	return time.Duration(C.sfTime_asMicroseconds(C.sfSound_getPlayingOffset(this.cptr))) * time.Microsecond
 }

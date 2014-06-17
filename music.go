@@ -207,7 +207,7 @@ func (this *Music) SetAttenuation(attenuation float32) {
 //
 // 	timeOffset: New playing position
 func (this *Music) SetPlayingOffset(offset time.Duration) {
-	C.sfMusic_setPlayingOffset(this.cptr, C.sfTime{microseconds: (C.sfInt64(offset / time.Microsecond))})
+	C.sfMusic_setPlayingOffset(this.cptr, C.sfMicroseconds(C.sfInt64(offset/time.Microsecond)))
 }
 
 // Get the pitch of a music
@@ -244,7 +244,7 @@ func (this *Music) GetAttenuation() float32 {
 
 // Get the current playing position of a music
 func (this *Music) GetPlayingOffset() time.Duration {
-	return time.Duration(C.sfMusic_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
+	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
 }
 
 // Get the sample rate of a music
@@ -264,5 +264,5 @@ func (this *Music) GetChannelCount() uint {
 
 // Get the total duration of a music
 func (this *Music) GetDuration() time.Duration {
-	return time.Duration(C.sfMusic_getPlayingOffset(this.cptr).microseconds) * time.Microsecond
+	return time.Duration(C.sfTime_asMicroseconds(C.sfMusic_getPlayingOffset(this.cptr))) * time.Microsecond
 }

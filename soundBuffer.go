@@ -166,7 +166,7 @@ func (this *SoundBuffer) GetChannelCount() uint {
 
 // Get the total duration of a sound buffer
 func (this *SoundBuffer) GetDuration() time.Duration {
-	return time.Duration(C.sfSoundBuffer_getDuration(this.cptr).microseconds) * time.Microsecond
+	return time.Duration(C.sfTime_asMicroseconds(C.sfSoundBuffer_getDuration(this.cptr))) * time.Microsecond
 }
 
 /////////////////////////////////////

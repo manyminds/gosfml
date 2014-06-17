@@ -124,7 +124,7 @@ func go_callbackStop(ptr unsafe.Pointer) {
 func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.sfBool {
 	buffer := make([]int16, count)
 	soundRecoder := (*SoundRecorder)(ptr)
-	
+
 	if len(buffer) > 0 {
 		memcopy(unsafe.Pointer(&buffer[0]), unsafe.Pointer(data), len(buffer)*int(unsafe.Sizeof(int16(0))))
 	}

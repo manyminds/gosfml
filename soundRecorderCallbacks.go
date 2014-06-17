@@ -29,7 +29,7 @@ sfBool bridge_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr
 }
 
 // create a sfSoundRecorder using the callbacks above.
-sfSoundRecorder* sfSoundRecorder_createEx(void* obj) 
+sfSoundRecorder* sfSoundRecorder_createEx(void* obj)
 {
 	return sfSoundRecorder_create(bridge_soundRecorderStart, bridge_soundRecorderProgress, bridge_soundRecorderStop,obj);
 }
