@@ -7,7 +7,7 @@ package gosfml2
 /*
 #include <SFML/Audio/SoundRecorder.h>
 
-extern sfSoundRecorder* sfSoundRecorder_createEx(void*);
+sfSoundRecorder* sfSoundRecorder_createEx(void*);
 */
 import "C"
 
@@ -105,24 +105,28 @@ func SoundRecorderIsAvailable() bool {
 
 //export go_callbackStart
 func go_callbackStart(ptr unsafe.Pointer) C.sfBool {
-	if (*(*SoundRecorder)(ptr)).startCallback != nil {
-		return goBool2C((*(*SoundRecorder)(ptr)).startCallback((*(*SoundRecorder)(ptr)).userData))
+	soundRecoder := (*SoundRecorder)(ptr)
+	if soundRecoder.startCallback != nil {
+		return goBool2C(soundRecoder.startCallback(soundRecoder.userData))
 	}
 	return C.sfFalse //stop recording
 }
 
 //export go_callbackStop
 func go_callbackStop(ptr unsafe.Pointer) {
-	if (*(*SoundRecorder)(ptr)).stopCallback != nil {
-		(*(*SoundRecorder)(ptr)).stopCallback((*(*SoundRecorder)(ptr)).userData)
+	soundRecoder := (*SoundRecorder)(ptr)
+	if soundRecoder.stopCallback != nil {
+		soundRecoder.stopCallback(soundRecoder.userData)
 	}
 }
 
 //export go_callbackProgress
 func go_callbackProgress(data *C.sfInt16, count C.size_t, ptr unsafe.Pointer) C.sfBool {
 	buffer := make([]int16, count)
+	soundRecoder := (*SoundRecorder)(ptr)
+	
 	if len(buffer) > 0 {
 		memcopy(unsafe.Pointer(&buffer[0]), unsafe.Pointer(data), len(buffer)*int(unsafe.Sizeof(int16(0))))
 	}
-	return goBool2C((*(*SoundRecorder)(ptr)).progressCallback(buffer, (*(*SoundRecorder)(ptr)).userData))
+	return goBool2C(soundRecoder.progressCallback(buffer, soundRecoder.userData))
 }

@@ -7,7 +7,7 @@ package gosfml2
 /*
 #include <SFML/Audio/SoundStream.h>
 
-extern sfSoundStream* sfSoundStream_createEx(unsigned int channelCount, unsigned int sampleRate,void* obj);
+sfSoundStream* sfSoundStream_createEx(unsigned int channelCount, unsigned int sampleRate,void* obj);
 */
 import "C"
 
@@ -247,8 +247,10 @@ func (this *SoundStream) GetPlayingOffset() time.Duration {
 
 //export go_callbackGetData
 func go_callbackGetData(chunk *C.sfSoundStreamChunk, ptr unsafe.Pointer) C.sfBool {
-	if (*(*SoundStream)(ptr)).dataCallback != nil {
-		r, goChunk := (*(*SoundStream)(ptr)).dataCallback((*(*SoundStream)(ptr)).userData)
+	soundStream := (*SoundStream)(ptr)
+
+	if soundStream.dataCallback != nil {
+		r, goChunk := soundStream.dataCallback(soundStream.userData)
 		chunk.sampleCount = C.uint(len(goChunk))
 		if len(goChunk) > 0 {
 			chunk.samples = (*C.sfInt16)(unsafe.Pointer(&goChunk[0]))
@@ -259,8 +261,10 @@ func go_callbackGetData(chunk *C.sfSoundStreamChunk, ptr unsafe.Pointer) C.sfBoo
 }
 
 //export go_callbackSeek
-func go_callbackSeek(ctime C.sfTime, ptr unsafe.Pointer) {
-	if (*(*SoundStream)(ptr)).seekCallback != nil {
-		(*(*SoundStream)(ptr)).seekCallback(time.Duration(ctime.microseconds)*time.Microsecond, (*(*SoundStream)(ptr)).userData)
+func go_callbackSeek(t C.sfTime, ptr unsafe.Pointer) {
+	soundStream := (*SoundStream)(ptr)
+	
+	if soundStream.seekCallback != nil {
+		soundStream.seekCallback(time.Duration(t.microseconds)*time.Microsecond, soundStream.userData)
 	}
 }

@@ -7,14 +7,26 @@ package gosfml2
 /*
 #include <SFML/Audio/SoundStream.h>
 
-extern sfBool go_callbackGetData(sfSoundStreamChunk* chunk, void* ptr);
-extern void go_callbackSeek(sfTime time, void* ptr);
+// cgo export declarations
+sfBool go_callbackGetData(sfSoundStreamChunk* chunk, void* ptr);
+void go_callbackSeek(sfTime t, void* ptr);
 
-sfBool c_soundStreamGetData(sfSoundStreamChunk* chunk, void* ptr) { return go_callbackGetData(chunk, ptr); }
-void c_soundStreamSeek(sfTime time, void* ptr) { go_callbackSeek(time ,ptr); }
+// C callbacks
+sfBool bridge_soundStreamGetData(sfSoundStreamChunk* chunk, void* ptr) 
+{
+	return go_callbackGetData((void*)chunk, ptr); 
+}
 
-sfSoundStream* sfSoundStream_createEx(unsigned int channelCount, unsigned int sampleRate,void* obj) {
-	return sfSoundStream_create(c_soundStreamGetData, c_soundStreamSeek, channelCount, sampleRate, obj);
+void bridge_soundStreamSeek(sfTime time, void* ptr) 
+{
+	go_callbackSeek(time, ptr); 
+}
+
+// create a sfSoundStream using the callbacks above.
+sfSoundStream* sfSoundStream_createEx(unsigned int channelCount, unsigned int sampleRate, void* obj)
+{
+	return sfSoundStream_create(bridge_soundStreamGetData, bridge_soundStreamSeek, channelCount, sampleRate, obj);
 }
 */
 import "C"
+

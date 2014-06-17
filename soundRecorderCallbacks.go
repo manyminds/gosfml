@@ -7,30 +7,32 @@ package gosfml2
 /*
 #include <SFML/Audio/SoundRecorder.h>
 
-// cgo exports
-extern sfBool go_callbackStart(void* ptr);
-extern void go_callbackStop(void* ptr);
-extern sfBool go_callbackProgress(const sfInt16* data, size_t count, void* ptr);
+// cgo export declarations
+sfBool go_callbackStart(void* ptr);
+void go_callbackStop(void* ptr);
+sfBool go_callbackProgress(const sfInt16* data, size_t count, void* ptr);
 
 // C callbacks
-sfBool c_soundRecorderStart(void* ptr)
+sfBool bridge_soundRecorderStart(void* ptr)
 {
 	return go_callbackStart(ptr);
 }
 
-void c_soundRecorderStop(void* ptr)
+void bridge_soundRecorderStop(void* ptr)
 {
 	go_callbackStop(ptr);
 }
 
-sfBool c_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr)
+sfBool bridge_soundRecorderProgress(const sfInt16* data, size_t count, void* ptr)
 {
 	return go_callbackProgress(data, count, ptr);
 }
 
 // create a sfSoundRecorder using the callbacks above.
-sfSoundRecorder* sfSoundRecorder_createEx(void* obj) {
-	return sfSoundRecorder_create(c_soundRecorderStart, c_soundRecorderProgress, c_soundRecorderStop,obj);
+sfSoundRecorder* sfSoundRecorder_createEx(void* obj) 
+{
+	return sfSoundRecorder_create(bridge_soundRecorderStart, bridge_soundRecorderProgress, bridge_soundRecorderStop,obj);
 }
+
 */
 import "C"
