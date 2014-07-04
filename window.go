@@ -57,8 +57,8 @@ type SystemWindow interface {
 }
 
 //TEST
-var _ SystemWindow = &RenderWindow{}
-var _ SystemWindow = &Window{}
+var _ SystemWindow = (*RenderWindow)(nil)
+var _ SystemWindow = (*Window)(nil)
 
 /////////////////////////////////////
 ///		FUNCTIONS

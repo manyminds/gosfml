@@ -184,8 +184,8 @@ func (this *Transform) toCPtr() *C.sfTransform {
 ///		TEST
 /////////////////////////////////////
 
-var _ Transformer = &Sprite{}
-var _ Transformer = &Text{}
-var _ Transformer = &RectangleShape{}
-var _ Transformer = &CircleShape{}
-var _ Transformer = &ConvexShape{}
+var _ Transformer = (*Sprite)(nil)
+var _ Transformer = (*Text)(nil)
+var _ Transformer = (*RectangleShape)(nil)
+var _ Transformer = (*CircleShape)(nil)
+var _ Transformer = (*ConvexShape)(nil)

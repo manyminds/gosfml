@@ -18,9 +18,9 @@ type Drawer interface {
 ///		TEST
 /////////////////////////////////////
 
-var _ Drawer = &Sprite{}
-var _ Drawer = &CircleShape{}
-var _ Drawer = &ConvexShape{}
-var _ Drawer = &RectangleShape{}
-var _ Drawer = &Text{}
-var _ Drawer = &VertexArray{}
+var _ Drawer = (*Sprite)(nil)
+var _ Drawer = (*CircleShape)(nil)
+var _ Drawer = (*ConvexShape)(nil)
+var _ Drawer = (*RectangleShape)(nil)
+var _ Drawer = (*Text)(nil)
+var _ Drawer = (*VertexArray)(nil)
