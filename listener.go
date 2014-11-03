@@ -53,7 +53,7 @@ func ListenerGetPosition() (pos Vector3f) {
 //
 // 	position: New direction of the listener
 func ListenerSetDirection(dir Vector3f) {
-	C.sfListener_setPosition(dir.toC())
+	C.sfListener_setDirection(dir.toC())
 }
 
 // Get the current orientation of the listener in the scene
