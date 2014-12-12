@@ -105,7 +105,7 @@ func (this *SoundRecorder) GetSampleRate() uint {
 //
 // 	interval Processing interval
 func (this *SoundRecorder) SetProcessingInterval(interval time.Duration) {
-	C.sfSoundRecorder_setProcessingInterval(this.cptr, C.sfTime{microseconds: C.sfInt64(int64(interval / 1000))})
+	C.sfSoundRecorder_setProcessingInterval(this.cptr, C.sfTime{microseconds: C.sfInt64(interval.Nanoseconds() / 1000)})
 }
 
 // Check if the system supports audio capture

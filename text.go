@@ -20,11 +20,11 @@ import (
 /////////////////////////////////////
 
 const (
-	TextRegular       = C.sfTextRegular       ///< Regular characters, no style
-	TextBold          = C.sfTextBold          ///< Characters are bold
-	TextItalic        = C.sfTextItalic        ///< Characters are in italic
-	TextUnderlined    = C.sfTextUnderlined    ///< Characters are underlined
-	TextStrikeThrough = C.sfTextStrikeThrough ///< Strike through characters
+	TextRegular       TextStyle = C.sfTextRegular       ///< Regular characters, no style
+	TextBold          TextStyle = C.sfTextBold          ///< Characters are bold
+	TextItalic        TextStyle = C.sfTextItalic        ///< Characters are in italic
+	TextUnderlined    TextStyle = C.sfTextUnderlined    ///< Characters are underlined
+	TextStrikeThrough TextStyle = C.sfTextStrikeThrough ///< Strike through characters
 )
 
 type TextStyle int

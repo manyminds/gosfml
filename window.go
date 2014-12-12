@@ -268,7 +268,7 @@ func (this *Window) HasFocus() bool {
 // If a window requests focus, it only hints to the operating
 // system, that it would like to be focused. The operating system
 // is free to deny the request.
-// This is not to be confused with RenderWindow.SetActive().
+// This is not to be confused with Window.SetActive().
 func (this *Window) RequestFocus() {
 	C.sfWindow_requestFocus(this.cptr)
 }
