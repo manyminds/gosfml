@@ -102,8 +102,8 @@ func (this *Font) GetGlyph(codePoint uint, characterSize uint32, bold bool) (gly
 // 	characterSize: Reference character size
 //
 // return Kerning value for first and second, in pixels
-func (this *Font) GetKerning(first uint32, second uint32, characterSize uint) int {
-	return int(C.sfFont_getKerning(this.cptr, C.sfUint32(first), C.sfUint32(second), C.uint(characterSize)))
+func (this *Font) GetKerning(first uint32, second uint32, characterSize uint) float32 {
+	return float32(C.sfFont_getKerning(this.cptr, C.sfUint32(first), C.sfUint32(second), C.uint(characterSize)))
 }
 
 // Get the line spacing
@@ -114,8 +114,8 @@ func (this *Font) GetKerning(first uint32, second uint32, characterSize uint) in
 // 	characterSize: Reference character size
 //
 // return Line spacing, in pixels
-func (this *Font) GetLineSpacing(characterSize uint) int {
-	return int(C.sfFont_getLineSpacing(this.cptr, C.uint(characterSize)))
+func (this *Font) GetLineSpacing(characterSize uint) float32 {
+	return float32(C.sfFont_getLineSpacing(this.cptr, C.uint(characterSize)))
 }
 
 // Retrieve the texture containing the loaded glyphs of a certain size
