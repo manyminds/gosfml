@@ -20,13 +20,14 @@ import (
 /////////////////////////////////////
 
 const (
-	TextRegular    = C.sfTextRegular    ///< Regular characters, no style
-	TextBold       = C.sfTextBold       ///< Characters are bold
-	TextItalic     = C.sfTextItalic     ///< Characters are in italic
-	TextUnderlined = C.sfTextUnderlined ///< Characters are underlined
+	TextRegular       = C.sfTextRegular       ///< Regular characters, no style
+	TextBold          = C.sfTextBold          ///< Characters are bold
+	TextItalic        = C.sfTextItalic        ///< Characters are in italic
+	TextUnderlined    = C.sfTextUnderlined    ///< Characters are underlined
+	TextStrikeThrough = C.sfTextStrikeThrough ///< Strike through characters
 )
 
-type TextStyle uint32
+type TextStyle int
 
 /////////////////////////////////////
 ///		STRUCTS
