@@ -13,6 +13,7 @@ import "C"
 
 import (
 	"runtime"
+	"time"
 	"unsafe"
 )
 
@@ -88,6 +89,23 @@ func (this *SoundRecorder) Stop() {
 // (for example, 44100 samples/sec is CD quality).
 func (this *SoundRecorder) GetSampleRate() uint {
 	return uint(C.sfSoundRecorder_getSampleRate(this.cptr))
+}
+
+// Set the processing interval
+//
+// The processing interval controls the period
+// between calls to the onProcessSamples function. You may
+// want to use a small interval if you want to process the
+// recorded data in real time, for example.
+//
+// Note: this is only a hint, the actual period may vary.
+// So don't rely on this parameter to implement precise timing.
+//
+// The default processing interval is 100 ms.
+//
+// 	interval Processing interval
+func (this *SoundRecorder) SetProcessingInterval(interval time.Duration) {
+	C.sfSoundRecorder_setProcessingInterval(this.cptr, C.sfTime{microseconds: C.sfInt64(int64(interval / 1000))})
 }
 
 // Check if the system supports audio capture
