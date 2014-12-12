@@ -12,7 +12,7 @@ import "C"
 /////////////////////////////////////
 
 type Glyph struct {
-	Advance     int     ///< Offset to move horizontically to the next character
+	Advance     float32 ///< Offset to move horizontically to the next character
 	Bounds      IntRect ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
 	TextureRect IntRect ///< Texture coordinates of the glyph inside the font's image
 }
@@ -22,7 +22,7 @@ type Glyph struct {
 /////////////////////////////////////
 
 func (this *Glyph) fromC(glyph C.sfGlyph) {
-	this.Advance = int(glyph.advance)
+	this.Advance = float32(glyph.advance)
 	this.Bounds.fromC(glyph.bounds)
 	this.TextureRect.fromC(glyph.textureRect)
 }
