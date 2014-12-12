@@ -44,20 +44,42 @@ func ListenerGetPosition() (pos Vector3f) {
 	return
 }
 
-// Set the orientation of the listener in the scene
+// Set the orientation of the forward vector in the scene
 //
-// The orientation defines the 3D axes of the listener
-// (left, up, front) in the scene. The orientation vector
-// doesn't have to be normalized.
-// The default listener's orientation is (0, 0, -1).
+// The direction (also called "at vector") is the vector
+// pointing forward from the listener's perspective. Together
+// with the up vector, it defines the 3D orientation of the
+// listener in the scene. The direction vector doesn't
+// have to be normalized.
+// The default listener's direction is (0, 0, -1).
 //
-// 	position: New direction of the listener
-func ListenerSetDirection(dir Vector3f) {
-	C.sfListener_setDirection(dir.toC())
+// 	direction New listener's direction
+func ListenerSetDirection(direction Vector3f) {
+	C.sfListener_setDirection(direction.toC())
 }
 
-// Get the current orientation of the listener in the scene
-func ListenerGetDirection() (dir Vector3f) {
-	dir.fromC(C.sfListener_getDirection())
+// Get the listener's forward vector (not normalized)
+func ListenerGetDirection() (direction Vector3f) {
+	direction.fromC(C.sfListener_getDirection())
+	return
+}
+
+// Set the upward vector of the listener in the scene
+//
+// The up vector is the vector that points upward from the
+// listener's perspective. Together with the direction, it
+// defines the 3D orientation of the listener in the scene.
+// The up vector doesn't have to be normalized.
+// The default listener's up vector is (0, 1, 0). It is usually
+// not necessary to change it, especially in 2D scenarios.
+//
+// 	upVec New listener's up vector
+func ListenerSetUpVector(upVec Vector3f) {
+	C.sfListener_setUpVector(upVec.toC())
+}
+
+// Get the current upward vector of the listener in the scene
+func ListenerGetUpVector() (upVec Vector3f) {
+	upVec.fromC(C.sfListener_getUpVector())
 	return
 }
