@@ -379,3 +379,27 @@ func (this *RenderWindow) ResetGLStates() {
 func (this *RenderWindow) Capture() *Image {
 	return newImageFromPtr(C.sfRenderWindow_capture(this.cptr))
 }
+
+// Check whether the render window has the input focus
+//
+// At any given time, only one window may have the input focus
+// to receive input events such as keystrokes or most mouse
+// events.
+//
+// 	True if window has focus, false otherwise
+func (this *RenderWindow) HasFocus() bool {
+	return sfBool2Go(C.sfRenderWindow_hasFocus(this.cptr))
+}
+
+// Request the current render window to be made the active
+// foreground window
+//
+// At any given time, only one window may have the input focus
+// to receive input events such as keystrokes or mouse events.
+// If a window requests focus, it only hints to the operating
+// system, that it would like to be focused. The operating system
+// is free to deny the request.
+// This is not to be confused with RenderWindow.SetActive().
+func (this *RenderWindow) RequestFocus() {
+	C.sfRenderWindow_requestFocus(this.cptr)
+}

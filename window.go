@@ -242,9 +242,33 @@ func (this *Window) SetActive(active bool) bool {
 	return success
 }
 
-// Show or hide the mouse cursor on a render window
+// Show or hide the mouse cursor on a window
 //
 // 	visible: true to show, false to hide
 func (this *Window) SetMouseCursorVisible(visible bool) {
 	C.sfWindow_setMouseCursorVisible(this.cptr, goBool2C(visible))
+}
+
+// Check whether the window has the input focus
+//
+// At any given time, only one window may have the input focus
+// to receive input events such as keystrokes or most mouse
+// events.
+//
+// 	True if window has focus, false otherwise
+func (this *Window) HasFocus() bool {
+	return sfBool2Go(C.sfWindow_hasFocus(this.cptr))
+}
+
+// Request the current window to be made the active
+// foreground window
+//
+// At any given time, only one window may have the input focus
+// to receive input events such as keystrokes or mouse events.
+// If a window requests focus, it only hints to the operating
+// system, that it would like to be focused. The operating system
+// is free to deny the request.
+// This is not to be confused with RenderWindow.SetActive().
+func (this *Window) RequestFocus() {
+	C.sfWindow_requestFocus(this.cptr)
 }
