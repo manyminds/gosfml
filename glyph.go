@@ -12,9 +12,9 @@ import "C"
 /////////////////////////////////////
 
 type Glyph struct {
-	Advance     float32 ///< Offset to move horizontically to the next character
-	Bounds      IntRect ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
-	TextureRect IntRect ///< Texture coordinates of the glyph inside the font's image
+	Advance     float32   ///< Offset to move horizontically to the next character
+	Bounds      FloatRect ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
+	TextureRect IntRect   ///< Texture coordinates of the glyph inside the font's image
 }
 
 /////////////////////////////////////
