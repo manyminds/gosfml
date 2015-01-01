@@ -113,6 +113,11 @@ func (this *Texture) GetSize() (size Vector2u) {
 	return
 }
 
+// Copy a texture's pixels to an image
+func (this *Texture) CopyToImage() *Image {
+	return newImageFromPtr(C.sfTexture_copyToImage(this.cptr))
+}
+
 // Update a texture from the contents of a window
 //
 // 	window:  Window to copy to the texture
