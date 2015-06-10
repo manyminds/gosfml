@@ -268,7 +268,7 @@ func (this *RenderWindow) Draw(drawer Drawer, renderStates RenderStates) {
 func (this *RenderWindow) DrawPrimitives(vertices []Vertex, primType PrimitiveType, renderStates RenderStates) {
 	if len(vertices) > 0 {
 		rs := renderStates.toC()
-		C.sfRenderWindow_drawPrimitives(this.cptr, (*C.sfVertex)(unsafe.Pointer(&vertices[0])), C.uint(len(vertices)), C.sfPrimitiveType(primType), &rs)
+		C.sfRenderWindow_drawPrimitives(this.cptr, (*C.sfVertex)(unsafe.Pointer(&vertices[0])), C.size_t(len(vertices)), C.sfPrimitiveType(primType), &rs)
 	}
 }
 

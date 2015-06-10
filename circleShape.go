@@ -235,7 +235,7 @@ func (this *CircleShape) GetPointCount() uint {
 
 // Get the total number of points of a circle shape
 func (this *CircleShape) GetPoint(index uint) (point Vector2f) {
-	point.fromC(C.sfCircleShape_getPoint(this.cptr, C.uint(index)))
+	point.fromC(C.sfCircleShape_getPoint(this.cptr, C.size_t(index)))
 	return
 }
 
@@ -251,7 +251,7 @@ func (this *CircleShape) GetRadius() float32 {
 
 // Set the number of points of a circle
 func (this *CircleShape) SetPointCount(count uint) {
-	C.sfCircleShape_setPointCount(this.cptr, C.uint(count))
+	C.sfCircleShape_setPointCount(this.cptr, C.size_t(count))
 }
 
 // Get the local bounding rectangle of a circle shape

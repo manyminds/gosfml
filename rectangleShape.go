@@ -275,7 +275,7 @@ func (this *RectangleShape) GetPointCount() uint {
 //
 // index: Index of the point to get, in range [0 .. GetPointCount() - 1]
 func (this *RectangleShape) GetPoint(index uint) (point Vector2f) {
-	point.fromC(C.sfRectangleShape_getPoint(this.cptr, C.uint(index)))
+	point.fromC(C.sfRectangleShape_getPoint(this.cptr, C.size_t(index)))
 	return
 }
 

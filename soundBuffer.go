@@ -89,7 +89,7 @@ func NewSoundBufferFromSamples(samples []int16, channelCount, sampleRate uint) (
 		return nil, errors.New("NewSoundBufferFromSamples: len(data)==0")
 	}
 
-	if cptr := C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.size_t(len(samples)), C.uint(channelCount), C.uint(sampleRate)); cptr != nil {
+	if cptr := C.sfSoundBuffer_createFromSamples((*C.sfInt16)(unsafe.Pointer(&samples[0])), C.sfUint64(len(samples)), C.uint(channelCount), C.uint(sampleRate)); cptr != nil {
 		buffer := &SoundBuffer{cptr}
 		runtime.SetFinalizer(buffer, (*SoundBuffer).destroy)
 

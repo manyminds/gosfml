@@ -232,7 +232,7 @@ func (this *ConvexShape) GetPointCount() uint {
 //
 // The result is undefined if index is out of the valid range.
 func (this *ConvexShape) GetPoint(index uint) (point Vector2f) {
-	point.fromC(C.sfConvexShape_getPoint(this.cptr, C.uint(index)))
+	point.fromC(C.sfConvexShape_getPoint(this.cptr, C.size_t(index)))
 	return
 }
 
@@ -240,7 +240,7 @@ func (this *ConvexShape) GetPoint(index uint) (point Vector2f) {
 //
 // count must be greater than 2 to define a valid shape.
 func (this *ConvexShape) SetPointCount(count uint) {
-	C.sfConvexShape_setPointCount(this.cptr, C.uint(count))
+	C.sfConvexShape_setPointCount(this.cptr, C.size_t(count))
 }
 
 // Set the position of a point in a convex shape
@@ -251,7 +251,7 @@ func (this *ConvexShape) SetPointCount(count uint) {
 // number of points. The result is undefined if index is out
 // of the valid range.
 func (this *ConvexShape) SetPoint(index uint, point Vector2f) {
-	C.sfConvexShape_setPoint(this.cptr, C.uint(index), point.toC())
+	C.sfConvexShape_setPoint(this.cptr, C.size_t(index), point.toC())
 }
 
 // Get the local bounding rectangle of a convex shape
