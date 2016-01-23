@@ -8,10 +8,11 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
 	"math"
 	"time"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 const (

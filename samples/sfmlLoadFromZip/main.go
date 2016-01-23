@@ -10,13 +10,14 @@ package main
 
 import (
 	"archive/zip"
-	sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"time"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 func loadFromZip(zipFile, file string) ([]byte, error) {

@@ -8,11 +8,12 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"runtime"
 	"strconv"
 	"time"
 	"unicode"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 func init() {

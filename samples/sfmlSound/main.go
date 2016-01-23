@@ -9,10 +9,11 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
 	"os"
 	"time"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 func playSound() {

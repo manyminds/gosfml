@@ -9,11 +9,12 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"math"
 	"math/rand"
 	"runtime"
 	"time"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 func init() {

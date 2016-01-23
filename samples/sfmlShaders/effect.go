@@ -9,9 +9,10 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"math"
 	"math/rand"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 type Effect interface {

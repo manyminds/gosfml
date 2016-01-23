@@ -8,9 +8,10 @@
 package main
 
 import (
-	sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
 	"time"
+
+	sf "github.com/manyminds/gosfml"
 )
 
 var recordedSamples = make([]int16, 0, 44100*10*10)
