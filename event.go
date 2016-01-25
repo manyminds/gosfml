@@ -16,6 +16,7 @@ package gosfml2
 // sfJoystickButtonEvent* getJoystickButtonEvent(sfEvent* ev) { return &ev->joystickButton; }
 // sfJoystickConnectEvent* getJoystickConnectEvent(sfEvent* ev) { return &ev->joystickConnect; }
 import "C"
+import "log"
 
 /////////////////////////////////////
 ///		CONSTS
@@ -32,6 +33,7 @@ const (
 	EventTypeKeyPressed             EventType = C.sfEvtKeyPressed
 	EventTypeKeyReleased            EventType = C.sfEvtKeyReleased
 	EventTypeMouseWheelMoved        EventType = C.sfEvtMouseWheelMoved
+	EventTypeMouseWheelScrolled     EventType = C.sfEvtMouseWheelScrolled
 	EventTypeMouseButtonPressed     EventType = C.sfEvtMouseButtonPressed
 	EventTypeMouseButtonReleased    EventType = C.sfEvtMouseButtonReleased
 	EventTypeMouseMoved             EventType = C.sfEvtMouseMoved
@@ -74,6 +76,13 @@ type EventMouseEntered struct{}
 
 func (EventMouseEntered) Type() EventType {
 	return EventTypeMouseEntered
+}
+
+//EventMouseWheelScrolled if the mouse wheel got scrolled
+type EventMouseWheelScrolled struct{}
+
+func (EventMouseWheelScrolled) Type() EventType {
+	return EventTypeMouseWheelScrolled
 }
 
 // The mouse cursor left the area of the window (no data)
@@ -287,6 +296,8 @@ func handleEvent(cEvent *C.sfEvent) (ev Event) {
 		ev = (EventKeyPressed)(newKeyEventFromC(C.getKeyEvent(cEvent)))
 	case EventTypeMouseWheelMoved:
 		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
+	case EventTypeMouseWheelScrolled:
+		ev = newMouseWheelEventFromC(C.getMouseWheelEvent(cEvent))
 	case EventTypeMouseButtonReleased:
 		ev = (EventMouseButtonReleased)(newMouseButtonEventFromC(C.getMouseButtonEvent(cEvent)))
 	case EventTypeMouseButtonPressed:
@@ -308,7 +319,7 @@ func handleEvent(cEvent *C.sfEvent) (ev Event) {
 	case EventTypeJoystickConnected:
 		ev = (EventJoystickConnected)(newJoystickConnectEventFromC(C.getJoystickConnectEvent(cEvent)))
 	default:
-		panic("Unknown event")
+		log.Printf("Unknown event %d occured. No handling defined\n", EventType(C.getEventType(cEvent)))
 	}
 	return
 }
